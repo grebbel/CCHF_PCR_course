@@ -496,35 +496,42 @@ document.addEventListener('DOMContentLoaded', () => {
     let multiplexScore = 0;
     const maxMultiplexScore = 120; // 12 questions × 10 points each
     const multiplexScoreDisplay = document.getElementById('multiplexScore');
+    let answersChecked = false;
+
+    // Initialize score display as hidden
+    if (multiplexScoreDisplay) {
+        multiplexScoreDisplay.textContent = `-- / ${maxMultiplexScore}`;
+        multiplexScoreDisplay.style.backgroundColor = '#cccccc';
+    }
 
     // Initialize multiplex exercise event listeners
     const interpretationDropdowns = document.querySelectorAll('.interpretation-dropdown');
     interpretationDropdowns.forEach(dropdown => {
         dropdown.addEventListener('change', function() {
-            const sampleNumber = this.getAttribute('data-sample');
-            const correctAnswer = this.getAttribute('data-correct');
-            const selectedAnswer = this.value;
-            const resultIndicator = document.querySelector(`.result-indicator[data-sample="${sampleNumber}"]`);
+            // Only calculate score internally, don't display until checked
+            calculateMultiplexScore();
             
-            if (selectedAnswer === correctAnswer) {
-                resultIndicator.innerHTML = '<span style="color: var(--rh-green); font-weight: bold; font-size: 18px;">✓</span>';
-                this.style.borderColor = 'var(--rh-green)';
-                this.style.backgroundColor = '#d4edda';
-            } else if (selectedAnswer !== '') {
-                resultIndicator.innerHTML = '<span style="color: #dc3545; font-weight: bold; font-size: 18px;">✗</span>';
-                this.style.borderColor = '#dc3545';
-                this.style.backgroundColor = '#f8d7da';
-            } else {
-                resultIndicator.innerHTML = '';
+            // Reset visual feedback if user changes answer after checking
+            if (answersChecked) {
+                const sampleNumber = this.getAttribute('data-sample');
+                const resultIndicator = document.querySelector(`.result-indicator[data-sample="${sampleNumber}"]`);
+                if (resultIndicator) {
+                    resultIndicator.innerHTML = '';
+                }
                 this.style.borderColor = '#ddd';
                 this.style.backgroundColor = 'white';
+                answersChecked = false;
+                
+                // Hide score again when user changes answers after checking
+                if (multiplexScoreDisplay) {
+                    multiplexScoreDisplay.textContent = `-- / ${maxMultiplexScore}`;
+                    multiplexScoreDisplay.style.backgroundColor = '#cccccc';
+                }
             }
-            
-            updateMultiplexScore();
         });
     });
 
-    function updateMultiplexScore() {
+    function calculateMultiplexScore() {
         let correctAnswers = 0;
         interpretationDropdowns.forEach(dropdown => {
             const correctAnswer = dropdown.getAttribute('data-correct');
@@ -535,6 +542,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         multiplexScore = correctAnswers * 10;
+        // Don't update display here - only calculate internally
+    }
+
+    function updateMultiplexScoreDisplay() {
         if (multiplexScoreDisplay) {
             multiplexScoreDisplay.textContent = `${multiplexScore} / ${maxMultiplexScore}`;
             
@@ -554,11 +565,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkAllAnswersBtn) {
         checkAllAnswersBtn.addEventListener('click', function() {
             let allAnswered = true;
+            
+            // First check if all questions are answered
             interpretationDropdowns.forEach(dropdown => {
                 if (dropdown.value === '') {
                     allAnswered = false;
-                    dropdown.style.borderColor = '#dc3545';
-                    dropdown.style.backgroundColor = '#f8d7da';
                 }
             });
             
@@ -566,6 +577,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Please complete all interpretations before checking answers.');
                 return;
             }
+            
+            // Calculate final score
+            calculateMultiplexScore();
+            
+            // Now show the score for the first time
+            updateMultiplexScoreDisplay();
+            
+            // Show visual feedback for all answers
+            interpretationDropdowns.forEach(dropdown => {
+                const sampleNumber = dropdown.getAttribute('data-sample');
+                const correctAnswer = dropdown.getAttribute('data-correct');
+                const selectedAnswer = dropdown.value;
+                const resultIndicator = document.querySelector(`.result-indicator[data-sample="${sampleNumber}"]`);
+                
+                if (selectedAnswer === correctAnswer) {
+                    resultIndicator.innerHTML = '<span style="color: var(--rh-green); font-weight: bold; font-size: 18px;">✓</span>';
+                    dropdown.style.borderColor = 'var(--rh-green)';
+                    dropdown.style.backgroundColor = '#d4edda';
+                } else {
+                    resultIndicator.innerHTML = '<span style="color: #dc3545; font-weight: bold; font-size: 18px;">✗</span>';
+                    dropdown.style.borderColor = '#dc3545';
+                    dropdown.style.backgroundColor = '#f8d7da';
+                }
+            });
+            
+            answersChecked = true;
             
             // Show summary
             const correctCount = multiplexScore / 10;
@@ -583,6 +620,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             alert(message);
+            
+            // Report to LMS
+            reportToLMS('multiplexExercise', multiplexScore, percentage >= 70);
         });
     }
 
@@ -602,9 +642,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             multiplexScore = 0;
+            answersChecked = false;
             if (multiplexScoreDisplay) {
-                multiplexScoreDisplay.textContent = `0 / ${maxMultiplexScore}`;
-                multiplexScoreDisplay.style.backgroundColor = 'var(--rh-green)';
+                multiplexScoreDisplay.textContent = `-- / ${maxMultiplexScore}`;
+                multiplexScoreDisplay.style.backgroundColor = '#cccccc';
             }
         });
     }

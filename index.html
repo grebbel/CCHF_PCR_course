@@ -832,7 +832,7 @@
                                     </li>
                                 </ul>
                                 
-                                <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Example Result Table</h4>
+                                <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Multiplex PCR Results</h4>
                                 <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
                                     <thead>
                                         <tr style="background-color: var(--rh-light-blue); color: var(--rh-dark-blue);">
@@ -840,6 +840,7 @@
                                             <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Pan-CCHF Result</th>
                                             <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Internal Control</th>
                                             <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Interpretation</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">✓</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -847,76 +848,217 @@
                                             <td style="border: 1px solid #ddd; padding: 12px;">1</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 26</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="1" data-correct="Negative" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="1"></span>
+                                            </td>
                                         </tr>
                                         <tr style="background-color: var(--rh-light-gray);">
                                             <td style="border: 1px solid #ddd; padding: 12px;">2</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 27</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 29</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="2" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="2"></span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="border: 1px solid #ddd; padding: 12px;">3</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 24</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="3" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="3"></span>
+                                            </td>
                                         </tr>
                                         <tr style="background-color: var(--rh-light-gray);">
                                             <td style="border: 1px solid #ddd; padding: 12px;">4</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 39</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 34</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Inhibition</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="4" data-correct="Inhibition" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="4"></span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="border: 1px solid #ddd; padding: 12px;">5</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 30</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="5" data-correct="Negative" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="5"></span>
+                                            </td>
                                         </tr>
                                         <tr style="background-color: var(--rh-light-gray);">
                                             <td style="border: 1px solid #ddd; padding: 12px;">6</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 37</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 29</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="6" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="6"></span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="border: 1px solid #ddd; padding: 12px;">7</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 36</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Inhibition</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="7" data-correct="Inhibition" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="7"></span>
+                                            </td>
                                         </tr>
                                         <tr style="background-color: var(--rh-light-gray);">
                                             <td style="border: 1px solid #ddd; padding: 12px;">8</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 31</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 29</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="8" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="8"></span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="border: 1px solid #ddd; padding: 12px;">9</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 27</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 33</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="9" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="9"></span>
+                                            </td>
                                         </tr>
                                         <tr style="background-color: var(--rh-light-gray);">
                                             <td style="border: 1px solid #ddd; padding: 12px;">10</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Invalid</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="10" data-correct="Invalid" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="10"></span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="border: 1px solid #ddd; padding: 12px;">11 Negative control</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 31</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="11" data-correct="Negative" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="11"></span>
+                                            </td>
                                         </tr>
                                         <tr style="background-color: var(--rh-light-gray);">
                                             <td style="border: 1px solid #ddd; padding: 12px;">12 Positive control</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 30</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 30</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 8px;">
+                                                <select class="interpretation-dropdown" data-sample="12" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <option value="">Select...</option>
+                                                    <option value="Negative">Negative</option>
+                                                    <option value="Positive">Positive</option>
+                                                    <option value="Inhibition">Inhibition</option>
+                                                    <option value="Invalid">Invalid</option>
+                                                </select>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <span class="result-indicator" data-sample="12"></span>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                
+                                <div style="margin: 20px 0; text-align: center;">
+                                    <div style="background-color: var(--rh-light-blue); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                        <span style="font-weight: 600; color: var(--rh-dark-blue);">Exercise Score: </span>
+                                        <span id="multiplexScore" style="font-weight: 700; color: white; background-color: var(--rh-green); padding: 5px 15px; border-radius: 15px;">0 / 120</span>
+                                    </div>
+                                    <button id="checkAllAnswers" class="submit-btn" style="margin: 0 10px;">Check All Answers</button>
+                                    <button id="resetMultiplex" class="retry-btn" style="margin: 0 10px;">Reset Exercise</button>
+                                </div>
                             </div>
                         </div>
                     </div>
