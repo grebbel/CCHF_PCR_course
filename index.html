@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: Principles of Real-time PCR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Rijkshuisstijl Colors from PDF */
+        :root {
+            --rh-blue: #007bc7;
+            --rh-dark-blue: #01689b;
+            --rh-green: #39870c;
+            --rh-mint-green: #76d2b6;
+            --rh-violet: #421451;
+            --rh-light-blue: #8fcae7;
+            --rh-orange: #e17000;
+            --rh-white: #ffffff;
+            --rh-black: #000000;
+            --rh-light-gray: #f0f0f0;
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--rh-light-blue);
+            color: var(--rh-black);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .course-container {
+            background-color: var(--rh-white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--rh-green) 0%, var(--rh-dark-blue) 100%);
+            color: var(--rh-white);
+            padding: 40px;
+            text-align: center;
+            border-bottom: 5px solid var(--rh-orange);
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            margin-top: 10px;
+        }
+        
+        /* Main Layout Container */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            min-height: 600px;
+        }
+
+        /* Left Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background-color: var(--rh-light-gray);
+            border-right: 2px solid #ddd;
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            background-color: var(--rh-dark-blue);
+            color: var(--rh-white);
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .chapter-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chapter-item {
+            display: block;
+            cursor: pointer;
+            padding: 15px 20px;
+            color: var(--rh-dark-blue);
+            font-weight: 500;
+            border-bottom: 1px solid #ddd;
+            transition: all 0.3s ease;
+            background-color: var(--rh-white);
+        }
+
+        .chapter-item:hover {
+            background-color: var(--rh-mint-green);
+            color: var(--rh-violet);
+            transform: translateX(5px);
+        }
+
+        .chapter-item.active {
+            background-color: var(--rh-orange);
+            color: var(--rh-white);
+            border-left: 5px solid var(--rh-dark-blue);
+            font-weight: 700;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: var(--rh-white);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            color: var(--rh-dark-blue);
+            margin-bottom: 20px;
+            border-left: 5px solid var(--rh-blue);
+            padding-left: 15px;
+        }
+
+        .content-section h3 {
+            font-size: 1.4rem;
+            color: var(--rh-green);
+            margin: 20px 0 15px 0;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+        }
+
+        .content-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        .content-section li::before {
+            content: '•';
+            color: var(--rh-green);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+        
+        .content-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        /* Interactive Section */
+        .interactive-container {
+            background-color: var(--rh-mint-green);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .interactive-container h3 {
+            font-size: 1.5rem;
+            color: var(--rh-dark-blue);
+            margin-bottom: 15px;
+        }
+
+        .interactive-content {
+            background-color: var(--rh-white);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.5s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            position: relative;
+        }
+
+        .slide-image {
+            max-width: 90%;
+            max-height: 350px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 3px solid var(--rh-light-blue);
+        }
+
+        .slide-text {
+            margin-top: 20px;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .slide-text h4 {
+            font-size: 1.3rem;
+            color: var(--rh-dark-blue);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .slide-text p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--rh-black);
+        }
+
+        /* Navigation Controls */
+        .navigation-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .progress-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--rh-green);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        #stepCounter {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--rh-dark-blue);
+        }
+
+        .nav-btn {
+            background-color: var(--rh-blue);
+            color: var(--rh-white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background-color: var(--rh-dark-blue);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Formula Section */
+        .formula-section {
+            background-color: var(--rh-light-gray);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 2px solid var(--rh-light-blue);
+        }
+
+        .formula-section h3 {
+            font-size: 1.4rem;
+            color: var(--rh-dark-blue);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .formula-box {
+            background-color: var(--rh-white);
+            border: 2px solid var(--rh-blue);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula-box p {
+            font-size: 1.3rem;
+            color: var(--rh-dark-blue);
+            margin: 0;
+        }
+
+        .formula-explanation {
+            background-color: var(--rh-white);
+            border-left: 4px solid var(--rh-green);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .formula-explanation p {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+
+        .continue-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .continue-btn {
+            background: linear-gradient(135deg, var(--rh-orange) 0%, var(--rh-green) 100%);
+            color: var(--rh-white);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* End Module Section */
+        .end-module-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--rh-light-blue) 0%, var(--rh-mint-green) 100%);
+            border-radius: 15px;
+            border: 2px solid var(--rh-blue);
+        }
+
+        .end-module-btn {
+            background: linear-gradient(135deg, var(--rh-violet) 0%, var(--rh-dark-blue) 100%);
+            color: var(--rh-white);
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .end-module-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .end-module-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .end-module-btn:hover:before {
+            left: 100%;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background-color: var(--rh-white);
+            border: 2px solid var(--rh-orange);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-section h3 {
+            background: linear-gradient(135deg, var(--rh-orange) 0%, var(--rh-green) 100%);
+            color: var(--rh-white);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-align: center;
+            font-weight: 700;
+            margin: -10px -10px 20px -10px;
+            font-size: 1.2rem;
+        }
+
+        .quiz-question {
+            background-color: var(--rh-light-blue);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--rh-blue);
+        }
+
+        .quiz-question p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .quiz-options {
+            background-color: var(--rh-light-gray);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px 20px;
+            background-color: var(--rh-white);
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--rh-blue);
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-option input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            margin-right: 15px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .quiz-option input[type="radio"]:checked {
+            border-color: var(--rh-blue);
+            background-color: var(--rh-blue);
+        }
+
+        .quiz-option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background-color: var(--rh-white);
+            border-radius: 50%;
+        }
+
+        .option-text {
+            flex-grow: 1;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .option-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .quiz-option.correct {
+            border-color: var(--rh-green);
+            background-color: #d4edda;
+        }
+
+        .quiz-option.correct .option-indicator {
+            display: flex;
+            background-color: var(--rh-green);
+            color: white;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+
+        .quiz-option.incorrect .option-indicator {
+            display: flex;
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .quiz-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .quiz-submit {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .submit-btn, .retry-btn {
+            background-color: var(--rh-blue);
+            color: var(--rh-white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .submit-btn:hover, .retry-btn:hover {
+            background-color: var(--rh-dark-blue);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .retry-btn {
+            background-color: var(--rh-orange);
+        }
+
+        .retry-btn:hover {
+            background-color: #cc5900;
+        }
+
+        .quiz-feedback {
+            background-color: var(--rh-mint-green);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid var(--rh-green);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .feedback-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .feedback-icon.correct {
+            background-color: var(--rh-green);
+            color: white;
+        }
+
+        .feedback-icon.incorrect {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .feedback-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--rh-dark-blue);
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--rh-light-gray);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--rh-dark-blue);
+        }
+
+        .progress-status {
+            font-weight: 500;
+            padding: 5px 15px;
+            border-radius: 15px;
+            background-color: var(--rh-white);
+        }
+
+        .progress-status.completed {
+            background-color: var(--rh-green);
+            color: white;
+        }
+
+        .progress-status.failed {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .score-display {
+            font-weight: 600;
+            color: var(--rh-dark-blue);
+        }
+
+        .score-value {
+            padding: 5px 15px;
+            border-radius: 15px;
+            background-color: var(--rh-green);
+            color: white;
+            margin-left: 5px;
+        }
+
+        .quiz-answer {
+            background-color: var(--rh-mint-green);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--rh-green);
+            margin-bottom: 20px;
+        }
+
+        .calculation-box {
+            background-color: var(--rh-white);
+            border: 2px solid var(--rh-green);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .calculation-box p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .important-note {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .important-note h4 {
+            color: var(--rh-dark-blue);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* Efficiency Section */
+        .efficiency-section {
+            background-color: var(--rh-light-gray);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid var(--rh-violet);
+        }
+
+        .example-box {
+            background-color: var(--rh-white);
+            border: 2px solid var(--rh-violet);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .example-box p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--rh-violet);
+        }
+
+        /* Advantages Section */
+        .advantages-section {
+            background-color: var(--rh-light-gray);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid var(--rh-orange);
+        }
+
+        .advantages-section h3 {
+            font-size: 1.6rem;
+            color: var(--rh-dark-blue);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .advantages-section > p {
+            background-color: var(--rh-white);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-style: italic;
+            border-left: 4px solid var(--rh-orange);
+        }
+
+        .advantage-item {
+            background-color: var(--rh-white);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--rh-blue);
+        }
+
+        .advantage-item h4 {
+            color: var(--rh-dark-blue);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .advantage-item p {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .module-transition {
+            background-color: var(--rh-mint-green);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px solid var(--rh-green);
+        }
+
+        .module-transition p {
+            margin: 0;
+            font-weight: 600;
+            color: var(--rh-dark-blue);
+            font-size: 1.1rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+                max-height: 200px;
+                border-right: none;
+                border-top: 2px solid #ddd;
+            }
+            
+            .sidebar-header {
+                display: none;
+            }
+            
+            .chapter-list {
+                display: flex;
+                overflow-x: auto;
+                padding: 10px;
+            }
+            
+            .chapter-item {
+                white-space: nowrap;
+                min-width: 150px;
+                text-align: center;
+                border-bottom: none;
+                border-right: 1px solid #ddd;
+            }
+            
+            .chapter-item:hover {
+                transform: none;
+            }
+            
+            .content-area {
+                order: 1;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .content-area {
+                padding: 15px;
+            }
+            
+            .interactive-content {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="course-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Module 4: Principles of Real-time PCR</h1>
+            <p>A comprehensive guide to understanding real-time PCR for CCHF detection.</p>
+        </header>
+
+        <!-- Main Layout with Sidebar and Content -->
+        <div class="main-layout">
+            <!-- Left Sidebar Navigation -->
+            <nav class="sidebar">
+                <div class="sidebar-header">Course Chapters</div>
+                <ul class="chapter-list">
+                    <li class="chapter-item active" data-tab="intro">Introduction</li>
+                    <li class="chapter-item" data-tab="pcr-principle">PCR Principle</li>
+                    <li class="chapter-item" data-tab="realtime-pcr">Real-time PCR</li>
+                    <li class="chapter-item" data-tab="sybr-green">SYBR Green</li>
+                    <li class="chapter-item" data-tab="taqman-probe">TaqMan Probe</li>
+                    <li class="chapter-item" data-tab="reverse-transcriptase">Reverse Transcriptase</li>
+                    <li class="chapter-item" data-tab="controls">Controls</li>
+                    <li class="chapter-item" data-tab="multiplex">Multiplex PCR</li>
+                    <li class="chapter-item" data-tab="troubleshooting">Troubleshooting</li>
+                </ul>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="content-area">
+                <!-- Introduction Section -->
+                <div id="intro" class="content-section active">
+                    <h2>Introduction</h2>
+                    <p>Microorganisms were traditionally detected by means of culture, microscopy and chemical reactions. Nowadays, Nucleic acid amplification by Polymerase Chain Reaction (PCR) are among the most valuable tools in biological research today and has largely replaced the traditional detection techniques. Scientists in all areas of life science – basic research, biotechnology, medicine, forensics, diagnostics, and more – use PCR techniques in a wide range of applications. For some applications, qualitative (positive or negative) nucleic acid detection is sufficient. Other applications, however, demand a quantitative (number of micro-organisms) analysis. Real-time PCR can be used to meet both demands.</p>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="pcr-principle">CONTINUE</button>
+                    </div>
+                </div>
+
+                <!-- PCR Principle Section with Interactive Element -->
+                <div id="pcr-principle" class="content-section">
+                    <h2>The PCR Principle</h2>
+                    <p>Before diving into real-time PCR, it's essential to understand the basic principle of PCR.</p> 
+                    <p>PCR is like a molecular photocopier for DNA. It is a laboratory technique used to make millions to billions of copies of a specific segment of DNA. 
+                        The process uses a few simple ingredients—DNA, primers, a special enzyme (Taq polymerase), and nucleotides—and cycles through changes in temperature to repeatedly copy the target DNA sequence. 
+                        These repeated heating and cooling steps allow scientists to quickly and precisely amplify a desired piece of DNA, making it easier to study, analyze, or use in various experiments.</p>    
+                    <p>The following interactive guide walks you through the key steps of the PCR cycle: denaturation, annealing, and elongation.</p>
+                    <div class="interactive-container">
+                        <h3>The PCR Process</h3>
+                        <p>Click the "Next" and "Previous" buttons or use the arrow keys to navigate the key steps of the process.</p>
+                        <div class="interactive-content">
+                            <div class="slide active" id="slide-1">
+                                <img src="images/PCR_1.png" alt="Step 1: Initial Setup" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 1: Initial Setup</h4>
+                                    <p>The PCR reaction begins with a mixture containing the target DNA template, specific primers that will bind to the DNA, Taq polymerase enzyme, nucleotides (A, T, G, C building blocks), and buffer solution. This mixture is placed in a thermal cycler machine that precisely controls temperature changes throughout the process.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="slide-2">
+                                <img src="images/PCR_2.png" alt="Step 2: Initial Denaturation" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 2: Initial Denaturation (95°C)</h4>
+                                    <p>The sample is heated to approximately 95°C for 2-5 minutes. This high temperature breaks the hydrogen bonds that hold the two strands of the double-stranded DNA together, separating them into single strands. This initial denaturation ensures that all DNA is completely separated before the cycling begins.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="slide-3">
+                                <img src="images/PCR_3.png" alt="Step 3: Denaturation Cycle" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 3: Cycle Denaturation (95°C)</h4>
+                                    <p>Each PCR cycle begins with denaturation at 95°C for 15-30 seconds. This step separates any double-stranded DNA that was formed in the previous cycle, ensuring that the DNA strands are single and accessible for primer binding. The brief duration prevents damage to the heat-stable Taq polymerase enzyme.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="slide-4">
+                                <img src="images/PCR_4.png" alt="Step 4: Annealing" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 4: Annealing (50-65°C)</h4>
+                                    <p>The temperature is rapidly lowered to 50-65°C for 15-60 seconds. At this lower temperature, the short DNA primers can bind (anneal) to their complementary sequences on the single DNA strands. The specific annealing temperature depends on the primer sequence and is carefully chosen to ensure specific binding while avoiding non-specific interactions.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="slide-5">
+                                <img src="images/PCR_5.png" alt="Step 5: Elongation" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 5: Elongation/Extension (72°C)</h4>
+                                    <p>The temperature is raised to 72°C, the optimal working temperature for Taq polymerase. The enzyme adds nucleotides to the 3' end of each primer, synthesizing new DNA strands complementary to the template. The extension time depends on the length of the target sequence (typically 1 minute per 1000 base pairs).</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="slide-6">
+                                <img src="images/PCR_6.png" alt="Step 6: First Cycle Complete" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 6: First Cycle Complete</h4>
+                                    <p>After the first complete cycle, the amount of target DNA has doubled. Each original strand now serves as a template, and two new complementary strands have been synthesized. The newly formed double-stranded DNA molecules will serve as additional templates in subsequent cycles, leading to exponential amplification.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="slide-7">
+                                <img src="images/PCR_7.png" alt="Step 7: Multiple Cycles" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 7: Exponential Amplification</h4>
+                                    <p>The three-step cycle (denaturation, annealing, extension) is repeated 25-40 times. With each cycle, the amount of target DNA approximately doubles, resulting in exponential amplification. After 30 cycles, theoretically over 1 billion copies of the original DNA sequence can be produced from a single starting molecule.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="slide-8">
+                                <img src="images/PCR_8.png" alt="Step 8: Real-time Detection" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Step 8: Real-time Detection & Analysis</h4>
+                                    <p>In real-time PCR, fluorescent dyes or probes detect DNA amplification during each cycle, not just at the end. As more DNA is produced, fluorescence increases proportionally. This creates an amplification curve showing DNA accumulation over time. The Ct (threshold cycle) value indicates the cycle where fluorescence exceeds background levels, allowing quantification of the original DNA amount.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="navigation-controls">
+                            <button class="nav-btn" id="prevBtn">Previous</button>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <span id="stepCounter">1 / 8</span>
+                            </div>
+                            <button class="nav-btn" id="nextBtn">Next</button>
+                        </div>
+                    </div>
+                    
+                    <div class="formula-section">
+                        <h3>PCR Amplification Formula</h3>
+                        <p>In the slides above the formula <em>copies = 2<sup>n</sup></em> is shown. This applies when the PCR-mix contains one DNA template. However, we can assume that at the start of the amplification reaction, the mixture can contain more than one DNA starting template. A reaction with 40 PCR cycles can start for example with 20 viral DNA copies. The formula can then we written as:</p>
+                        
+                        <div class="formula-box">
+                            <p><strong><em>N</em> = <em>N</em><sub>0</sub> x 2<sup><em>n</em></sup></strong></p>
+                        </div>
+                        
+                        <div class="formula-explanation">
+                            <p><strong><em>N</em></strong> = final number of DNA copies</p>
+                            <p><strong><em>N</em><sub>0</sub></strong> = initial number of DNA copies (starting template)</p>
+                            <p><strong><em>n</em></strong> = number of PCR cycles</p>
+                        </div>
+                        
+                        <p>For example: <strong><em>N</em> = 20 x 2<sup>40</sup></strong></p>
+                        
+                        <div class="quiz-section">
+                            <h3>QUIZ 1</h3>
+                            <div class="quiz-question">
+                                <p>A PCR mix contains 100 Hepatitis B virus particles at the start. After 30 cycles of PCR, assuming <em>perfect</em> doubling at each cycle, how many total virus copies could result?</p>
+                            </div>
+                            <form class="quiz-form" id="quiz1Form">
+                                <div class="quiz-options">
+                                    <label class="quiz-option">
+                                        <input type="radio" name="quiz1Answer" value="a" id="option-a">
+                                        <span class="option-text">a) Up to 10<sup>7</sup>x10<sup>9</sup></span>
+                                        <span class="option-indicator"></span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="quiz1Answer" value="b" id="option-b">
+                                        <span class="option-text">b) Up to 3.8x10<sup>31</sup></span>
+                                        <span class="option-indicator"></span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="quiz1Answer" value="c" id="option-c">
+                                        <span class="option-text">c) Exactly 1.073.741.824</span>
+                                        <span class="option-indicator"></span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="quiz1Answer" value="d" id="option-d">
+                                        <span class="option-text">d) Exactly 107.374.182.400</span>
+                                        <span class="option-indicator"></span>
+                                    </label>
+                                </div>
+                                <div class="quiz-submit">
+                                    <button type="submit" class="submit-btn" id="submitQuiz1">Submit Answer</button>
+                                    <button type="button" class="retry-btn" id="retryQuiz1" style="display: none;">Try Again</button>
+                                </div>
+                            </form>
+                            <div class="quiz-feedback" id="quiz1Feedback" style="display: none;">
+                                <div class="feedback-content">
+                                    <div class="feedback-header">
+                                        <span class="feedback-icon"></span>
+                                        <span class="feedback-title"></span>
+                                    </div>
+                                    <div class="feedback-explanation">
+                                        <p>The correct answer is <strong>d)</strong>: Exactly 107.374.182.400.</p>
+                                        <p>After 30 cycles, each initial copy is amplified 2<sup>30</sup> times:</p>
+                                        <div class="calculation-box">
+                                            <p>Total copies = 100 × 2<sup>30</sup> = 100 × 1.073.741.824 = 107.374.182.400</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quiz-progress">
+                                <div class="progress-indicator">
+                                    <span class="progress-text">Quiz Progress:</span>
+                                    <span class="progress-status" id="quiz1Status">Not Started</span>
+                                </div>
+                                <div class="score-display" id="quiz1Score" style="display: none;">
+                                    Score: <span class="score-value"></span>
+                                </div>
+                            </div>
+                            <div class="important-note">
+                                <h4>Important Note</h4>
+                                <p>This calculation assumes <strong>100% PCR efficiency</strong>, meaning perfect doubling each cycle. In actual experiments, the number is lower, as factors like reagent depletion and enzyme decay reduce yield during later cycles. So, "up to" really means an estimated theoretical maximum, but practical results are always less due to real-world limitations. Tip: Online PCR calculator.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="efficiency-section">
+                            <p>If the reaction efficiency (<em>E</em>) is less than 100% (which is always the case in real experiments), the formula is:</p>
+                            
+                            <div class="formula-box">
+                                <p><strong><em>N</em> = <em>N</em><sub>0</sub> x (1+<em>E</em>)<sup><em>n</em></sup></strong></p>
+                            </div>
+                            
+                            <p>Where <em>E</em> = the amplification efficiency per cycle (for 100% <em>E</em> = 1 efficiency; for 90% efficiency, <em>E</em> = 0.9), usually represented as a decimal.</p>
+                            
+                            <p>Using the examples in the slides, if the reaction has an efficiency of 90%, the formula would be:</p>
+                            <div class="example-box">
+                                <p><strong><em>N</em> = 100 x 1.9<sup>30</sup></strong></p>
+                            </div>
+                        </div>
+                        
+                        <div class="continue-section">
+                            <button class="continue-btn" id="continueBtn">CONTINUE</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time PCR Section -->
+                <div id="realtime-pcr" class="content-section">
+                    <h2>What is Real-time PCR?</h2>
+                    <p>What are the differences between conventional PCR as explained above, and real-time PCR? In conventional PCR, the amplified DNA product is detected in an end-point analysis. An example is visualizing the amplified DNA with Ethidium Bromide on an agarose gel.</p>
+                    
+                    <img src="images/Agarose_DNA.jpeg" alt="Agarose gel showing DNA bands visualized with Ethidium Bromide">
+                    
+                    <p>In real-time PCR, the accumulation of the amplified DNA is measured as the reaction progresses, in real-time. The amplified DNA is detected by the inclusion of a fluorescent reporter molecule. The fluorescence increases by each step by the amount of amplified DNA.</p>
+                    
+                    <img src="images/realtime_plate.jpg" alt="Real-time PCR plate with fluorescent samples">
+                    
+                    <p>The amplification process has several stages that are presented in the next block. These stages are important to remember.</p>
+                    
+                    <div class="interactive-container">
+                        <h3>Real-time PCR Amplification Curve Analysis</h3>
+                        <p>Click the "Next" and "Previous" buttons or use the arrow keys to learn about the different phases of real-time PCR amplification.</p>
+                        <div class="interactive-content">
+                            <div class="slide active" id="rtpcr-slide-1">
+                                <img src="images/1_realtimePCR.png" alt="Basic real-time PCR amplification curves" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Real-time PCR Amplification Curves</h4>
+                                    <p>Real-time PCR produces characteristic S-shaped amplification curves. Each curve represents the accumulation of PCR product over time, measured by fluorescence intensity. The green and blue curves represent different samples, each showing the typical sigmoid pattern of PCR amplification.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="rtpcr-slide-2">
+                                <img src="images/2_realtimePCR.png" alt="Initiation phase of real-time PCR" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>1. Initiation Phase</h4>
+                                    <p>The initiation phase occurs during the first few cycles of PCR. During this phase, the fluorescence signal is very low and often indistinguishable from background noise. The PCR reaction is starting, but the amount of product formed is still minimal compared to the detection sensitivity of the instrument.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="rtpcr-slide-3">
+                                <img src="images/3_realtimePCR.png" alt="Exponential phase of real-time PCR" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>2. Exponential Phase</h4>
+                                    <p>The exponential phase is characterized by rapid, logarithmic increase in PCR product. During this phase, the reaction conditions are optimal: there are abundant primers, nucleotides, and active polymerase. The fluorescence signal doubles with each cycle, creating the steep upward slope of the curve.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="rtpcr-slide-4">
+                                <img src="images/4_realtimePCR.png" alt="Plateau phase of real-time PCR" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>3. Plateau Phase</h4>
+                                    <p>The plateau phase occurs when the reaction reaches its maximum capacity. The curve levels off as reagents become limiting factors, polymerase activity decreases, and product inhibition occurs. The final fluorescence reading at the end of the reaction is called "End RFU" (Relative Fluorescence Units), which represents the maximum amount of product that can be formed.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="rtpcr-slide-5">
+                                <img src="images/5_realtimePCR.png" alt="Threshold line in real-time PCR" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Setting the Threshold</h4>
+                                    <p>The threshold line is a horizontal line set above the background fluorescence level. It represents the point where the fluorescence signal becomes statistically significant above the noise. The threshold is typically set in the exponential phase of the amplification curve, where the signal is increasing rapidly and consistently.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="rtpcr-slide-6">
+                                <img src="images/6_realtimePCR.png" alt="Ct value determination" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Ct Value (Cycle Threshold)</h4>
+                                    <p>The Ct value is the cycle number at which the fluorescence signal crosses the threshold line. The goal is to set the threshold where the precision of replicates is highest. It also represents the point where the amplified DNA becomes detectable above background levels. The Ct value is inversely proportional to the initial amount of target DNA: lower Ct values indicate higher starting concentrations, while higher Ct values indicate lower starting concentrations.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="rtpcr-slide-7">
+                                <img src="images/7_realtimePCR.png" alt="Comparing samples with different Ct values" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Comparing Sample Concentrations</h4>
+                                    <p>This example shows two samples with different starting DNA concentrations. Sample A (green) has a lower Ct value and higher starting quantity of DNA, reaching the threshold earlier. Sample B (blue) has a higher Ct value and lower starting quantity of DNA, reaching the threshold later. The difference in Ct values allows for quantitative comparison between samples.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="navigation-controls">
+                            <button class="nav-btn" id="rtpcrPrevBtn">Previous</button>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="rtpcrProgressFill"></div>
+                                </div>
+                                <span id="rtpcrStepCounter">1 / 7</span>
+                            </div>
+                            <button class="nav-btn" id="rtpcrNextBtn">Next</button>
+                        </div>
+                    </div>
+                    
+                    <p>At each amplification cycle a 'photo' is taken of the samples. Of each sample on a plate the amount of fluorescent light is measured, emitted by fluorescent reporter molecules. Next, we will discuss two types of fluorescent reporter molecules: SYBR Green and Taqman probes.</p>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="sybr-green">CONTINUE</button>
+                    </div>
+                </div>
+                
+                <!-- SYBR Green Section -->
+                <div id="sybr-green" class="content-section">
+                    <h2>SYBR Green</h2>
+                    <p>In conventional PCR where the amplified product is visualized on agarose gel, the fluorescent molecule Ethidium-Bromide was used which binds to double-stranded DNA. In modern molecular biology labs, Ethidium-Bromide is being replaced by SYBR Green. The SYBR-Green dye is considered less mutagenic and safer compared to the traditional ethidium bromide stain. Furthermore, in solutions (as in real-time PCR) the SYBR-Green dye is much more fluorescent. It also doesn't inhibit the polymerase activity during the amplification process. Most real-time PCR instruments are therefore designed to detect the fluorescence wavelengths emitted by SYBR Green, and not ethidium bromide.</p>
+                    
+                    <p>SYBR Green's fluorescence is quenched (diminished) when floating free in a solution, but is allowed to shine when the dye is "locked" into double-stranded DNA (dsDNA).</p>
+                    
+                    <img src="images/SYBR_Green.png" alt="SYBR Green binding to double-stranded DNA during PCR cycles">
+                    
+                    <p>The figure above shows four PCR stages with the SYBR Green binding to double-stranded DNA. The dye is used to detect PCR product as it accumulates during PCR cycles. An important note is that the SYBR Green dye chemistry will detect <strong>all</strong> double-stranded DNA, including non-specific reaction products. A well-optimized reaction is therefore very important for accurate results.</p>
+                    
+                    <h3>Experiment</h3>
+                    <p>Let us do an experiment</p>
+                    <p>A real-time PCR experiment is performed using Sybr Green dye. There are two samples / templates: one is from the CCHF Europe I strain, the other from the CCHF Africa II strain</p>
+                    
+                    <img src="images/CCHF_primers.png" alt="Graph showing mismatching DNA sequences between CCHF strains with primer positions">
+                    
+                    <p>Sequences of the nucleoprotein genes from the two strains are uploaded on the National Institute of Health web applcation: https://www.ncbi.nlm.nih.gov/tools/primer-blast/</p>
+                    
+                    <p>The image displays the alignment of two CCHF virus strains, focusing on the region targeted by a PCR assay. The <strong>top section</strong> shows a graphical overview of the primer pairs mapped to the viral nucleoprotein sequence. The positions of the forward and reverse primers are marked in blue at each end of the region. (in module XX you can learn more about primer design).</p>
+                    
+                    <p>The <strong>zoomed-in</strong> section gives a detailed view of the forward primer position. The DNA sequences represent the double strand sequence of the Africa strain. Red blocks/letters highlight mismatches—positions where the nucleotide bases differ between the two viral strains, making them easily identifiable against otherwise matching regions.</p>
+                    
+                    <p>After PCR amplification, a melting curve analysis is conducted: the thermal cycler slowly increases the block temperature, while recording the fluorescence. As temperature rises, double-strand DNA products begin to "melt" (denature into single strands), and Sybr Green—whose fluorescence depends on binding double-stranded DNA—dissociates, causing fluorescence to decrease.</p>
+                    
+                    <p>In the graph below are the melting curves of the amplified DNA from the two CCHF virus strains. The melting point of the African strain (blue line) is 82,2 ºC. The melting point of the European strain (purple line) is 83,4 ºC.</p>
+                    
+                    <img src="images/Melting_point_1.JPG" alt="Melting curves showing fluorescence vs temperature for two CCHF virus strains">
+                    
+                    <p>In the graph below are again the melting curve, but here the first derivative of fluorescence vs. temperature is displayed (often shown as −dF/dT vs. T). The derivative curve transforms the gradual decline of fluorescence into sharp, distinct peaks, with the peak position marking the melting temperature (Tm) of each strain. This makes it easy to pinpoint very subtle differences between two strains, or wild-type and mutant amplicons – even if only a degree apart.</p>
+                    
+                    <img src="images/Melting_point_2.JPG" alt="First derivative melting curve analysis showing distinct peaks for melting temperatures">
+                    
+                    <p>The graphs are generated by pasting the sequences of the two strains in the online web application: https://www.dna-utah.org/umelt/quartz/dynamic.php</p>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="taqman-probe">CONTINUE</button>
+                    </div>
+                </div>
+                
+                <!-- TaqMan Probe Section -->
+                <div id="taqman-probe" class="content-section">
+                    <h2>TaqMan Probe</h2>
+                    <p>Real-time PCR with TaqMan probes is an advanced technique for the detection and quantification of specific DNA sequences. 
+                        TaqMan probes offer greater specificity and precision than SYBR Green assays. 
+                        While SYBR Green detects any double-stranded DNA, TaqMan probes use a sequence-specific fluorescent probe to increase discrimination. </p>
+                        <img src="images/taqmanprobe.png" alt="Graph showing mismatching DNA sequences between CCHF strains with primer positions">
+                    <div class="interactive-container">
+                        <h3>TaqMan Probe Mechanism</h3>
+                        <p>Click the "Next" and "Previous" buttons or use the arrow keys to understand how TaqMan probes work during PCR amplification.</p>
+                        <div class="interactive-content">
+                            <div class="slide active" id="taqman-slide-1">
+                                <img src="images/probe_step1.png" alt="TaqMan initiation with template DNA" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Initiation - Template DNA</h4>
+                                    <p>For a suitable location in a genome, a forward primer, a reverse primer and an oligonucleotide probe are constructed. The probe contains a reporter fluorescent dye on the 5´ end and a quencher dye on the 3´end.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="taqman-slide-2">
+                                <img src="images/probe_step2.png" alt="Denaturing stage at 95°C" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Denaturing Stage (95°C)</h4>
+                                    <p>At 95°C, the high temperature breaks the hydrogen bonds between the DNA strands, causing them to separate. This denaturation step creates single-stranded templates that are now accessible for primer and probe binding during the annealing phase.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="taqman-slide-3">
+                                <img src="images/probe_step3.png" alt="Primer annealing with TaqMan probe binding" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Primer Annealing (60°C)</h4>
+                                    <p>At the annealing temperature, the forward and reverse primers bind to their complementary sequences on the template DNA. Simultaneously, the TaqMan probe anneals to its specific target sequence between the primer binding sites. The probe contains a fluorescent reporter molecule and a quencher that suppresses fluorescence when in close proximity.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="taqman-slide-4">
+                                <img src="images/probe_step4.png" alt="Extension phase with polymerase cleavage" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Extension (72°C)</h4>
+                                    <p>During the extension phase, Taq polymerase begins DNA synthesis from the primers. When the polymerase encounters the bound TaqMan probe, its 5' exonuclease activity cleaves the probe. This cleavage separates the fluorescent reporter from the quencher, allowing the reporter to emit fluorescence. This fluorescence signal is proportional to the amount of PCR product being generated.</p>
+                                </div>
+                            </div>
+                            <div class="slide" id="taqman-slide-5">
+                                <img src="images/probe_step5.png" alt="Results showing amplification curve and Ct value" class="slide-image">
+                                <div class="slide-text">
+                                    <h4>Results - Amplification Curve</h4>
+                                    <p>The accumulated fluorescence from cleaved probes creates the characteristic S-shaped amplification curve. The Ct (cycle threshold) value is determined where the fluorescence crosses the threshold line, typically set in the exponential phase. Lower Ct values indicate higher starting template concentrations, while higher Ct values indicate lower starting concentrations.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="navigation-controls">
+                            <button class="nav-btn" id="taqmanPrevBtn">Previous</button>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="taqmanProgressFill"></div>
+                                </div>
+                                <span id="taqmanStepCounter">1 / 5</span>
+                            </div>
+                            <button class="nav-btn" id="taqmanNextBtn">Next</button>
+                        </div>
+                    </div>
+                    
+                    <div class="advantages-section">
+                        <h3>Reasons why real-time PCR is superior to conventional PCR</h3>
+                        <p>We are now half-way of the module. You learned what the main differences are between real-time PCR and conventional PCR. Let's make a list of the advantages of real-time PCR.</p>
+                        
+                        <div class="advantage-item">
+                            <h4>Consistency</h4>
+                            <p>The graph below shows a real-time PCR on 96 identical samples on the same plate. The graph clearly shows variations in the plateau phase of multiple PCR reactions with the same starting DNA concentration. Note that the fluorescence values at the endpoint show a lot of variability from sample to sample. This is due to variations in the reaction kinetics. This means the conventional or end-point PCR has lots of variation, something we want to avoid in particular when we want to quantify the number of viruses in a solution. The Ct (or Cq) value remain consistent.</p>
+                            <img src="images/ReatimePCR_replicates.png" alt="Real-time PCR replicates showing consistency in Ct values across multiple samples">
+                        </div>
+
+                        <div class="advantage-item">
+                            <h4>Sensitivity & specificity</h4>
+                            <p>For real-time TaqMan PCR, the optimal amplicon size is generally 50 to 150 base pairs (bp), improving the amplification efficiency. Primers are usually designed to recognize specific targets in the gene. Adding the probe binding site therefore increases specificity.</p>
+                            
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Speed and efficiency</h4>
+                            <p>Real-time PCR eliminates the need for post-PCR processing like gel electrophoresis, delivering results faster and with less hands-on time. It also makes it easier to automate the detection process.</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Reduced contamination risk</h4>
+                            <p>Real-time PCR is run in closed plates. This reduces the risk of contamination from handling amplified products, which is a major issue in conventional PCR.</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Broader Applications</h4>
+                            <p>Real-time PCR supports applications such as gene expression analysis, viral load quantification, multiple target detection and fast diagnosis of diseases – functions where conventional PCR falls short.</p>
+                        </div>
+                        
+                        <div class="module-transition">
+                            <p>The next part of this module will cover some of the broader applications.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="reverse-transcriptase">CONTINUE</button>
+                    </div>
+                </div>
+                
+                <!-- Reverse Transcriptase Section -->
+                <div id="reverse-transcriptase" class="content-section">
+                    <h2>Reverse Transcriptase</h2>
+                    <p>PCR amplification only works on DNA. In real-time PCR (qPCR) for RNA viruses or gene expression analysis, it is essential to translate the RNA into DNA first. Reverse transcriptase is a specialized enzyme that converts RNA into complementary DNA (cDNA). The process, known as reverse transcription, allows researchers to detect and quantify RNA targets—such as viral genomes or messenger RNA—by first converting RNA to cDNA, which is then amplified and monitored in real-time PCR reactions.</p>
+                    
+                    <h3>One-Step vs. Two-Step Real-Time PCR</h3>
+                    <p>In one-step real-time PCR, both the reverse transcription (conversion of RNA to cDNA) and the PCR amplification of DNA occur in a single tube during the same reaction. This approach minimizes handling, reduces contamination risk, and is convenient for rapid diagnostics.</p>
+                    
+                    <p>In two-step real-time PCR, the reverse transcription and PCR are performed in separate tubes: RNA is first converted to cDNA, which is then transferred to a new tube for amplification. This method allows greater flexibility in experiment setup, the ability to archive cDNA for future uses, and optimized conditions for each step.</p>
+                    
+                     <p>Both approaches have advantages depending on the needs of the laboratory and the experiment.</p>
+                     <img src="images/reverse_transcriptase.png" alt="Reverse Transcriptase diagram">
+                     <p>One-step PCR and two-step PCR are two different approaches for performing reverse transcription polymerase chain reaction (RT-PCR), which is used to convert RNA into complementary DNA (cDNA) and then amplify specific DNA targets.</p>                    
+                    <div class="advantages-section">
+                        <h3>One-Step PCR</h3>
+                        <p>In one-step PCR, the reverse transcription (RT) and PCR amplification occur in a single reaction tube and buffer. This method combines the reverse transcriptase and DNA polymerase enzymes, allowing both processes to happen sequentially without the need to transfer the sample between steps.</p>
+                        
+                        <div class="advantage-item">
+                            <h4>Advantages</h4>
+                            <ul>
+                                <li>Simplifies the workflow by reducing the number of steps and tubes</li>
+                                <li>Minimizes the risk of contamination and pipetting errors</li>
+                                <li>Suitable for high-throughput applications</li>
+                                <li>Requires less hands-on time and is faster overall</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Disadvantages</h4>
+                            <ul>
+                                <li>Uses gene-specific primers, limiting the analysis to specific targets</li>
+                                <li>Less flexible in optimizing conditions for RT and PCR separately</li>
+                                <li>The cDNA product cannot be stored for future use, requiring additional RNA samples for repeated assays</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="advantages-section">
+                        <h3>Two-Step PCR</h3>
+                        <p>In two-step PCR, the reverse transcription and PCR amplification are performed in separate reactions. First, the RNA is reverse-transcribed into cDNA in one tube. Then, an aliquot of the cDNA is transferred to a new tube for PCR amplification.</p>
+                        
+                        <div class="advantage-item">
+                            <h4>Advantages</h4>
+                            <ul>
+                                <li>Allows the use of different primers for reverse transcription (e.g., oligo(dT), random hexamers, or gene-specific primers), providing more flexibility</li>
+                                <li>Enables optimization of reaction conditions for each step independently</li>
+                                <li>The cDNA can be stored and reused for multiple PCR reactions, facilitating the analysis of multiple genes from the same RNA sample</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Disadvantages</h4>
+                            <ul>
+                                <li>More complex workflow with additional steps and sample handling</li>
+                                <li>Increased risk of contamination and variability due to multiple pipetting steps</li>
+                                <li>Requires more hands-on time and is less suitable for high-throughput applications</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="controls">CONTINUE</button>
+                    </div>
+                </div>
+                
+                <!-- Controls Section -->
+                <div id="controls" class="content-section">
+                    <h2>Controls</h2>
+                    <p>Controls are essential components of any PCR assay that help ensure the reliability and validity of results. They serve as quality assurance measures to detect potential problems in the PCR reaction and help interpret results correctly.</p>
+                    
+                    <h3>Types of Controls</h3>
+                    
+                    <div class="advantages-section">
+                        <div class="advantage-item">
+                            <h4>Positive Control</h4>
+                            <p>Contains a known amount of target DNA/RNA that should always produce a positive result. It confirms that the PCR reaction conditions are working properly and that all reagents are functional. If the positive control fails to amplify, the entire run should be considered invalid.</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Negative Control (No Template Control - NTC)</h4>
+                            <p>Contains all PCR reagents except the target DNA/RNA template (replaced with sterile water). It should always produce a negative result. A positive result in the negative control indicates contamination and invalidates the entire run.</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Internal Positive Control (IPC)</h4>
+                            <p>A specific DNA or RNA sequence added to each sample that is amplified alongside the target. It monitors for PCR inhibitors in the sample that could cause false-negative results. If the IPC fails to amplify, the sample may contain inhibitors or the extraction may have failed.</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <h4>Extraction Control</h4>
+                            <p>Used to monitor the efficiency of the nucleic acid extraction process. It can be an external control (known amount of target added before extraction) or an internal control (endogenous gene present in the sample).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="interactive-container">
+                        <h3>Control Interpretation Guide</h3>
+                        <div class="interactive-content">
+                            <div style="background-color: var(--rh-white); padding: 20px; border-radius: 10px;">
+                                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                                    <thead>
+                                        <tr style="background-color: var(--rh-light-blue); color: var(--rh-dark-blue);">
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Control Type</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Expected Result</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Interpretation if Unexpected</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive Control</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">If negative: PCR failure, reagent problem</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative Control</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">If positive: Contamination detected</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Internal Positive Control</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">If negative: PCR inhibition, extraction failure</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Extraction Control</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">If negative: Extraction efficiency problem</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>CCHF-Specific Controls</h3>
+                    <p>For CCHF virus detection, specific controls might include:</p>
+                    
+                    <div class="efficiency-section">
+                        <div class="example-box">
+                            <p><strong>CCHF Positive Control:</strong> Synthetic CCHF RNA or inactivated virus</p>
+                        </div>
+                        
+                        <div class="example-box">
+                            <p><strong>Human/Animal Gene Control:</strong> β-actin or GAPDH to confirm sample quality</p>
+                        </div>
+                        
+                        <div class="example-box">
+                            <p><strong>RT Control:</strong> For RT-PCR, confirms reverse transcriptase activity</p>
+                        </div>
+                    </div>
+                    
+                    <div class="important-note">
+                        <h4>Best Practices</h4>
+                        <p>Always include appropriate controls in every PCR run. Without proper controls, it's impossible to distinguish between true negative results and false negatives due to technical failures. Controls are not optional—they are fundamental to reliable PCR diagnostics.</p>
+                    </div>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="multiplex">CONTINUE</button>
+                    </div>
+                </div>
+                
+                <!-- Multiplex PCR Section -->
+                <div id="multiplex" class="content-section">
+                    <h2>Multiplex PCR</h2>
+                    <p>Multiplex PCR is a variation of PCR that amplifies multiple DNA targets simultaneously in a single reaction. This is done by using multiple sets of primers for different targets. This method is highly efficient, as it can save time and reagents by testing for several targets at once. Multiplexing is often used in pathogen detection, genetic analysis, and genotyping. With real-time PCR, different fluorescent dyes are used to label probes for each target, allowing the machine to distinguish between the different signals.</p>
+                    
+                    <h3>CCHFV Genetic Diversity and the Need for Multiplex PCR</h3>
+                    <p>CCHFV is notable for its genetic diversity, with strains grouped into six main phylogenetic genotypes based on their geographic distribution and sequence differences. These genotypes are:</p>
+                    
+                    <div class="advantages-section">
+                        <div class="advantage-item">
+                            <ul>
+                                <li><strong>Genotype I:</strong> Found in West Africa</li>
+                                <li><strong>Genotype II:</strong> Central Africa</li>
+                                <li><strong>Genotype III:</strong> South and West Africa</li>
+                                <li><strong>Genotype IV:</strong> Asia and Middle East</li>
+                                <li><strong>Genotype V:</strong> South and East Europe</li>
+                                <li><strong>Genotype VI:</strong> Europe (AP92 group)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <p>Each genotype reflects regional evolution and adaptation of the virus. The high genetic variability—up to 20-31% difference at the nucleotide level—poses a challenge for molecular detection because it can affect PCR assay performance.</p>
+                    
+                    <p>This diversity explains the need for multiplex PCR assays with genotype-specific primers to ensure reliable detection of all circulating CCHFV strains. One way to deal with this problem is 'Multiplex PCR'.</p>
+                    
+                    <p>Multiplex PCR is a technique in which multiple target DNA (or RNA sequences) are amplified simultaneously in a single PCR reaction by using more than one pair of primers. This allows the detection or analysis of several genes, pathogens, or genomic regions at once, saving time and reagents and increasing the efficiency of diagnostic or research workflows. Use of reporter dyes with different wave-lengths.</p>
+                    
+                    <img src="images/multiplex.png" alt="Multiplex PCR setup showing different fluorescent dyes for multiple targets" style="width: 562px; height: 558px; max-width: 100%; height: auto;">
+                    
+                    <div class="interactive-container">
+                        <h3>Simulation Exercise: CCHFV Genotyping Workflow with Real-Time PCR</h3>
+                        <div class="interactive-content">
+                            <div style="background-color: var(--rh-white); padding: 25px; border-radius: 10px; text-align: left;">
+                                <h4 style="color: var(--rh-dark-blue); margin-bottom: 20px;">Scenario</h4>
+                                <p style="margin-bottom: 20px;">A researcher at a diagnostic virology laboratory is screening clinical samples for Crimean-Congo hemorrhagic fever virus (CCHFV) using a <strong>pan-CCHFV real-time PCR</strong> assay that includes an <strong>internal control</strong>. When a sample tests positive, they must further discriminate the CCHFV genotype using a <strong>multiplex real-time PCR</strong> targeting <strong>genotypes IV, V, and VI</strong>.</p>
+                                
+                                <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Step 1: Initial Pan-CCHFV Real-Time PCR Screening</h4>
+                                <ul style="margin-bottom: 20px;">
+                                    <li>The researcher receives a batch of blood or tissue samples for CCHFV testing.</li>
+                                    <li>Each sample is prepared and nucleic acids extracted.</li>
+                                    <li>A pan-CCHFV real-time PCR reaction mix is set up for each sample, including:
+                                        <ul style="margin-top: 10px; padding-left: 30px;">
+                                            <li>Primers and probe targeting conserved regions of CCHFV (all genotypes)</li>
+                                            <li><strong>Internal control</strong> (e.g., EGFP RNA or an unrelated control sequence) to validate extraction and amplification</li>
+                                        </ul>
+                                    </li>
+                                    <li>After amplification, results are interpreted:
+                                        <ul style="margin-top: 10px; padding-left: 30px;">
+                                            <li><strong>Negative sample:</strong> No signal for CCHFV and successful internal control amplification</li>
+                                            <li><strong>Inhibited/Invalid sample:</strong> No signal for CCHFV or internal control (possible PCR inhibition or extraction failure; retesting required)</li>
+                                            <li><strong>Positive sample:</strong> Detectable CCHFV signal and internal control amplification</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                
+                                <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Example Result Table</h4>
+                                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                                    <thead>
+                                        <tr style="background-color: var(--rh-light-blue); color: var(--rh-dark-blue);">
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Sample</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Pan-CCHF Result</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Internal Control</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Interpretation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">1</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 26</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">2</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 27</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 29</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">3</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 24</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">4</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 39</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 34</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Inhibition</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">5</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 30</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">6</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 37</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 29</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">7</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 36</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Inhibition</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">8</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 31</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 29</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">9</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 27</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 33</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">10</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Invalid</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">11 Negative control</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 31</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Negative</td>
+                                        </tr>
+                                        <tr style="background-color: var(--rh-light-gray);">
+                                            <td style="border: 1px solid #ddd; padding: 12px;">12 Positive control</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 30</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 30</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Positive</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="efficiency-section">
+                        <h3>Step 2: Multiplex Genotyping PCR</h3>
+                        <p>For positive samples (Sample 002 and Sample 004), the researcher proceeds with genotype-specific multiplex PCR:</p>
+                        
+                        <div class="example-box">
+                            <p><strong>Multiplex Setup:</strong> Three primer/probe sets in one reaction</p>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Genotype IV primers/probe (FAM fluorophore)</li>
+                                <li>Genotype V primers/probe (VIC fluorophore)</li>
+                                <li>Genotype VI primers/probe (ROX fluorophore)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example-box">
+                            <p><strong>Expected Results:</strong></p>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Sample 002: Genotype V positive (VIC signal, Ct 34.2)</li>
+                                <li>Sample 004: Genotype IV positive (FAM signal, Ct 28.5)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="important-note">
+                        <h4>Key Learning Points</h4>
+                        <p>This simulation demonstrates how multiplex PCR enables simultaneous detection of multiple targets, improving diagnostic efficiency while providing specific genotype information crucial for epidemiological tracking and treatment decisions. The internal control ensures result validity, while different fluorescent reporters allow discrimination between targets in a single reaction.</p>
+                    </div>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="troubleshooting">CONTINUE</button>
+                    </div>
+                </div>
+                
+                <!-- Troubleshooting Section -->
+                <div id="troubleshooting" class="content-section">
+                    <h2>Troubleshooting</h2>
+                    <p>Common issues in real-time PCR can include a lack of amplification, low efficiency, or inconsistent results. This can be caused by various factors, such as degraded nucleic acids, primer or probe design issues, or the presence of inhibitors in the sample. Troubleshooting involves checking reagent quality, optimizing primer and probe concentrations, adjusting the thermal cycling conditions, and ensuring the sample is free from contaminants.</p>
+                    
+                    <div class="end-module-section">
+                        <button class="end-module-btn" id="endModuleBtn">END OF MODULE 4</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chapter Navigation Logic
+            const chapterItems = document.querySelectorAll('.chapter-item');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            chapterItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    chapterItems.forEach(chapter => chapter.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    item.classList.add('active');
+                    const tabId = item.dataset.tab;
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // PCR Interactive Slides
+            const slides = document.querySelectorAll('#pcr-principle .slide');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progressFill = document.getElementById('progressFill');
+            const stepCounter = document.getElementById('stepCounter');
+
+            function updateSlide() {
+                slides.forEach(slide => slide.classList.remove('active'));
+                slides[currentSlide].classList.add('active');
+                const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+                progressFill.style.width = progressPercent + '%';
+                stepCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+
+            function nextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            }
+
+            function previousSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            }
+
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', previousSlide);
+
+            document.addEventListener('keydown', (e) => {
+                const activeChapter = document.querySelector('.chapter-item.active');
+                if (activeChapter && activeChapter.dataset.tab === 'pcr-principle') {
+                    if (e.key === 'ArrowLeft') {
+                        previousSlide();
+                    } else if (e.key === 'ArrowRight') {
+                        nextSlide();
+                    }
+                }
+            });
+
+            updateSlide();
+
+            // Real-time PCR Slides
+            const rtpcrSlides = document.querySelectorAll('#realtime-pcr .slide');
+            const rtpcrTotalSlides = rtpcrSlides.length;
+            let rtpcrCurrentSlide = 0;
+            const rtpcrPrevBtn = document.getElementById('rtpcrPrevBtn');
+            const rtpcrNextBtn = document.getElementById('rtpcrNextBtn');
+            const rtpcrProgressFill = document.getElementById('rtpcrProgressFill');
+            const rtpcrStepCounter = document.getElementById('rtpcrStepCounter');
+
+            function updateRtpcrSlide() {
+                if (rtpcrSlides.length === 0) return;
+                rtpcrSlides.forEach(slide => slide.classList.remove('active'));
+                if (rtpcrSlides[rtpcrCurrentSlide]) {
+                    rtpcrSlides[rtpcrCurrentSlide].classList.add('active');
+                }
+                const progressPercent = ((rtpcrCurrentSlide + 1) / rtpcrTotalSlides) * 100;
+                if (rtpcrProgressFill) {
+                    rtpcrProgressFill.style.width = progressPercent + '%';
+                }
+                if (rtpcrStepCounter) {
+                    rtpcrStepCounter.textContent = `${rtpcrCurrentSlide + 1} / ${rtpcrTotalSlides}`;
+                }
+                if (rtpcrPrevBtn) {
+                    rtpcrPrevBtn.disabled = rtpcrCurrentSlide === 0;
+                }
+                if (rtpcrNextBtn) {
+                    rtpcrNextBtn.disabled = rtpcrCurrentSlide === rtpcrTotalSlides - 1;
+                }
+            }
+
+            function nextRtpcrSlide() {
+                if (rtpcrCurrentSlide < rtpcrTotalSlides - 1) {
+                    rtpcrCurrentSlide++;
+                    updateRtpcrSlide();
+                }
+            }
+
+            function previousRtpcrSlide() {
+                if (rtpcrCurrentSlide > 0) {
+                    rtpcrCurrentSlide--;
+                    updateRtpcrSlide();
+                }
+            }
+
+            if (rtpcrNextBtn) {
+                rtpcrNextBtn.addEventListener('click', nextRtpcrSlide);
+            }
+            if (rtpcrPrevBtn) {
+                rtpcrPrevBtn.addEventListener('click', previousRtpcrSlide);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                const activeChapter = document.querySelector('.chapter-item.active');
+                if (activeChapter && activeChapter.dataset.tab === 'realtime-pcr') {
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        previousRtpcrSlide();
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        nextRtpcrSlide();
+                    }
+                }
+            });
+
+            if (rtpcrSlides.length > 0) {
+                updateRtpcrSlide();
+            }
+
+            // TaqMan Slides
+            const taqmanSlides = document.querySelectorAll('#taqman-probe .slide');
+            const taqmanTotalSlides = taqmanSlides.length;
+            let taqmanCurrentSlide = 0;
+            const taqmanPrevBtn = document.getElementById('taqmanPrevBtn');
+            const taqmanNextBtn = document.getElementById('taqmanNextBtn');
+            const taqmanProgressFill = document.getElementById('taqmanProgressFill');
+            const taqmanStepCounter = document.getElementById('taqmanStepCounter');
+
+            function updateTaqmanSlide() {
+                if (taqmanSlides.length === 0) return;
+                taqmanSlides.forEach(slide => slide.classList.remove('active'));
+                if (taqmanSlides[taqmanCurrentSlide]) {
+                    taqmanSlides[taqmanCurrentSlide].classList.add('active');
+                }
+                const progressPercent = ((taqmanCurrentSlide + 1) / taqmanTotalSlides) * 100;
+                if (taqmanProgressFill) {
+                    taqmanProgressFill.style.width = progressPercent + '%';
+                }
+                if (taqmanStepCounter) {
+                    taqmanStepCounter.textContent = `${taqmanCurrentSlide + 1} / ${taqmanTotalSlides}`;
+                }
+                if (taqmanPrevBtn) {
+                    taqmanPrevBtn.disabled = taqmanCurrentSlide === 0;
+                }
+                if (taqmanNextBtn) {
+                    taqmanNextBtn.disabled = taqmanCurrentSlide === taqmanTotalSlides - 1;
+                }
+            }
+
+            function nextTaqmanSlide() {
+                if (taqmanCurrentSlide < taqmanTotalSlides - 1) {
+                    taqmanCurrentSlide++;
+                    updateTaqmanSlide();
+                }
+            }
+
+            function previousTaqmanSlide() {
+                if (taqmanCurrentSlide > 0) {
+                    taqmanCurrentSlide--;
+                    updateTaqmanSlide();
+                }
+            }
+
+            if (taqmanNextBtn) {
+                taqmanNextBtn.addEventListener('click', nextTaqmanSlide);
+            }
+            if (taqmanPrevBtn) {
+                taqmanPrevBtn.addEventListener('click', previousTaqmanSlide);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                const activeChapter = document.querySelector('.chapter-item.active');
+                if (activeChapter && activeChapter.dataset.tab === 'taqman-probe') {
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        previousTaqmanSlide();
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        nextTaqmanSlide();
+                    }
+                }
+            });
+
+            if (taqmanSlides.length > 0) {
+                updateTaqmanSlide();
+            }
+
+            // Quiz Functionality
+            const quiz1Form = document.getElementById('quiz1Form');
+            const quiz1Feedback = document.getElementById('quiz1Feedback');
+            const quiz1Status = document.getElementById('quiz1Status');
+            const quiz1Score = document.getElementById('quiz1Score');
+            const submitBtn = document.getElementById('submitQuiz1');
+            const retryBtn = document.getElementById('retryQuiz1');
+
+            let quizData = {
+                quiz1: {
+                    attempts: 0,
+                    completed: false,
+                    score: 0,
+                    correctAnswer: 'd',
+                    startTime: null,
+                    endTime: null
+                }
+            };
+
+            function reportToLMS(quizId, score, completion) {
+                if (typeof window.API !== 'undefined') {
+                    window.API.LMSSetValue('cmi.core.score.raw', score);
+                    window.API.LMSSetValue('cmi.core.lesson_status', completion ? 'completed' : 'incomplete');
+                    window.API.LMSCommit('');
+                } else if (typeof window.API_1484_11 !== 'undefined') {
+                    window.API_1484_11.SetValue('cmi.score.raw', score);
+                    window.API_1484_11.SetValue('cmi.completion_status', completion ? 'completed' : 'incomplete');
+                    window.API_1484_11.Commit('');
+                } else {
+                    const lmsData = {
+                        quizId: quizId,
+                        score: score,
+                        completion: completion,
+                        timestamp: new Date().toISOString()
+                    };
+                    try {
+                        const existingData = JSON.parse(localStorage.getItem('pcr_course_data') || '[]');
+                        existingData.push(lmsData);
+                        localStorage.setItem('pcr_course_data', JSON.stringify(existingData));
+                    } catch (e) {
+                        console.log('LMS data storage not available');
+                    }
+                }
+            }
+
+            if (quiz1Form) {
+                quiz1Form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const selectedAnswer = document.querySelector('input[name="quiz1Answer"]:checked');
+                    if (!selectedAnswer) {
+                        alert('Please select an answer before submitting.');
+                        return;
+                    }
+                    
+                    quizData.quiz1.attempts++;
+                    quizData.quiz1.endTime = new Date();
+                    
+                    const userAnswer = selectedAnswer.value;
+                    const isCorrect = userAnswer === quizData.quiz1.correctAnswer;
+                    
+                    const allOptions = document.querySelectorAll('.quiz-option');
+                    allOptions.forEach(option => {
+                        option.classList.add('disabled');
+                        const input = option.querySelector('input');
+                        input.disabled = true;
+                        
+                        const indicator = option.querySelector('.option-indicator');
+                        if (input.value === quizData.quiz1.correctAnswer) {
+                            option.classList.add('correct');
+                            indicator.textContent = '✓';
+                        } else if (input.checked && input.value !== quizData.quiz1.correctAnswer) {
+                            option.classList.add('incorrect');
+                            indicator.textContent = '✗';
+                        }
+                    });
+                    
+                    quiz1Feedback.style.display = 'block';
+                    const feedbackIcon = quiz1Feedback.querySelector('.feedback-icon');
+                    const feedbackTitle = quiz1Feedback.querySelector('.feedback-title');
+                    
+                    if (isCorrect) {
+                        feedbackIcon.classList.add('correct');
+                        feedbackIcon.textContent = '✓';
+                        feedbackTitle.textContent = 'Correct!';
+                        quiz1Status.textContent = 'Completed';
+                        quiz1Status.classList.add('completed');
+                        quizData.quiz1.score = 100;
+                        quizData.quiz1.completed = true;
+                        quiz1Score.style.display = 'block';
+                        quiz1Score.querySelector('.score-value').textContent = '100%';
+                    } else {
+                        feedbackIcon.classList.add('incorrect');
+                        feedbackIcon.textContent = '✗';
+                        feedbackTitle.textContent = 'Incorrect. The correct answer is highlighted above.';
+                        quiz1Status.textContent = 'Failed';
+                        quiz1Status.classList.add('failed');
+                        quizData.quiz1.score = 0;
+                        quiz1Score.style.display = 'block';
+                        quiz1Score.querySelector('.score-value').textContent = '0%';
+                        retryBtn.style.display = 'inline-block';
+                    }
+                    
+                    submitBtn.style.display = 'none';
+                    reportToLMS('quiz1', quizData.quiz1.score, quizData.quiz1.completed);
+                    quiz1Feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+            }
+            
+            if (retryBtn) {
+                retryBtn.addEventListener('click', function() {
+                    const allOptions = document.querySelectorAll('.quiz-option');
+                    allOptions.forEach(option => {
+                        option.classList.remove('disabled', 'correct', 'incorrect');
+                        const input = option.querySelector('input');
+                        input.disabled = false;
+                        input.checked = false;
+                        const indicator = option.querySelector('.option-indicator');
+                        indicator.textContent = '';
+                        indicator.style.display = 'none';
+                    });
+                    
+                    quiz1Feedback.style.display = 'none';
+                    quiz1Status.textContent = 'Not Started';
+                    quiz1Status.classList.remove('completed', 'failed');
+                    quiz1Score.style.display = 'none';
+                    submitBtn.style.display = 'inline-block';
+                    retryBtn.style.display = 'none';
+                    quizData.quiz1.startTime = new Date();
+                    quiz1Form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            }
+
+            document.querySelectorAll('input[name="quiz1Answer"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (!quizData.quiz1.startTime) {
+                        quizData.quiz1.startTime = new Date();
+                        quiz1Status.textContent = 'In Progress';
+                    }
+                });
+            });
+
+            // Continue Button Logic
+            const continueButtons = document.querySelectorAll('.continue-btn');
+            continueButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const nextChapterTab = e.target.dataset.next;
+                    if (nextChapterTab) {
+                        navigateToChapter(nextChapterTab);
+                    }
+                });
+            });
+
+            // Special continue button for PCR Principle section
+            const continueBtn = document.getElementById('continueBtn');
+            if (continueBtn) {
+                continueBtn.addEventListener('click', () => {
+                    navigateToChapter('realtime-pcr');
+                });
+            }
+
+            // Navigation function
+            function navigateToChapter(chapterTab) {
+                chapterItems.forEach(chapter => chapter.classList.remove('active'));
+                contentSections.forEach(section => section.classList.remove('active'));
+                
+                const nextChapter = document.querySelector(`[data-tab="${chapterTab}"]`);
+                const nextSection = document.getElementById(chapterTab);
+                
+                if (nextChapter && nextSection) {
+                    nextChapter.classList.add('active');
+                    nextSection.classList.add('active');
+                    
+                    const contentArea = document.querySelector('.content-area');
+                    contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            // Multiplex PCR Interactive Exercise
+            let multiplexScore = 0;
+            const maxMultiplexScore = 120; // 12 questions × 10 points each
+            const multiplexScoreDisplay = document.getElementById('multiplexScore');
+
+            // Initialize multiplex exercise event listeners
+            const interpretationDropdowns = document.querySelectorAll('.interpretation-dropdown');
+            interpretationDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('change', function() {
+                    const sampleNumber = this.getAttribute('data-sample');
+                    const correctAnswer = this.getAttribute('data-correct');
+                    const selectedAnswer = this.value;
+                    const resultIndicator = document.querySelector(`.result-indicator[data-sample="${sampleNumber}"]`);
+                    
+                    if (selectedAnswer === correctAnswer) {
+                        resultIndicator.innerHTML = '<span style="color: var(--rh-green); font-weight: bold; font-size: 18px;">✓</span>';
+                        this.style.borderColor = 'var(--rh-green)';
+                        this.style.backgroundColor = '#d4edda';
+                    } else if (selectedAnswer !== '') {
+                        resultIndicator.innerHTML = '<span style="color: #dc3545; font-weight: bold; font-size: 18px;">✗</span>';
+                        this.style.borderColor = '#dc3545';
+                        this.style.backgroundColor = '#f8d7da';
+                    } else {
+                        resultIndicator.innerHTML = '';
+                        this.style.borderColor = '#ddd';
+                        this.style.backgroundColor = 'white';
+                    }
+                    
+                    updateMultiplexScore();
+                });
+            });
+
+            function updateMultiplexScore() {
+                let correctAnswers = 0;
+                interpretationDropdowns.forEach(dropdown => {
+                    const correctAnswer = dropdown.getAttribute('data-correct');
+                    const selectedAnswer = dropdown.value;
+                    if (selectedAnswer === correctAnswer) {
+                        correctAnswers++;
+                    }
+                });
+                
+                multiplexScore = correctAnswers * 10;
+                multiplexScoreDisplay.textContent = `${multiplexScore} / ${maxMultiplexScore}`;
+                
+                // Update score color based on performance
+                if (multiplexScore === maxMultiplexScore) {
+                    multiplexScoreDisplay.style.backgroundColor = 'var(--rh-green)';
+                } else if (multiplexScore >= maxMultiplexScore * 0.7) {
+                    multiplexScoreDisplay.style.backgroundColor = 'var(--rh-orange)';
+                } else {
+                    multiplexScoreDisplay.style.backgroundColor = '#dc3545';
+                }
+            }
+
+            // Check All Answers button
+            const checkAllAnswersBtn = document.getElementById('checkAllAnswers');
+            if (checkAllAnswersBtn) {
+                checkAllAnswersBtn.addEventListener('click', function() {
+                    let allAnswered = true;
+                    interpretationDropdowns.forEach(dropdown => {
+                        if (dropdown.value === '') {
+                            allAnswered = false;
+                            dropdown.style.borderColor = '#dc3545';
+                            dropdown.style.backgroundColor = '#f8d7da';
+                        }
+                    });
+                    
+                    if (!allAnswered) {
+                        alert('Please complete all interpretations before checking answers.');
+                        return;
+                    }
+                    
+                    // Show summary
+                    const correctCount = multiplexScore / 10;
+                    const percentage = Math.round((correctCount / 12) * 100);
+                    let message = `Exercise Complete!\n\nScore: ${multiplexScore}/${maxMultiplexScore} (${percentage}%)\nCorrect answers: ${correctCount}/12\n\n`;
+                    
+                    if (percentage === 100) {
+                        message += 'Excellent! Perfect score! 🎉';
+                    } else if (percentage >= 75) {
+                        message += 'Great job! You have a solid understanding of PCR result interpretation.';
+                    } else if (percentage >= 50) {
+                        message += 'Good work! Review the incorrect answers to improve your understanding.';
+                    } else {
+                        message += 'Keep practicing! Review the principles of PCR result interpretation.';
+                    }
+                    
+                    alert(message);
+                });
+            }
+
+            // Reset Exercise button
+            const resetMultiplexBtn = document.getElementById('resetMultiplex');
+            if (resetMultiplexBtn) {
+                resetMultiplexBtn.addEventListener('click', function() {
+                    interpretationDropdowns.forEach(dropdown => {
+                        dropdown.value = '';
+                        dropdown.style.borderColor = '#ddd';
+                        dropdown.style.backgroundColor = 'white';
+                        const sampleNumber = dropdown.getAttribute('data-sample');
+                        const resultIndicator = document.querySelector(`.result-indicator[data-sample="${sampleNumber}"]`);
+                        resultIndicator.innerHTML = '';
+                    });
+                    
+                    multiplexScore = 0;
+                    multiplexScoreDisplay.textContent = `0 / ${maxMultiplexScore}`;
+                    multiplexScoreDisplay.style.backgroundColor = 'var(--rh-green)';
+                });
+            }
+
+            // End Module Button Logic
+            const endModuleBtn = document.getElementById('endModuleBtn');
+            if (endModuleBtn) {
+                endModuleBtn.addEventListener('click', () => {
+                    reportModuleCompletion();
+                    exitToLMS();
+                });
+            }
+
+            function reportModuleCompletion() {
+                const moduleData = {
+                    moduleId: 'module4_pcr',
+                    completion: 'completed',
+                    score: 100,
+                    timeCompleted: new Date().toISOString()
+                };
+                
+                if (typeof window.API !== 'undefined') {
+                    window.API.LMSSetValue('cmi.core.lesson_status', 'completed');
+                    window.API.LMSSetValue('cmi.core.score.raw', '100');
+                    window.API.LMSSetValue('cmi.core.exit', 'normal');
+                    window.API.LMSCommit('');
+                } else if (typeof window.API_1484_11 !== 'undefined') {
+                    window.API_1484_11.SetValue('cmi.completion_status', 'completed');
+                    window.API_1484_11.SetValue('cmi.score.raw', '100');
+                    window.API_1484_11.SetValue('cmi.exit', 'normal');
+                    window.API_1484_11.Commit('');
+                } else {
+                    try {
+                        const existingData = JSON.parse(localStorage.getItem('pcr_course_data') || '[]');
+                        existingData.push(moduleData);
+                        localStorage.setItem('pcr_course_data', JSON.stringify(existingData));
+                    } catch (e) {
+                        console.log('LMS data storage not available');
+                    }
+                }
+            }
+
+            function exitToLMS() {
+                const completionMessage = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                                background: rgba(0,0,0,0.8); display: flex; align-items: center; 
+                                justify-content: center; z-index: 10000;">
+                        <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; 
+                                    max-width: 500px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+                            <h2 style="color: #39870c; margin-bottom: 20px;">🎉 Module Completed!</h2>
+                            <p style="font-size: 18px; margin-bottom: 30px;">
+                                Congratulations! You have successfully completed Module 4: Principles of Real-time PCR.
+                            </p>
+                            <p style="font-size: 14px; color: #666;">
+                                You will be redirected to the main course page in 3 seconds...
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', completionMessage);
+                
+                setTimeout(() => {
+                    if (typeof window.API !== 'undefined') {
+                        window.API.LMSFinish('');
+                        window.close();
+                    } else if (typeof window.API_1484_11 !== 'undefined') {
+                        window.API_1484_11.Terminate('');
+                        window.close();
+                    } else if (window.parent !== window) {
+                        window.parent.postMessage({
+                            type: 'moduleComplete',
+                            moduleId: 'module4_pcr',
+                            status: 'completed'
+                        }, '*');
+                    } else {
+                        window.location.href = '../course.html';
+                    }
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
