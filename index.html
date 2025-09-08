@@ -805,5 +805,34 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Debug script to check if external JS loaded
+        window.addEventListener('load', function() {
+            console.log('Page loaded');
+            // Check if our main script loaded
+            if (typeof document.querySelector === 'undefined') {
+                console.error('Basic JavaScript not working');
+            } else {
+                console.log('Basic JavaScript working');
+            }
+            
+            // Check if our elements exist
+            const chapterItems = document.querySelectorAll('.chapter-item');
+            const nextBtn = document.getElementById('nextBtn');
+            console.log('Chapter items found:', chapterItems.length);
+            console.log('Next button found:', nextBtn ? 'Yes' : 'No');
+            
+            // Test if external script loaded
+            if (chapterItems.length > 0 && !nextBtn) {
+                console.error('External script.js may not have loaded properly');
+                console.log('Trying to reload functionality...');
+                
+                // Fallback: reload the page or provide error message
+                setTimeout(() => {
+                    alert('JavaScript not loading properly. Please check:\n1. script.js file is in the same folder as index.html\n2. Both files are uploaded to GitHub\n3. Try refreshing the page');
+                }, 1000);
+            }
+        });
+    </script>
 </body>
 </html>
