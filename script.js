@@ -345,6 +345,117 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Reverse Transcriptase Exercise Functionality
+    const rtExerciseForm = document.getElementById('rtExerciseForm');
+    const rtExerciseFeedback = document.getElementById('rtExerciseFeedback');
+    const rtExerciseStatus = document.getElementById('rtExerciseStatus');
+    const rtExerciseScore = document.getElementById('rtExerciseScore');
+    const submitRtExerciseBtn = document.getElementById('submitRtExercise');
+    const retryRtExerciseBtn = document.getElementById('retryRtExercise');
+
+    let rtExerciseData = {
+        attempts: 0,
+        completed: false,
+        score: 0,
+        correctAnswer: 'b',
+        startTime: null,
+        endTime: null
+    };
+
+    if (rtExerciseForm) {
+        rtExerciseForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedAnswer = document.querySelector('input[name="rtExerciseAnswer"]:checked');
+            if (!selectedAnswer) {
+                alert('Please select an answer before submitting.');
+                return;
+            }
+            
+            rtExerciseData.attempts++;
+            rtExerciseData.endTime = new Date();
+            
+            const userAnswer = selectedAnswer.value;
+            const isCorrect = userAnswer === rtExerciseData.correctAnswer;
+            
+            const allRtOptions = document.querySelectorAll('input[name="rtExerciseAnswer"]').forEach(input => {
+                const option = input.closest('.quiz-option');
+                option.classList.add('disabled');
+                input.disabled = true;
+                
+                const indicator = option.querySelector('.option-indicator');
+                if (input.value === rtExerciseData.correctAnswer) {
+                    option.classList.add('correct');
+                    indicator.textContent = '✓';
+                } else if (input.checked && input.value !== rtExerciseData.correctAnswer) {
+                    option.classList.add('incorrect');
+                    indicator.textContent = '✗';
+                }
+            });
+            
+            rtExerciseFeedback.style.display = 'block';
+            const feedbackIcon = rtExerciseFeedback.querySelector('.feedback-icon');
+            const feedbackTitle = rtExerciseFeedback.querySelector('.feedback-title');
+            
+            if (isCorrect) {
+                feedbackIcon.classList.add('correct');
+                feedbackIcon.textContent = '✓';
+                feedbackTitle.textContent = 'Correct!';
+                rtExerciseStatus.textContent = 'Completed';
+                rtExerciseStatus.classList.add('completed');
+                rtExerciseData.score = 100;
+                rtExerciseData.completed = true;
+                rtExerciseScore.style.display = 'block';
+                rtExerciseScore.querySelector('.score-value').textContent = '100%';
+            } else {
+                feedbackIcon.classList.add('incorrect');
+                feedbackIcon.textContent = '✗';
+                feedbackTitle.textContent = 'Incorrect. The correct answer is highlighted above.';
+                rtExerciseStatus.textContent = 'Failed';
+                rtExerciseStatus.classList.add('failed');
+                rtExerciseData.score = 0;
+                rtExerciseScore.style.display = 'block';
+                rtExerciseScore.querySelector('.score-value').textContent = '0%';
+                retryRtExerciseBtn.style.display = 'inline-block';
+            }
+            
+            submitRtExerciseBtn.style.display = 'none';
+            reportToLMS('rtExercise', rtExerciseData.score, rtExerciseData.completed);
+            rtExerciseFeedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    }
+    
+    if (retryRtExerciseBtn) {
+        retryRtExerciseBtn.addEventListener('click', function() {
+            const allRtOptions = document.querySelectorAll('input[name="rtExerciseAnswer"]').forEach(input => {
+                const option = input.closest('.quiz-option');
+                option.classList.remove('disabled', 'correct', 'incorrect');
+                input.disabled = false;
+                input.checked = false;
+                const indicator = option.querySelector('.option-indicator');
+                indicator.textContent = '';
+                indicator.style.display = 'none';
+            });
+            
+            rtExerciseFeedback.style.display = 'none';
+            rtExerciseStatus.textContent = 'Not Started';
+            rtExerciseStatus.classList.remove('completed', 'failed');
+            rtExerciseScore.style.display = 'none';
+            submitRtExerciseBtn.style.display = 'inline-block';
+            retryRtExerciseBtn.style.display = 'none';
+            rtExerciseData.startTime = new Date();
+            rtExerciseForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    document.querySelectorAll('input[name="rtExerciseAnswer"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (!rtExerciseData.startTime) {
+                rtExerciseData.startTime = new Date();
+                rtExerciseStatus.textContent = 'In Progress';
+            }
+        });
+    });
+
     // Continue Button Logic
     const continueButtons = document.querySelectorAll('.continue-btn');
     continueButtons.forEach(btn => {

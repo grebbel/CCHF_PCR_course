@@ -586,6 +586,95 @@
                         </div>
                     </div>
                     
+                    <div class="quiz-section">
+                        <h3>Simulation Exercise: Choosing One-Step or Two-Step PCR</h3>
+                        
+                        <div class="quiz-question">
+                            <h4>Scenario</h4>
+                            <p>You are a technician working in a diagnostic virology laboratory. You receive 10 blood samples from patients with suspected Crimean-Congo Hemorrhagic Fever (CCHF) infection.</p>
+                        </div>
+                        
+                        <div class="advantages-section">
+                            <h4 style="color: var(--rh-dark-blue); margin-bottom: 15px;">The Laboratory Requests:</h4>
+                            <div class="advantage-item">
+                                <h4>Step 1:</h4>
+                                <p>Screen all 10 samples using the Pan-CCHF real-time PCR assay to determine which are positive for CCHF virus.</p>
+                            </div>
+                            <div class="advantage-item">
+                                <h4>Step 2:</h4>
+                                <p>For any sample that tests positive, determine its virus genotype using further multiplex real-time PCR. These genotypes include:</p>
+                                <ul style="margin-top: 10px;">
+                                    <li><strong>Genotype I:</strong> West Africa</li>
+                                    <li><strong>Genotype II:</strong> Central Africa</li>
+                                    <li><strong>Genotype III:</strong> South and West Africa</li>
+                                    <li><strong>Genotype IV:</strong> Asia and Middle East</li>
+                                    <li><strong>Genotype V:</strong> South and East Europe</li>
+                                    <li><strong>Genotype VI:</strong> Europe (AP92 group)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question">
+                            <h4>Decision Point</h4>
+                            <p><strong>Which reverse transcription PCR protocol should you use?</strong></p>
+                        </div>
+                        
+                        <form class="quiz-form" id="rtExerciseForm">
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="rtExerciseAnswer" value="a" id="rt-option-a">
+                                    <span class="option-text"><strong>A)</strong> One-step PCR: Reverse transcription and PCR happen in the same tube, at the same time, producing cDNA only for immediate, single-use amplification.</span>
+                                    <span class="option-indicator"></span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="rtExerciseAnswer" value="b" id="rt-option-b">
+                                    <span class="option-text"><strong>B)</strong> Two-step PCR: RNA is first converted to cDNA (which can be stored), then separate PCR amplifications can be performed on the same cDNA as many times as needed.</span>
+                                    <span class="option-indicator"></span>
+                                </label>
+                            </div>
+                            <div class="quiz-submit">
+                                <button type="submit" class="submit-btn" id="submitRtExercise">Submit Answer</button>
+                                <button type="button" class="retry-btn" id="retryRtExercise" style="display: none;">Try Again</button>
+                            </div>
+                        </form>
+                        
+                        <div class="quiz-feedback" id="rtExerciseFeedback" style="display: none;">
+                            <div class="feedback-content">
+                                <div class="feedback-header">
+                                    <span class="feedback-icon"></span>
+                                    <span class="feedback-title"></span>
+                                </div>
+                                <div class="feedback-explanation">
+                                    <h4 style="color: var(--rh-dark-blue); margin-bottom: 15px;">Correct Answer: B) Two-step PCR</h4>
+                                    
+                                    <h4 style="color: var(--rh-green); margin-bottom: 10px;">Explanation</h4>
+                                    <p>In two-step PCR, once the RNA is converted to cDNA, you can store the cDNA and perform multiple PCR reactions on it whenever needed. This is especially useful here:</p>
+                                    
+                                    <ul style="margin: 15px 0; padding-left: 20px;">
+                                        <li style="margin-bottom: 8px;">You can first screen all samples with the Pan-CCHF assay.</li>
+                                        <li style="margin-bottom: 8px;">For positives, you do not need to repeat the reverse transcription or extract new RNA—you simply use the remaining cDNA for the detailed genotype multiplex assays.</li>
+                                        <li style="margin-bottom: 8px;">If you had used one-step PCR, you would not have leftover cDNA to reuse. You would need to repeat the reverse transcription process for each new assay, increasing work and risk of sample loss.</li>
+                                    </ul>
+                                    
+                                    <div class="important-note" style="margin-top: 20px;">
+                                        <h4>Key Point</h4>
+                                        <p>This practical advantage is why two-step PCR is preferred when subsequent or multiple PCR analyses are required after initial screening. This workflow will be explored further in the upcoming section on Multiplex PCR.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-progress">
+                            <div class="progress-indicator">
+                                <span class="progress-text">Exercise Progress:</span>
+                                <span class="progress-status" id="rtExerciseStatus">Not Started</span>
+                            </div>
+                            <div class="score-display" id="rtExerciseScore" style="display: none;">
+                                Score: <span class="score-value"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="continue-section">
                         <button class="continue-btn" data-next="controls">CONTINUE</button>
                     </div>
