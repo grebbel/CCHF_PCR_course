@@ -8,6 +8,77 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Override sidebar and content area scrolling to scroll together */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            min-height: auto; /* Changed from 600px to auto */
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: var(--rh-light-gray);
+            border-right: 2px solid #ddd;
+            padding: 0;
+            overflow-y: visible; /* Changed from auto to visible */
+            position: sticky;
+            top: 0;
+            height: fit-content;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: visible; /* Changed from auto to visible */
+            background-color: var(--rh-white);
+        }
+
+        /* Make sure the course container allows natural scrolling */
+        .course-container {
+            background-color: var(--rh-white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            width: 100%;
+            overflow: visible; /* Changed from hidden to visible */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ensure body allows natural scrolling */
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--rh-light-blue);
+            color: var(--rh-black);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+                max-height: none; /* Remove height restriction */
+                border-right: none;
+                border-top: 2px solid #ddd;
+                position: static; /* Remove sticky on mobile */
+            }
+            
+            .content-area {
+                order: 1;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
