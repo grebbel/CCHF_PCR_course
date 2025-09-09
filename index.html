@@ -819,27 +819,58 @@
                         <div class="interactive-content">
                             <div style="background-color: var(--rh-white); padding: 25px; border-radius: 10px; text-align: left;">
                                 <h4 style="color: var(--rh-dark-blue); margin-bottom: 20px;">Scenario</h4>
-                                <p style="margin-bottom: 20px;">A researcher at a diagnostic virology laboratory is screening clinical samples for Crimean-Congo hemorrhagic fever virus (CCHFV) using a <strong>pan-CCHFV real-time PCR</strong> assay that includes an <strong>internal control</strong>. When a sample tests positive, they must further discriminate the CCHFV genotype using a <strong>multiplex real-time PCR</strong> targeting <strong>genotypes IV, V, and VI</strong>.</p>
-                                
-                                <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Step 1: Initial Pan-CCHFV Real-Time PCR Screening</h4>
-                                <ul style="margin-bottom: 20px;">
-                                    <li>The researcher receives a batch of blood or tissue samples for CCHFV testing.</li>
-                                    <li>Each sample is prepared and nucleic acids extracted.</li>
-                                    <li>A pan-CCHFV real-time PCR reaction mix is set up for each sample, including:
-                                        <ul style="margin-top: 10px; padding-left: 30px;">
-                                            <li>Primers and probe targeting conserved regions of CCHFV (all genotypes)</li>
-                                            <li><strong>Internal control</strong> (e.g., EGFP RNA or an unrelated control sequence) to validate extraction and amplification</li>
-                                        </ul>
-                                    </li>
-                                    <li>After amplification, results are interpreted:
-                                        <ul style="margin-top: 10px; padding-left: 30px;">
-                                            <li><strong>Negative sample:</strong> No signal for CCHFV and successful internal control amplification</li>
-                                            <li><strong>Inhibited/Invalid sample:</strong> No signal for CCHFV or internal control (possible PCR inhibition or extraction failure; retesting required)</li>
-                                            <li><strong>Positive sample:</strong> Detectable CCHFV signal and internal control amplification</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                
+                                <p style="margin-bottom: 20px;"> 
+                                 A researcher at a diagnostic virology laboratory is using a <strong>pan-CCHFV real-time PCR</strong> assay to screen 10 clinical samples for Crimean-Congo hemorrhagic fever virus (CCHFV). This assay is adapted from a protocol published in the <a href="https://doi.org/10.1016/j.jviromet.2018.01.013" target="_blank" style="color: var(--rh-dark-blue); text-decoration: underline;"><strong>Journal of Virological Methods</strong></a> for universal detection of all known CCHFV genotypes. The current approach features two main modifications: (a) the assay incorporates an <strong>internal control</strong> to monitor for extraction and amplification efficiency, and (b) it employs a two-step RT-PCR process. After nucleic acid extraction, reverse transcription is performed on each sample to generate cDNA, which is subsequently used as input for the real-time PCR. The residual cDNA is stored for follow-up testing: when a sample tests positive, further multiplex real-time PCR assays are conducted to determine the specific CCHFV genotype (<strong>IV, V, or VI</strong>).
+                                </p>
+
+<div style="background: linear-gradient(90deg, #f9fff4 60%, #eaffe3 100%); border-radius: 16px; box-shadow: 0 4px 14px rgba(34,139,34,.08); padding: 28px 36px; margin-bottom: 30px; color: #183413;">
+    <h4 style="color: #177041; margin: 0 0 22px 0; font-size: 1.35em;">
+        <span aria-hidden="true" style="font-size: 1.2em;">🔎</span>
+        Step 1: Initial Pan-CCHFV Real-Time PCR Screening
+    </h4>
+    <ul style="margin: 0; padding-left: 0; list-style-type: none;">
+        <li style="margin-bottom: 22px;">
+            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true">• </span>
+            <strong>Sample Reception:</strong> The researcher receives a batch of blood or tissue samples for CCHFV testing.
+        </li>
+        <li style="margin-bottom: 22px;">
+            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true">• </span>
+            <strong>Nucleic Acid Extraction:</strong> Each sample is prepared and nucleic acids extracted.
+        </li>
+        <li style="margin-bottom: 22px;">
+            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true">• </span>
+            <strong>PCR Reaction Setup:</strong> Each pan-CCHFV real-time PCR mix includes:
+            <ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 22px; background: #f2fdee; border-radius: 8px; list-style-type: none;">
+                <li style="margin-bottom: 7px;">
+                    <span style="font-weight: bold; color: #1b6041;" aria-hidden="true">– </span>
+                    Primers and probe targeting conserved regions of CCHFV (all genotypes)
+                </li>
+                <li>
+                    <span style="font-weight: bold; color: #1b6041;" aria-hidden="true">– </span>
+                    <span style="color: #1a7914; font-weight: 700;">Internal control</span> (e.g., EGFP RNA or unrelated sequence) to verify extraction and amplification
+                </li>
+            </ul>
+        </li>
+        <li>
+            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true">• </span>
+            <strong>Result Interpretation:</strong> After amplification, results are interpreted:
+            <ul style="margin-top: 8px; padding-left: 22px; background: #ebf8ee; border-radius: 8px; list-style-type: none;">
+                <li style="margin-bottom: 7px;">
+                    <span aria-hidden="true" style="color: #ac0000; font-weight: bold;">⦿</span>
+                    <strong>Negative sample:</strong> No signal for CCHFV; internal control amplified.
+                </li>
+                <li style="margin-bottom: 7px;">
+                    <span aria-hidden="true" style="color: #caa700; font-weight: bold;">⚠️</span>
+                    <strong>Inhibited/Invalid:</strong> No CCHFV or internal control signal (possible inhibition/extraction failure; retest needed).
+                </li>
+                <li>
+                    <span aria-hidden="true" style="color: #187904; font-weight: bold;">🟢</span>
+                    <strong>Positive sample:</strong> Detectable CCHFV and internal control signals.
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
                                 <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Multiplex PCR Results</h4>
                                 <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
                                     <thead>
@@ -889,7 +920,7 @@
                                         <tr>
                                             <td style="border: 1px solid #ddd; padding: 12px;">3</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 24</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 33</td>
                                             <td style="border: 1px solid #ddd; padding: 8px;">
                                                 <select class="interpretation-dropdown" data-sample="3" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
                                                     <option value="">Select...</option>
