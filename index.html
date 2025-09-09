@@ -773,7 +773,7 @@
                     
                     <p>Inhibitors work by affecting critical steps such as DNA denaturation or reducing the activity of the polymerase enzyme, resulting in <strong>impaired amplification</strong>. The presence of such compounds may cause an increase in cycle threshold (<em>Ct</em>) values or even lead to <strong>false negative results</strong>. To monitor and identify inhibition, an internal control is co-amplified in each reaction. The <em>Ct</em> values of these internal controls should be tightly clustered—commonly around a set value such as 27. If, for example, one internal control shifts significantly (e.g., from <em>Ct=27</em> to Ct=37), this strongly suggests inhibition within that reaction. Troubleshooting strategies for PCR inhibition, as well as detailed information on the use and interpretation of internal controls, are provided in the later modules & chapters on troubleshooting and quality control.</p>
                     
-                    <img src="PCR_inhibition.png" alt="PCR Inhibition Diagram" style="max-width: 100%; height: auto; margin-top: 15px;">
+                    <img src="images\PCR_inhibition.png" alt="PCR Inhibition Diagram" style="max-width: 100%; height: auto; margin-top: 15px;">
                     
                     <div class="important-note">
                         <h4>Best Practices</h4>
@@ -1117,97 +1117,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        // Function to scroll to top of page smoothly
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Function to scroll to top of content area
-        function scrollToContentTop() {
-            const contentArea = document.querySelector('.content-area');
-            if (contentArea) {
-                contentArea.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            }
-            // Also scroll the main window to top
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Add scroll-to-top functionality to all continue buttons
-        function addScrollToTopToContinueButtons() {
-            const continueButtons = document.querySelectorAll('.continue-btn');
-            continueButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Small delay to allow section change to complete first
-                    setTimeout(() => {
-                        scrollToTop();
-                    }, 100);
-                });
-            });
-        }
-        
-        // Add scroll-to-top functionality to sidebar navigation
-        function addScrollToTopToSidebarItems() {
-            const chapterItems = document.querySelectorAll('.chapter-item');
-            chapterItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Small delay to allow section change to complete first
-                    setTimeout(() => {
-                        scrollToTop();
-                    }, 100);
-                });
-            });
-        }
-        
-        // Debug script to check if external JS loaded
-        window.addEventListener('load', function() {
-            console.log('Page loaded');
-            // Check if our main script loaded
-            if (typeof document.querySelector === 'undefined') {
-                console.error('Basic JavaScript not working');
-            } else {
-                console.log('Basic JavaScript working');
-            }
-            
-            // Add scroll functionality after page loads
-            addScrollToTopToContinueButtons();
-            addScrollToTopToSidebarItems();
-            
-            // Check if our elements exist
-            const chapterItems = document.querySelectorAll('.chapter-item');
-            const nextBtn = document.getElementById('nextBtn');
-            console.log('Chapter items found:', chapterItems.length);
-            console.log('Next button found:', nextBtn ? 'Yes' : 'No');
-            
-            // Test if external script loaded
-            if (chapterItems.length > 0 && !nextBtn) {
-                console.error('External script.js may not have loaded properly');
-                console.log('Trying to reload functionality...');
-                
-                // Fallback: reload the page or provide error message
-                setTimeout(() => {
-                    alert('JavaScript not loading properly. Please check:\n1. script.js file is in the same folder as index.html\n2. Both files are uploaded to GitHub\n3. Try refreshing the page');
-                }, 1000);
-            }
-        });
-        
-        // Also add functionality that works with dynamically created buttons
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('continue-btn') || e.target.classList.contains('chapter-item')) {
-                setTimeout(() => {
-                    scrollToTop();
-                }, 100);
-            }
-        });
-    </script>
 </body>
 </html>

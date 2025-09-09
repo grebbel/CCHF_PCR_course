@@ -1,4 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Scroll-to-Top Functionality
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    function scrollToContentTop() {
+        const contentArea = document.querySelector('.content-area');
+        if (contentArea) {
+            contentArea.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        // Also scroll the main window to top
+        scrollToTop();
+    }
+
     // Chapter Navigation Logic
     const chapterItems = document.querySelectorAll('.chapter-item');
     const contentSections = document.querySelectorAll('.content-section');
@@ -10,6 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('active');
             const tabId = item.dataset.tab;
             document.getElementById(tabId).classList.add('active');
+            
+            // Add scroll to top after chapter navigation
+            setTimeout(() => {
+                scrollToTop();
+            }, 100);
         });
     });
 
@@ -475,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Navigation function
+    // Updated Navigation function with scroll-to-top
     function navigateToChapter(chapterTab) {
         chapterItems.forEach(chapter => chapter.classList.remove('active'));
         contentSections.forEach(section => section.classList.remove('active'));
@@ -487,8 +512,10 @@ document.addEventListener('DOMContentLoaded', () => {
             nextChapter.classList.add('active');
             nextSection.classList.add('active');
             
-            const contentArea = document.querySelector('.content-area');
-            contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+            // Enhanced scroll to top functionality
+            setTimeout(() => {
+                scrollToTop();
+            }, 100);
         }
     }
 
@@ -726,6 +753,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 3000);
     }
+
+    // Global click handler for dynamically created buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('continue-btn')) {
+            setTimeout(() => {
+                scrollToTop();
+            }, 100);
+        }
+    });
 
     // Console log to confirm script loaded
     console.log('PCR Module JavaScript loaded successfully');
