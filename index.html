@@ -1145,7 +1145,163 @@
                 <div id="troubleshooting" class="content-section">
                     <h2>Troubleshooting</h2>
                     <p>Common issues in real-time PCR can include a lack of amplification, low efficiency, or inconsistent results. This can be caused by various factors, such as degraded nucleic acids, primer or probe design issues, or the presence of inhibitors in the sample. Troubleshooting involves checking reagent quality, optimizing primer and probe concentrations, adjusting the thermal cycling conditions, and ensuring the sample is free from contaminants.</p>
+                                       <p>Real-time PCR troubleshooting requires systematic analysis of amplification curves, controls, and experimental conditions. Common issues include amplification failure, inhibition, contamination, and inconsistent results. This interactive troubleshooting simulator will guide you through identifying and resolving common PCR problems using a step-by-step decision tree approach.</p>
                     
+                    <!-- Troubleshooting Simulator -->
+                    <div class="interactive-container">
+                        <h3>Interactive PCR Troubleshooting Simulator</h3>
+                        
+                        <!-- Dashboard Screen -->
+                        <div id="troubleshoot-dashboard" class="troubleshoot-screen active">
+                            <h4>Select a Problem to Troubleshoot</h4>
+                            <p>Choose from the common PCR problems below to start the interactive troubleshooting process:</p>
+                            
+                            <div class="problem-grid">
+                                <div class="problem-card" data-problem="no-amplification">
+                                    <div class="problem-icon">⚠️</div>
+                                    <h5>No Amplification</h5>
+                                    <p>Positive control shows no signal</p>
+                                    <div class="severity high">High Priority</div>
+                                </div>
+                                
+                                <div class="problem-card" data-problem="high-ct">
+                                    <div class="problem-icon">📈</div>
+                                    <h5>High Ct Values</h5>
+                                    <p>Weak or delayed amplification</p>
+                                    <div class="severity medium">Medium Priority</div>
+                                </div>
+                                
+                                <div class="problem-card" data-problem="inhibition">
+                                    <div class="problem-icon">🚫</div>
+                                    <h5>PCR Inhibition</h5>
+                                    <p>Internal control fails to amplify</p>
+                                    <div class="severity high">High Priority</div>
+                                </div>
+                                
+                                <div class="problem-card" data-problem="contamination">
+                                    <div class="problem-icon">🦠</div>
+                                    <h5>Contamination</h5>
+                                    <p>Negative control shows signal</p>
+                                    <div class="severity critical">Critical</div>
+                                </div>
+                                
+                                <div class="problem-card" data-problem="inconsistent">
+                                    <div class="problem-icon">📊</div>
+                                    <h5>Inconsistent Results</h5>
+                                    <p>Variable Ct values between replicates</p>
+                                    <div class="severity medium">Medium Priority</div>
+                                </div>
+                                
+                                <div class="problem-card" data-problem="nonspecific">
+                                    <div class="problem-icon">🔀</div>
+                                    <h5>Non-specific Products</h5>
+                                    <p>Multiple peaks in melting curve</p>
+                                    <div class="severity low">Low Priority</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Problem Analysis Screen -->
+                        <div id="troubleshoot-analysis" class="troubleshoot-screen">
+                            <div class="analysis-header">
+                                <button class="back-btn" onclick="goToTroubleshootScreen('dashboard')">← Back to Dashboard</button>
+                                <h4 id="problem-title">Problem Analysis</h4>
+                            </div>
+                            
+                            <div class="analysis-content">
+                                <div class="problem-description">
+                                    <h5>Problem Description</h5>
+                                    <p id="problem-desc">Loading...</p>
+                                </div>
+                                
+                                <div class="visual-evidence">
+                                    <h5>Visual Evidence</h5>
+                                    <div id="problem-visual" class="visual-container">
+                                        <!-- Charts and images will be inserted here -->
+                                    </div>
+                                </div>
+                                
+                                <div class="initial-assessment">
+                                    <h5>Initial Assessment Questions</h5>
+                                    <div id="assessment-questions">
+                                        <!-- Questions will be loaded dynamically -->
+                                    </div>
+                                </div>
+                                
+                                <div class="action-center">
+                                    <button class="continue-btn" onclick="startTroubleshooting()">Start Troubleshooting Process</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Decision Tree Screen -->
+                        <div id="troubleshoot-decision" class="troubleshoot-screen">
+                            <div class="decision-header">
+                                <button class="back-btn" onclick="goToTroubleshootScreen('analysis')">← Back to Analysis</button>
+                                <h4>Troubleshooting Steps</h4>
+                                <div class="progress-tracker">
+                                    <span>Step <span id="current-step">1</span> of <span id="total-steps">5</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="decision-content">
+                                <div class="step-description">
+                                    <h5 id="step-title">Step Title</h5>
+                                    <p id="step-description">Step description</p>
+                                </div>
+                                
+                                <div class="step-visual" id="step-visual">
+                                    <!-- Step-specific visuals -->
+                                </div>
+                                
+                                <div class="action-choices">
+                                    <h5>What would you like to do?</h5>
+                                    <div id="choice-options">
+                                        <!-- Multiple choice options -->
+                                    </div>
+                                </div>
+                                
+                                <div class="step-navigation">
+                                    <button class="nav-btn" id="prev-step" onclick="previousStep()">Previous Step</button>
+                                    <button class="nav-btn primary" id="next-step" onclick="nextStep()">Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Resolution Screen -->
+                        <div id="troubleshoot-resolution" class="troubleshoot-screen">
+                            <div class="resolution-header">
+                                <h4>Troubleshooting Complete</h4>
+                            </div>
+                            
+                            <div class="resolution-content">
+                                <div class="resolution-summary">
+                                    <div class="success-icon">✅</div>
+                                    <h5 id="resolution-title">Resolution Found</h5>
+                                    <p id="resolution-description">Resolution description</p>
+                                </div>
+                                
+                                <div class="action-summary">
+                                    <h5>Actions Taken</h5>
+                                    <ul id="actions-taken">
+                                        <!-- List of actions -->
+                                    </ul>
+                                </div>
+                                
+                                <div class="prevention-tips">
+                                    <h5>Prevention Tips</h5>
+                                    <ul id="prevention-list">
+                                        <!-- Prevention recommendations -->
+                                    </ul>
+                                </div>
+                                
+                                <div class="resolution-actions">
+                                    <button class="continue-btn" onclick="goToTroubleshootScreen('dashboard')">Troubleshoot Another Problem</button>
+                                    <button class="continue-btn secondary" onclick="resetTroubleshooting()">Start Over</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="end-module-section">
                         <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
                     </div>
@@ -1155,5 +1311,35 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Debug script to check if external JS loaded
+        window.addEventListener('load', function() {
+            console.log('Page loaded');
+            // Check if our main script loaded
+            if (typeof document.querySelector === 'undefined') {
+                console.error('Basic JavaScript not working');
+            } else {
+                console.log('Basic JavaScript working');
+            }
+            
+            // Check if our elements exist
+            const chapterItems = document.querySelectorAll('.chapter-item');
+            const nextBtn = document.getElementById('nextBtn');
+            console.log('Chapter items found:', chapterItems.length);
+            console.log('Next button found:', nextBtn ? 'Yes' : 'No');
+            
+            // Test if external script loaded
+            if (chapterItems.length > 0 && !nextBtn) {
+                console.error('External script.js may not have loaded properly');
+                console.log('Trying to reload functionality...');
+                
+                // Fallback: reload the page or provide error message
+                setTimeout(() => {
+                    alert('JavaScript not loading properly. Please check:\n1. script.js file is in the same folder as index.html\n2. Both files are uploaded to GitHub\n3. Try refreshing the page');
+                }, 1000);
+            }
+        });
+    </script>
+
 </body>
 </html>
