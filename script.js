@@ -972,68 +972,285 @@ document.addEventListener('DOMContentLoaded', () => {
         return generateNormalCurve(ctValue);
     }
 
-    function drawProblemCurves(svg, visualType) {
-        const curves = {
-            'flat-curves': [
-                { color: '#ff4444', points: generateFlatCurve(), label: 'Positive Control' },
-                { color: '#4444ff', points: generateFlatCurve(), label: 'Sample' }
-            ],
-            'delayed-curves': [
-                { color: '#ff4444', points: generateNormalCurve(25), label: 'Normal Control' },
-                { color: '#4444ff', points: generateDelayedCurve(35), label: 'High Ct Sample' }
-            ],
-            'inhibition-curves': [
-                { color: '#ff4444', points: generateNormalCurve(28), label: 'Positive Control' },
-                { color: '#ffaa00', points: generateFlatCurve(), label: 'Internal Control (Failed)' },
-                { color: '#4444ff', points: generateFlatCurve(), label: 'Sample' }
-            ],
-            'contamination-curves': [
-                { color: '#ff4444', points: generateNormalCurve(25), label: 'Positive Control' },
-                { color: '#ff0000', points: generateNormalCurve(30), label: 'Negative Control!' },
-                { color: '#4444ff', points: generateNormalCurve(27), label: 'Sample' }
-            ],
-            'variable-curves': [
-                { color: '#ff4444', points: generateNormalCurve(25), label: 'Rep 1' },
-                { color: '#ff6666', points: generateNormalCurve(28), label: 'Rep 2' },
-                { color: '#ff8888', points: generateNormalCurve(31), label: 'Rep 3' }
-            ],
-            'multiple-peaks': [
-                { color: '#ff4444', points: generateNormalCurve(25), label: 'Specific Product' },
-                { color: '#ff8888', points: generateNormalCurve(22), label: 'Non-specific Product' }
-            ]
-        };
+// Replace your drawProblemCurves function with this image-based version
+function drawProblemCurves(svg, visualType) {
+    // Clear the SVG content first
+    svg.innerHTML = '';
+    
+    // Define image paths for different curve types
+    const curveImages = {
+        'normal': 'images/pcr-curves-normal.png',
+        'inhibition': 'images/pcr-curves-inhibition.png', 
+        'degradation': 'images/pcr-curves-degradation.png',
+        'negative': 'images/pcr-curves-negative.png',
+        'contamination': 'images/pcr-curves-contamination.png',
+        'primer_dimer': 'images/pcr-curves-primer-dimer.png',
+        'low_template': 'images/pcr-curves-low-template.png',
+        'high_template': 'images/pcr-curves-high-template.png'
+    };
+    
+    // Get the image path, fallback to normal if not found
+    const imagePath = curveImages[visualType] || curveImages['normal'];
+    
+    // Create SVG image element
+    const image = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+    image.setAttribute('href', imagePath);
+    image.setAttribute('x', '10');
+    image.setAttribute('y', '20');
+    image.setAttribute('width', '480');
+    image.setAttribute('height', '260');
+    image.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    
+    // Add error handling
+    image.addEventListener('error', function() {
+        console.warn(`Could not load PCR curve image: ${imagePath}`);
+        // Fallback to text if image fails
+        addFallbackText(svg, visualType);
+    });
+    
+    svg.appendChild(image);
+}
 
-        const curvesToDraw = curves[visualType] || curves['flat-curves'];
+// Fallback function if images don't load
+function addFallbackText(svg, visualType) {
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', '250');
+    text.setAttribute('y', '150');
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('font-family', 'Arial');
+    text.setAttribute('font-size', '16');
+    text.setAttribute('fill', '#666');
+    text.textContent = `PCR Curves: ${visualType}`;
+    svg.appendChild(text);
+    
+    const subtext = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    subtext.setAttribute('x', '250');
+    subtext.setAttribute('y', '180');
+    subtext.setAttribute('text-anchor', 'middle');
+    subtext.setAttribute('font-family', 'Arial');
+    subtext.setAttribute('font-size', '12');
+    subtext.setAttribute('fill', '#999');
+    subtext.textContent = 'Image not available';
+    svg.appendChild(subtext);
+}
 
-        curvesToDraw.forEach((curve, index) => {
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            const pathData = 'M' + curve.points.map(p => `${p.x},${p.y}`).join('L');
-            path.setAttribute('d', pathData);
-            path.setAttribute('stroke', curve.color);
-            path.setAttribute('stroke-width', '3');
-            path.setAttribute('fill', 'none');
-            svg.appendChild(path);
+// Alternative approach: Use regular HTML img element instead of SVG
+function updateProblemVisualWithImages(visualType) {
+    const container = document.getElementById('problem-visual');
+    if (!container) return;
 
-            // Add legend
-            const legendY = 70 + (index * 25);
-            const legendLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            legendLine.setAttribute('x1', '60');
-            legendLine.setAttribute('y1', legendY);
-            legendLine.setAttribute('x2', '85');
-            legendLine.setAttribute('y2', legendY);
-            legendLine.setAttribute('stroke', curve.color);
-            legendLine.setAttribute('stroke-width', '3');
-            svg.appendChild(legendLine);
+    // Define image paths
+    const curveImages = {
+        'normal': 'images/pcr-curves-normal.png',
+        'inhibition': 'images/pcr-curves-inhibition.png',
+        'degradation': 'images/pcr-curves-degradation.png',
+        'negative': 'images/pcr-curves-negative.png',
+        'contamination': 'images/pcr-curves-contamination.png',
+        'primer_dimer': 'images/pcr-curves-primer-dimer.png',
+        'low_template': 'images/pcr-curves-low-template.png',
+        'high_template': 'images/pcr-curves-high-template.png'
+    };
 
-            const legendText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            legendText.setAttribute('x', '90');
-            legendText.setAttribute('y', legendY + 5);
-            legendText.setAttribute('font-family', 'Arial');
-            legendText.setAttribute('font-size', '12');
-            legendText.textContent = curve.label;
-            svg.appendChild(legendText);
-        });
-    }
+    const imagePath = curveImages[visualType] || curveImages['normal'];
+
+    // Create HTML structure
+    container.innerHTML = `
+        <div class="pcr-curve-container" style="
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        ">
+            <img 
+                src="${imagePath}" 
+                alt="PCR Curves: ${visualType}"
+                style="
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                "
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+            >
+            <div style="
+                display: none;
+                padding: 40px;
+                text-align: center;
+                color: #666;
+                background: #f9f9f9;
+            ">
+                <h3 style="margin: 0 0 10px 0;">PCR Curves: ${visualType}</h3>
+                <p style="margin: 0; font-size: 14px;">Image not available</p>
+            </div>
+        </div>
+    `;
+}
+
+// Enhanced version with loading states and descriptions
+function updateProblemVisualEnhanced(visualType) {
+    const container = document.getElementById('problem-visual');
+    if (!container) return;
+
+    // Curve descriptions for educational context
+    const curveDescriptions = {
+        'normal': 'Normal PCR amplification showing typical S-shaped curves with clear exponential phases.',
+        'inhibition': 'PCR inhibition causing delayed amplification and reduced efficiency.',
+        'degradation': 'Template degradation resulting in poor amplification and irregular curves.',
+        'negative': 'Negative controls showing no amplification (flat lines).',
+        'contamination': 'Contamination showing unexpected amplification in negative controls.',
+        'primer_dimer': 'Primer-dimer formation causing low-level, early amplification artifacts.',
+        'low_template': 'Low template concentration causing delayed Ct values.',
+        'high_template': 'High template concentration causing early Ct values and potential inhibition.'
+    };
+
+    const curveImages = {
+        'normal': 'images/pcr-curves-normal.png',
+        'inhibition': 'images/pcr-curves-inhibition.png',
+        'degradation': 'images/pcr-curves-degradation.png',
+        'negative': 'images/pcr-curves-negative.png',
+        'contamination': 'images/pcr-curves-contamination.png',
+        'primer_dimer': 'images/pcr-curves-primer-dimer.png',
+        'low_template': 'images/pcr-curves-low-template.png',
+        'high_template': 'images/pcr-curves-high-template.png'
+    };
+
+    const imagePath = curveImages[visualType] || curveImages['normal'];
+    const description = curveDescriptions[visualType] || curveDescriptions['normal'];
+
+    // Show loading state first
+    container.innerHTML = `
+        <div class="pcr-curve-container" style="
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        ">
+            <div class="loading-state" style="
+                padding: 40px;
+                text-align: center;
+                color: #666;
+            ">
+                <div style="
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    border: 2px solid #f3f3f3;
+                    border-radius: 50%;
+                    border-top: 2px solid #4CAF50;
+                    animation: spin 1s linear infinite;
+                    margin-bottom: 10px;
+                "></div>
+                <p>Loading PCR curves...</p>
+            </div>
+            <img 
+                src="${imagePath}" 
+                alt="PCR Curves: ${visualType}"
+                style="display: none; width: 100%; height: auto;"
+                onload="
+                    this.style.display='block'; 
+                    this.parentElement.querySelector('.loading-state').style.display='none';
+                    this.parentElement.querySelector('.description').style.display='block';
+                "
+                onerror="
+                    this.parentElement.querySelector('.loading-state').innerHTML='<h3>PCR Curves: ${visualType}</h3><p>Image not available</p>';
+                "
+            >
+            <div class="description" style="
+                display: none;
+                padding: 15px;
+                background: #f8f9fa;
+                border-top: 1px solid #e9ecef;
+                font-size: 14px;
+                color: #495057;
+            ">
+                ${description}
+            </div>
+        </div>
+        
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    `;
+}
+
+// If you want to replace your existing updateProblemVisual function entirely:
+function updateProblemVisual(visualType) {
+    updateProblemVisualEnhanced(visualType);
+}
+
+
+
+
+    // function drawProblemCurves(svg, visualType) {
+    //     const curves = {
+    //         'flat-curves': [
+    //             { color: '#ff4444', points: generateFlatCurve(), label: 'Positive Control' },
+    //             { color: '#4444ff', points: generateFlatCurve(), label: 'Sample' }
+    //         ],
+    //         'delayed-curves': [
+    //             { color: '#ff4444', points: generateNormalCurve(25), label: 'Normal Control' },
+    //             { color: '#4444ff', points: generateDelayedCurve(35), label: 'High Ct Sample' }
+    //         ],
+    //         'inhibition-curves': [
+    //             { color: '#ff4444', points: generateNormalCurve(28), label: 'Positive Control' },
+    //             { color: '#ffaa00', points: generateFlatCurve(), label: 'Internal Control (Failed)' },
+    //             { color: '#4444ff', points: generateFlatCurve(), label: 'Sample' }
+    //         ],
+    //         'contamination-curves': [
+    //             { color: '#ff4444', points: generateNormalCurve(25), label: 'Positive Control' },
+    //             { color: '#ff0000', points: generateNormalCurve(30), label: 'Negative Control!' },
+    //             { color: '#4444ff', points: generateNormalCurve(27), label: 'Sample' }
+    //         ],
+    //         'variable-curves': [
+    //             { color: '#ff4444', points: generateNormalCurve(25), label: 'Rep 1' },
+    //             { color: '#ff6666', points: generateNormalCurve(28), label: 'Rep 2' },
+    //             { color: '#ff8888', points: generateNormalCurve(31), label: 'Rep 3' }
+    //         ],
+    //         'multiple-peaks': [
+    //             { color: '#ff4444', points: generateNormalCurve(25), label: 'Specific Product' },
+    //             { color: '#ff8888', points: generateNormalCurve(22), label: 'Non-specific Product' }
+    //         ]
+    //     };
+
+    //     const curvesToDraw = curves[visualType] || curves['flat-curves'];
+
+    //     curvesToDraw.forEach((curve, index) => {
+    //         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    //         const pathData = 'M' + curve.points.map(p => `${p.x},${p.y}`).join('L');
+    //         path.setAttribute('d', pathData);
+    //         path.setAttribute('stroke', curve.color);
+    //         path.setAttribute('stroke-width', '3');
+    //         path.setAttribute('fill', 'none');
+    //         svg.appendChild(path);
+
+    //         // Add legend
+    //         const legendY = 70 + (index * 25);
+    //         const legendLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    //         legendLine.setAttribute('x1', '60');
+    //         legendLine.setAttribute('y1', legendY);
+    //         legendLine.setAttribute('x2', '85');
+    //         legendLine.setAttribute('y2', legendY);
+    //         legendLine.setAttribute('stroke', curve.color);
+    //         legendLine.setAttribute('stroke-width', '3');
+    //         svg.appendChild(legendLine);
+
+    //         const legendText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    //         legendText.setAttribute('x', '90');
+    //         legendText.setAttribute('y', legendY + 5);
+    //         legendText.setAttribute('font-family', 'Arial');
+    //         legendText.setAttribute('font-size', '12');
+    //         legendText.textContent = curve.label;
+    //         svg.appendChild(legendText);
+    //     });
+    // }
 
     function updateProblemVisual(visualType) {
         const container = document.getElementById('problem-visual');
