@@ -148,43 +148,43 @@
                             <div class="slide" id="slide-3">
                                 <img src="images/PCR_3.png" alt="Step 3: Denaturation Cycle" class="slide-image">
                                 <div class="slide-text">
-                                    <h4>Step 3: Annealing (50-65°C)</h4>
-                                    <p>The temperature is rapidly lowered to 50-65°C for 15-60 seconds. At this lower temperature, the short DNA primers can bind (anneal) to their complementary sequences on the single DNA strands. The specific annealing temperature depends on the primer sequence and is carefully chosen to ensure specific binding while avoiding non-specific interactions.</p>
+                                    <h4>Step 3: Cycle Denaturation (95°C)</h4>
+                                    <p>Each PCR cycle begins with denaturation at 95°C for 15-30 seconds. This step separates any double-stranded DNA that was formed in the previous cycle, ensuring that the DNA strands are single and accessible for primer binding. The brief duration prevents damage to the heat-stable Taq polymerase enzyme.</p>
                                 </div>
                             </div>
                             <div class="slide" id="slide-4">
                                 <img src="images/PCR_4.png" alt="Step 4: Annealing" class="slide-image">
                                 <div class="slide-text">
-                                    <h4>Step 4: Elongation/Extension (72°C)</h4>
-                                    <p>The temperature is raised to 72°C, the optimal working temperature for Taq polymerase. The enzyme adds nucleotides to the 3' end of each primer, synthesizing new DNA strands complementary to the template. The extension time depends on the length of the target sequence (typically 1 minute per 1000 base pairs).</p>
+                                    <h4>Step 4: Annealing (50-65°C)</h4>
+                                    <p>The temperature is rapidly lowered to 50-65°C for 15-60 seconds. At this lower temperature, the short DNA primers can bind (anneal) to their complementary sequences on the single DNA strands. The specific annealing temperature depends on the primer sequence and is carefully chosen to ensure specific binding while avoiding non-specific interactions.</p>
                                 </div>
                             </div>
                             <div class="slide" id="slide-5">
                                 <img src="images/PCR_5.png" alt="Step 5: Elongation" class="slide-image">
                                 <div class="slide-text">
-                                    <h4>Step 5: First cycle complete</h4>
-                                    <p>After the first complete cycle, the amount of target DNA has doubled. Each original strand now serves as a template, and two new complementary strands have been synthesized. The newly formed double-stranded DNA molecules will serve as additional templates in subsequent cycles, leading to exponential amplification.</p>
+                                    <h4>Step 5: Elongation/Extension (72°C)</h4>
+                                    <p>The temperature is raised to 72°C, the optimal working temperature for Taq polymerase. The enzyme adds nucleotides to the 3' end of each primer, synthesizing new DNA strands complementary to the template. The extension time depends on the length of the target sequence (typically 1 minute per 1000 base pairs).</p>
                                 </div>
                             </div>
                             <div class="slide" id="slide-6">
                                 <img src="images/PCR_6.png" alt="Step 6: First Cycle Complete" class="slide-image">
                                 <div class="slide-text">
-                                    <h4>Step 6: Second elongation step</h4>
+                                    <h4>Step 6: First Cycle Complete</h4>
                                     <p>After the first complete cycle, the amount of target DNA has doubled. Each original strand now serves as a template, and two new complementary strands have been synthesized. The newly formed double-stranded DNA molecules will serve as additional templates in subsequent cycles, leading to exponential amplification.</p>
                                 </div>
                             </div>
                             <div class="slide" id="slide-7">
                                 <img src="images/PCR_7.png" alt="Step 7: Multiple Cycles" class="slide-image">
                                 <div class="slide-text">
-                                    <h4>Step 7: Exponential amplification</h4>
-                                    <p>The three-step cycle (denaturation, annealing, extension) is repeated 25-40 times. With each cycle, the amount of target DNA approximately doubles. </p>
+                                    <h4>Step 7: Exponential Amplification</h4>
+                                    <p>The three-step cycle (denaturation, annealing, extension) is repeated 25-40 times. With each cycle, the amount of target DNA approximately doubles, resulting in exponential amplification. After 30 cycles, theoretically over 1 billion copies of the original DNA sequence can be produced from a single starting molecule.</p>
                                 </div>
                             </div>
                             <div class="slide" id="slide-8">
                                 <img src="images/PCR_8.png" alt="Step 8: Real-time Detection" class="slide-image">
                                 <div class="slide-text">
-                                    <h4>Step 8: Micro-explosion</h4>
-                                    <p>The amplificatoin produces theoretically over 1 billion copies of the original DNA sequence from a single starting molecule.</p>
+                                    <h4>Step 8: Real-time Detection & Analysis</h4>
+                                    <p>In real-time PCR, fluorescent dyes or probes detect DNA amplification during each cycle, not just at the end. As more DNA is produced, fluorescence increases proportionally. This creates an amplification curve showing DNA accumulation over time. The Ct (threshold cycle) value indicates the cycle where fluorescence exceeds background levels, allowing quantification of the original DNA amount.</p>
                                 </div>
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                             </div>
                             <div class="important-note">
                                 <h4>Important Note</h4>
-                                <p>This calculation assumes <strong>100% PCR efficiency</strong>, meaning perfect doubling each cycle. In actual experiments, the number is lower, as factors like reagent depletion and enzyme decay reduce yield during later cycles. So, "up to" really means an estimated theoretical maximum, but practical results are always less due to real-world limitations.</p>
+                                <p>This calculation assumes <strong>100% PCR efficiency</strong>, meaning perfect doubling each cycle. In actual experiments, the number is lower, as factors like reagent depletion and enzyme decay reduce yield during later cycles. So, "up to" really means an estimated theoretical maximum, but practical results are always less due to real-world limitations. Tip: Online PCR calculator.</p>
                             </div>
                         </div>
                         
@@ -389,22 +389,17 @@
                 <!-- SYBR Green Section -->
                 <div id="sybr-green" class="content-section">
                     <h2>SYBR Green</h2>
-                    <p>In conventional PCR where the amplified product is visualized on agarose gel, the fluorescent molecule Ethidium-Bromide was used which binds to double-stranded DNA. 
-                        In modern molecular biology labs, Ethidium-Bromide is being replaced by SYBR Green. The SYBR-Green dye is considered less mutagenic and safer compared to the traditional ethidium bromide stain. 
-                        Furthermore, in solutions (as in real-time PCR) the SYBR-Green dye is much more fluorescent. It also doesn't inhibit the polymerase activity during the amplification process. 
-                        Most real-time PCR instruments are therefore designed to detect the fluorescence wavelengths emitted by SYBR Green, and not ethidium bromide.</p>
+                    <p>In conventional PCR where the amplified product is visualized on agarose gel, the fluorescent molecule Ethidium-Bromide was used which binds to double-stranded DNA. In modern molecular biology labs, Ethidium-Bromide is being replaced by SYBR Green. The SYBR-Green dye is considered less mutagenic and safer compared to the traditional ethidium bromide stain. Furthermore, in solutions (as in real-time PCR) the SYBR-Green dye is much more fluorescent. It also doesn't inhibit the polymerase activity during the amplification process. Most real-time PCR instruments are therefore designed to detect the fluorescence wavelengths emitted by SYBR Green, and not ethidium bromide.</p>
                     
                     <p>SYBR Green's fluorescence is quenched (diminished) when floating free in a solution, but is allowed to shine when the dye is "locked" into double-stranded DNA (dsDNA).</p>
                     
                     <img src="images/SYBR_Green.png" alt="SYBR Green binding to double-stranded DNA during PCR cycles">
                     
-                    <p>The figure above shows four PCR stages with the SYBR Green binding to double-stranded DNA. 
-                        The dye is used to detect PCR product as it accumulates during PCR cycles. An important note is that the SYBR Green dye chemistry will detect <strong>all</strong> double-stranded DNA, including non-specific reaction products. 
-                        A well-optimized reaction is therefore very important for accurate results.</p>
+                    <p>The figure above shows four PCR stages with the SYBR Green binding to double-stranded DNA. The dye is used to detect PCR product as it accumulates during PCR cycles. An important note is that the SYBR Green dye chemistry will detect <strong>all</strong> double-stranded DNA, including non-specific reaction products. A well-optimized reaction is therefore very important for accurate results.</p>
                     
                     <h3>Experiment</h3>
                     <p>Let us do an experiment</p>
-                    <p>A real-time PCR experiment is performed using SYBR Green dye. There are two samples / templates: one is from the CCHF Europe I strain, the other from the CCHF Africa II strain</p>
+                    <p>A real-time PCR experiment is performed using Sybr Green dye. There are two samples / templates: one is from the CCHF Europe I strain, the other from the CCHF Africa II strain</p>
                     
                     <img src="images/CCHF_primers.png" alt="Graph showing mismatching DNA sequences between CCHF strains with primer positions">
                     
@@ -414,14 +409,13 @@
                     
                     <p>The <strong>zoomed-in</strong> section gives a detailed view of the forward primer position. The DNA sequences represent the double strand sequence of the Africa strain. Red blocks/letters highlight mismatches—positions where the nucleotide bases differ between the two viral strains, making them easily identifiable against otherwise matching regions.</p>
                     
-                    <p>After PCR amplification, a melting curve analysis is conducted: the thermal cycler slowly increases the block temperature, while recording the fluorescence. As temperature rises, double-strand DNA products begin to "melt" (denature into single strands), and SYBR Green—whose fluorescence depends on binding double-stranded DNA—dissociates, causing fluorescence to decrease.</p>
+                    <p>After PCR amplification, a melting curve analysis is conducted: the thermal cycler slowly increases the block temperature, while recording the fluorescence. As temperature rises, double-strand DNA products begin to "melt" (denature into single strands), and Sybr Green—whose fluorescence depends on binding double-stranded DNA—dissociates, causing fluorescence to decrease.</p>
                     
                     <p>In the graph below are the melting curves of the amplified DNA from the two CCHF virus strains. The melting point of the African strain (blue line) is 82,2 ºC. The melting point of the European strain (purple line) is 83,4 ºC.</p>
                     
                     <img src="images/Melting_point_1.JPG" alt="Melting curves showing fluorescence vs temperature for two CCHF virus strains">
                     
-                    <p>In the graph below are again the melting curve, but here the first derivative of fluorescence vs. temperature is displayed (often shown as −dF/dT vs. T). 
-                        The derivative curve transforms the gradual decline of fluorescence into sharp, distinct peaks, with the peak position marking the melting temperature (Tm) of each strain. This makes it easy to pinpoint very subtle differences between two strains, or wild-type and mutant amplicons – even if only a degree apart.</p>
+                    <p>In the graph below are again the melting curve, but here the first derivative of fluorescence vs. temperature is displayed (often shown as −dF/dT vs. T). The derivative curve transforms the gradual decline of fluorescence into sharp, distinct peaks, with the peak position marking the melting temperature (Tm) of each strain. This makes it easy to pinpoint very subtle differences between two strains, or wild-type and mutant amplicons – even if only a degree apart.</p>
                     
                     <img src="images/Melting_point_2.JPG" alt="First derivative melting curve analysis showing distinct peaks for melting temperatures">
                     
@@ -597,26 +591,25 @@
                         
                         <div class="quiz-question">
                             <h4>Scenario</h4>
-                            <p>You are a technician working in a diagnostic virology laboratory. You receive 10 blood samples from cattle animals with suspected Hemorrhagic Fever virus infection.</p>
+                            <p>You are a technician working in a diagnostic virology laboratory. You receive 10 blood samples from patients with suspected Crimean-Congo Hemorrhagic Fever (CCHF) infection.</p>
                         </div>
                         
                         <div class="advantages-section">
                             <h4 style="color: var(--rh-dark-blue); margin-bottom: 15px;">The Laboratory Requests:</h4>
                             <div class="advantage-item">
                                 <h4>Step 1:</h4>
-                                <p>Screen all 10 samples using the Pan-CCHF real-time PCR assay for the detection of CCHF virus RNA.</p>
+                                <p>Screen all 10 samples using the Pan-CCHF real-time PCR assay to determine which are positive for CCHF virus.</p>
                             </div>
                             <div class="advantage-item">
                                 <h4>Step 2:</h4>
-                                <p>For any sample from a patient that tests positive, determine its virus genotype. These genotypes include:</p>
+                                <p>For any sample that tests positive, determine its virus genotype using further multiplex real-time PCR. These genotypes include:</p>
                                 <ul style="margin-top: 10px;">
                                     <li><strong>Genotype I:</strong> West Africa</li>
                                     <li><strong>Genotype II:</strong> Central Africa</li>
                                     <li><strong>Genotype III:</strong> South and West Africa</li>
-                                    <li><strong>Genotype IV:</strong> Asia I</li>
-                                    <li><strong>Genotype V:</strong> Asia II</li>
-                                    <li><strong>Genotype VI:</strong> Europe I</li>
-                                    <li><strong>Genotype VII:</strong> Europe II</li>
+                                    <li><strong>Genotype IV:</strong> Asia and Middle East</li>
+                                    <li><strong>Genotype V:</strong> South and East Europe</li>
+                                    <li><strong>Genotype VI:</strong> Europe (AP92 group)</li>
                                 </ul>
                             </div>
                         </div>
@@ -635,7 +628,7 @@
                                 </label>
                                 <label class="quiz-option">
                                     <input type="radio" name="rtExerciseAnswer" value="b" id="rt-option-b">
-                                    <span class="option-text"><strong>B)</strong> Two-step PCR: RNA is first converted to cDNA (which can be stored), then separate PCR amplifications can be performed on the same cDNA.</span>
+                                    <span class="option-text"><strong>B)</strong> Two-step PCR: RNA is first converted to cDNA (which can be stored), then separate PCR amplifications can be performed on the same cDNA as many times as needed.</span>
                                     <span class="option-indicator"></span>
                                 </label>
                             </div>
@@ -774,14 +767,6 @@
                         </div>
                     </div>
                     
-                    <!-- NEW INHIBITION SECTION ADDED HERE -->
-                    <h3>Inhibition</h3>
-                    <p>Inefficient PCR amplification in real-time PCR is often caused by <strong>inhibitory substances</strong> present within the nucleic acid (NA) extract. These inhibitors can originate from the sample matrix itself, such as plant polysaccharides, proteins, or humic acids, or be introduced during nucleic acid extraction—for example, residual ethanol or guanidine. Laboratory contaminants like glove powder or ink from marker pens, as well as debris on PCR plates and residues on the detection unit, can also interfere with fluorescence detection and <strong>amplification efficiency</strong>.</p>
-                    
-                    <p>Inhibitors work by affecting critical steps such as DNA denaturation or reducing the activity of the polymerase enzyme, resulting in <strong>impaired amplification</strong>. The presence of such compounds may cause an increase in cycle threshold (<em>Ct</em>) values or even lead to <strong>false negative results</strong>. To monitor and identify inhibition, an internal control is co-amplified in each reaction. The <em>Ct</em> values of these internal controls should be tightly clustered—commonly around a set value such as 27. If, for example, one internal control shifts significantly (e.g., from <em>Ct=27</em> to Ct=37), this strongly suggests inhibition within that reaction. Troubleshooting strategies for PCR inhibition, as well as detailed information on the use and interpretation of internal controls, are provided in the later modules & chapters on troubleshooting and quality control.</p>
-                    
-                    <img src="images\PCR_inhibition.png" alt="PCR Inhibition Diagram" style="max-width: 100%; height: auto; margin-top: 15px;">
-                    
                     <div class="important-note">
                         <h4>Best Practices</h4>
                         <p>Always include appropriate controls in every PCR run. Without proper controls, it's impossible to distinguish between true negative results and false negatives due to technical failures. Controls are not optional—they are fundamental to reliable PCR diagnostics.</p>
@@ -801,20 +786,21 @@
                     <p>CCHFV is notable for its genetic diversity, with strains grouped into six main phylogenetic genotypes based on their geographic distribution and sequence differences. These genotypes are:</p>
                     
                     <div class="advantages-section">
+                        <div class="advantage-item">
                             <ul>
                                 <li><strong>Genotype I:</strong> Found in West Africa</li>
                                 <li><strong>Genotype II:</strong> Central Africa</li>
                                 <li><strong>Genotype III:</strong> South and West Africa</li>
-                                <li><strong>Genotype IV:</strong> Asia I</li>
-                                <li><strong>Genotype V:</strong> Asia II</li>
-                                <li><strong>Genotype VI:</strong> Europe I</li>
-                                <li><strong>Genotype VII:</strong> Europe II</li>
+                                <li><strong>Genotype IV:</strong> Asia and Middle East</li>
+                                <li><strong>Genotype V:</strong> South and East Europe</li>
+                                <li><strong>Genotype VI:</strong> Europe (AP92 group)</li>
                             </ul>
+                        </div>
                     </div>
                     
                     <p>Each genotype reflects regional evolution and adaptation of the virus. The high genetic variability—up to 20-31% difference at the nucleotide level—poses a challenge for molecular detection because it can affect PCR assay performance.</p>
                     
-                    <p>Beside the detection of the CCHFv, the simultaneous detection of the internal control is also desirable. Simultaneous detection of more than one target can be achieved with <strong>'Multiplex PCR'</strong>.</p>
+                    <p>This diversity explains the need for multiplex PCR assays with genotype-specific primers to ensure reliable detection of all circulating CCHFV strains. One way to deal with this problem is 'Multiplex PCR'.</p>
                     
                     <p>Multiplex PCR is a technique in which multiple target DNA (or RNA sequences) are amplified simultaneously in a single PCR reaction by using more than one pair of primers. This allows the detection or analysis of several genes, pathogens, or genomic regions at once, saving time and reagents and increasing the efficiency of diagnostic or research workflows. Use of reporter dyes with different wave-lengths.</p>
                     
@@ -825,59 +811,27 @@
                         <div class="interactive-content">
                             <div style="background-color: var(--rh-white); padding: 25px; border-radius: 10px; text-align: left;">
                                 <h4 style="color: var(--rh-dark-blue); margin-bottom: 20px;">Scenario</h4>
-                                <p style="margin-bottom: 20px;"> 
-                                 A researcher at a diagnostic virology laboratory is using a <strong>pan-CCHFV real-time PCR</strong> assay to screen 10 animal samples for Crimean-Congo hemorrhagic fever virus (CCHFV). This assay is adapted from a protocol published in the <a href="https://doi.org/10.1016/j.jviromet.2018.01.013" target="_blank" style="color: var(--rh-dark-blue); text-decoration: underline;"><strong>Journal of Virological Methods</strong></a> for universal detection of all known CCHFV genotypes. The current approach features two main modifications: (a) the assay incorporates an <strong>internal control</strong> to monitor for extraction and amplification efficiency, and (b) it employs a two-step RT-PCR process. After nucleic acid extraction, reverse transcription is performed on each sample to generate cDNA, which is subsequently used as input for the real-time PCR. 
-                                 The residual cDNA is stored for follow-up testing: further multiplex real-time PCR assays or other molecular tests are conducted if required.
-                                </p>
-
-<div style="background: linear-gradient(90deg, #f9fff4 60%, #eaffe3 100%); border-radius: 16px; box-shadow: 0 4px 14px rgba(34,139,34,.08); padding: 28px 36px; margin-bottom: 30px; color: #183413;">
-    <h4 style="color: #177041; margin: 0 0 22px 0; font-size: 1.35em;">
-        <span aria-hidden="true" style="font-size: 1.2em;">🔎</span>
-        Step 1: Initial Pan-CCHFV Real-Time PCR Screening
-    </h4>
-    <ul style="margin: 0; padding-left: 0; list-style-type: none;">
-        <li style="margin-bottom: 22px;">
-            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true"></span>
-            <strong>Sample Reception:</strong> The researcher receives a batch of blood or tissue samples for CCHFV testing.
-        </li>
-        <li style="margin-bottom: 22px;">
-            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true"></span>
-            <strong>Nucleic Acid Extraction:</strong> Each sample is prepared and nucleic acids extracted.
-        </li>
-        <li style="margin-bottom: 22px;">
-            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true"></span>
-            <strong>PCR Reaction Setup:</strong> Each pan-CCHFV real-time PCR mix includes:
-            <ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 22px; background: #f2fdee; border-radius: 8px; list-style-type: none;">
-                <li style="margin-bottom: 7px;">
-                    <span style="font-weight: bold; color: #1b6041;" aria-hidden="true"></span>
-                    Primers and probe targeting conserved regions of CCHFV (all genotypes)
-                </li>
-                <li>
-                    <span style="font-weight: bold; color: #1b6041;" aria-hidden="true"></span>
-                    <span style="color: #1a7914; font-weight: 700;">Internal control</span> (e.g., EGFP RNA or unrelated sequence) to verify extraction and amplification
-                </li>
-            </ul>
-        </li>
-        <li>
-            <span style="font-weight: bold; color: #1b6041;" aria-hidden="true"></span>
-            <strong>Result Interpretation:</strong> After amplification, results are interpreted:
-            <ul style="margin-top: 8px; padding-left: 22px; background: #ebf8ee; border-radius: 8px; list-style-type: none;">
-                <li style="margin-bottom: 7px;">
-                    <span aria-hidden="true" style="color: #ac0000; font-weight: bold;">⦿</span>
-                    <strong>Negative sample:</strong> No signal for CCHFV; internal control amplified.
-                </li>
-                <li style="margin-bottom: 7px;">
-                    <span aria-hidden="true" style="color: #caa700; font-weight: bold;">⚠️</span>
-                    <strong>Inhibited/Invalid:</strong> No CCHFV or internal control signal (possible inhibition/extraction failure; retest needed).
-                </li>
-                <li>
-                    <span aria-hidden="true" style="color: #187904; font-weight: bold;">🟢</span>
-                    <strong>Positive sample:</strong> Detectable CCHFV and internal control signals.
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
+                                <p style="margin-bottom: 20px;">A researcher at a diagnostic virology laboratory is screening clinical samples for Crimean-Congo hemorrhagic fever virus (CCHFV) using a <strong>pan-CCHFV real-time PCR</strong> assay that includes an <strong>internal control</strong>. When a sample tests positive, they must further discriminate the CCHFV genotype using a <strong>multiplex real-time PCR</strong> targeting <strong>genotypes IV, V, and VI</strong>.</p>
+                                
+                                <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Step 1: Initial Pan-CCHFV Real-Time PCR Screening</h4>
+                                <ul style="margin-bottom: 20px;">
+                                    <li>The researcher receives a batch of blood or tissue samples for CCHFV testing.</li>
+                                    <li>Each sample is prepared and nucleic acids extracted.</li>
+                                    <li>A pan-CCHFV real-time PCR reaction mix is set up for each sample, including:
+                                        <ul style="margin-top: 10px; padding-left: 30px;">
+                                            <li>Primers and probe targeting conserved regions of CCHFV (all genotypes)</li>
+                                            <li><strong>Internal control</strong> (e.g., EGFP RNA or an unrelated control sequence) to validate extraction and amplification</li>
+                                        </ul>
+                                    </li>
+                                    <li>After amplification, results are interpreted:
+                                        <ul style="margin-top: 10px; padding-left: 30px;">
+                                            <li><strong>Negative sample:</strong> No signal for CCHFV and successful internal control amplification</li>
+                                            <li><strong>Inhibited/Invalid sample:</strong> No signal for CCHFV or internal control (possible PCR inhibition or extraction failure; retesting required)</li>
+                                            <li><strong>Positive sample:</strong> Detectable CCHFV signal and internal control amplification</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                
                                 <h4 style="color: var(--rh-green); margin: 25px 0 15px 0;">Multiplex PCR Results</h4>
                                 <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
                                     <thead>
@@ -927,7 +881,7 @@
                                         <tr>
                                             <td style="border: 1px solid #ddd; padding: 12px;">3</td>
                                             <td style="border: 1px solid #ddd; padding: 12px;">Ct 24</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 33</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
                                             <td style="border: 1px solid #ddd; padding: 8px;">
                                                 <select class="interpretation-dropdown" data-sample="3" data-correct="Positive" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
                                                     <option value="">Select...</option>
@@ -943,8 +897,8 @@
                                         </tr>
                                         <tr style="background-color: var(--rh-light-gray);">
                                             <td style="border: 1px solid #ddd; padding: 12px;">4</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">undetected</td>
-                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 38</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 39</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px;">Ct 34</td>
                                             <td style="border: 1px solid #ddd; padding: 8px;">
                                                 <select class="interpretation-dropdown" data-sample="4" data-correct="Inhibition" style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
                                                     <option value="">Select...</option>
@@ -1109,28 +1063,28 @@
                         </div>
                     </div>
                     
-  
-                    <p>After processing clinical samples in a diagnostic virology laboratory, results are typically classified as positive, negative, inhibited, or invalid. For samples that indicate inhibition or return invalid results, further analysis is required. Detailed troubleshooting procedures for handling such samples are outlined in the course chapter on Troubleshooting. This ensures that any technical or sample-related issues are addressed.</p>
+                    <div class="efficiency-section">
+                        <h3>Step 2: Multiplex Genotyping PCR</h3>
+                        <p>For positive samples (Sample 002 and Sample 004), the researcher proceeds with genotype-specific multiplex PCR:</p>
+                        
+                        <div class="example-box">
+                            <p><strong>Multiplex Setup:</strong> Three primer/probe sets in one reaction</p>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Genotype IV primers/probe (FAM fluorophore)</li>
+                                <li>Genotype V primers/probe (VIC fluorophore)</li>
+                                <li>Genotype VI primers/probe (ROX fluorophore)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example-box">
+                            <p><strong>Expected Results:</strong></p>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Sample 002: Genotype V positive (VIC signal, Ct 34.2)</li>
+                                <li>Sample 004: Genotype IV positive (FAM signal, Ct 28.5)</li>
+                            </ul>
+                        </div>
+                    </div>
                     
-                    <h3>Reporting and Advanced Investigation</h3>
-                    <p>Results for <strong>positive and negative samples</strong> can be reported to the requester or applicant. When necessary, positive samples may undergo further characterization. For example, determining the specific virus strain can be important during outbreaks or for epidemiological studies. To achieve this, various molecular techniques may be applied to the sample cDNA:</p>
-                    
-                    <ul style="margin: 15px 0 15px 20px;">
-                        <li><strong>SYBR Green melting curve</strong> analysis for rapid differentiation based on amplicon profiles.</li>
-                        <li><strong>Strain-specific multiplex real-time PCR</strong> to distinguish closely related viruses in a single reaction.</li>
-                        <li><strong>Sequencing with phylogenetic analysis</strong> to provide the highest level of detail about the viral genome, allowing robust comparison with global reference strains.</li>
-                    </ul>
-                    
-                    <h3>Application of Multiplex Real-time PCR in Clinical Diagnostics</h3>
-                    <p>Multiplex real-time PCR enables the simultaneous detection of multiple viral pathogens that can present with similar symptoms. For instance, as described by Choi & Kim (2023), assays were developed to rapidly screen for 17 viruses associated with hemorrhagic fever syndrome. Because a multiplex PCR can accurately target only a certain number of pathogens in one panel, these 17 viruses were divided into 8 panels, with design based on geographic distribution and compatibility of fluorescent detection channels.</p>
-                    
-                    <p>For example, Crimean-Congo hemorrhagic fever virus (CCHFV) was grouped in the same amplification panel as Ebola virus and Marburg virus, allowing for efficient, parallel screening of high-priority pathogens.</p>
-                    
-                    <p>An internal control—using synthetic plasmid DNA—was included in each reaction to validate the testing process and detect any potential PCR inhibition.</p>
-                    
-                    <img src="images/multiplex2.png" alt="Multiplex PCR diagnostic workflow" style="width: 100%; max-width: 800px; height: auto; margin: 20px 0;">
-                    
-
                     <div class="important-note">
                         <h4>Key Learning Points</h4>
                         <p>This simulation demonstrates how multiplex PCR enables simultaneous detection of multiple targets, improving diagnostic efficiency while providing specific genotype information crucial for epidemiological tracking and treatment decisions. The internal control ensures result validity, while different fluorescent reporters allow discrimination between targets in a single reaction.</p>
@@ -1144,164 +1098,138 @@
                 <!-- Troubleshooting Section -->
                 <div id="troubleshooting" class="content-section">
                     <h2>Troubleshooting</h2>
-                    <p>Common issues in real-time PCR can include a lack of amplification, low efficiency, or inconsistent results. This can be caused by various factors, such as degraded nucleic acids, primer or probe design issues, or the presence of inhibitors in the sample. Troubleshooting involves checking reagent quality, optimizing primer and probe concentrations, adjusting the thermal cycling conditions, and ensuring the sample is free from contaminants.</p>
-                                       <p>Real-time PCR troubleshooting requires systematic analysis of amplification curves, controls, and experimental conditions. Common issues include amplification failure, inhibition, contamination, and inconsistent results. This interactive troubleshooting simulator will guide you through identifying and resolving common PCR problems using a step-by-step decision tree approach.</p>
+                    <div class="troubleshooting-intro">
+                        <img src="images/PCR_open.png" alt="Open PCR machine" class="troubleshooting-image">
+                        <p>Common issues in real-time PCR can include a lack of amplification, low efficiency, or inconsistent results. This can be caused by various factors, such as degraded nucleic acids, primer or probe design issues, or the presence of inhibitors in the sample. Troubleshooting involves checking reagent quality, optimizing primer and probe concentrations, adjusting the thermal cycling conditions, and ensuring the sample is free from contaminants.</p>
+                        
+                        <p>Real-time PCR troubleshooting requires a systematic approach to identify and resolve issues that may arise during the amplification process. Understanding common problems and their solutions is essential for obtaining reliable and reproducible results in diagnostic applications.</p>
+                    </div>
                     
-                    <!-- Troubleshooting Simulator -->
-                    <div class="interactive-container">
-                        <h3>Interactive PCR Troubleshooting Simulator</h3>
+                    <button class="dashboard-button" id="troubleshootingDashboardBtn">Continue to troubleshooting dashboard</button>
+                    
+                    <div class="troubleshooting-dashboard" id="troubleshootingDashboard">
+                        <h3>PCR Troubleshooting Dashboard</h3>
                         
-                        <!-- Dashboard Screen -->
-                        <div id="troubleshoot-dashboard" class="troubleshoot-screen active">
-                            <h4>Select a Problem to Troubleshoot</h4>
-                            <p>Choose from the common PCR problems below to start the interactive troubleshooting process:</p>
-                            
-                            <div class="problem-grid">
-                                <div class="problem-card" data-problem="no-amplification">
-                                    <div class="problem-icon">⚠️</div>
-                                    <h5>No Amplification</h5>
-                                    <p>Positive control shows no signal</p>
-                                    <div class="severity high">High Priority</div>
-                                </div>
-                                
-                                <div class="problem-card" data-problem="high-ct">
-                                    <div class="problem-icon">📈</div>
-                                    <h5>High Ct Values</h5>
-                                    <p>Weak or delayed amplification</p>
-                                    <div class="severity medium">Medium Priority</div>
-                                </div>
-                                
-                                <div class="problem-card" data-problem="inhibition">
-                                    <div class="problem-icon">🚫</div>
-                                    <h5>PCR Inhibition</h5>
-                                    <p>Internal control fails to amplify</p>
-                                    <div class="severity high">High Priority</div>
-                                </div>
-                                
-                                <div class="problem-card" data-problem="contamination">
-                                    <div class="problem-icon">🦠</div>
-                                    <h5>Contamination</h5>
-                                    <p>Negative control shows signal</p>
-                                    <div class="severity critical">Critical</div>
-                                </div>
-                                
-                                <div class="problem-card" data-problem="inconsistent">
-                                    <div class="problem-icon">📊</div>
-                                    <h5>Inconsistent Results</h5>
-                                    <p>Variable Ct values between replicates</p>
-                                    <div class="severity medium">Medium Priority</div>
-                                </div>
-                                
-                                <div class="problem-card" data-problem="nonspecific">
-                                    <div class="problem-icon">🔀</div>
-                                    <h5>Non-specific Products</h5>
-                                    <p>Multiple peaks in melting curve</p>
-                                    <div class="severity low">Low Priority</div>
-                                </div>
-                            </div>
+                        <div class="troubleshooting-category">
+                            <h4>🔬 No Amplification Problems</h4>
+                            <ul class="troubleshooting-list">
+                                <li>
+                                    <div class="problem">No amplification in positive control</div>
+                                    <div class="solution">Check reagent quality and expiration dates, verify primer and probe concentrations, ensure proper thermal cycling conditions</div>
+                                </li>
+                                <li>
+                                    <div class="problem">No amplification in test samples but positive control works</div>
+                                    <div class="solution">Check sample quality and concentration, verify RNA/DNA extraction efficiency, test for PCR inhibitors</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Template DNA/RNA degradation</div>
+                                    <div class="solution">Use fresh samples, optimize storage conditions, check extraction protocol, use shorter amplicons</div>
+                                </li>
+                            </ul>
                         </div>
                         
-                        <!-- Problem Analysis Screen -->
-                        <div id="troubleshoot-analysis" class="troubleshoot-screen">
-                            <div class="analysis-header">
-                                <button class="back-btn" onclick="goToTroubleshootScreen('dashboard')">← Back to Dashboard</button>
-                                <h4 id="problem-title">Problem Analysis</h4>
-                            </div>
-                            
-                            <div class="analysis-content">
-                                <div class="problem-description">
-                                    <h5>Problem Description</h5>
-                                    <p id="problem-desc">Loading...</p>
-                                </div>
-                                
-                                <div class="visual-evidence">
-                                    <h5>Visual Evidence</h5>
-                                    <div id="problem-visual" class="visual-container">
-                                        <!-- Charts and images will be inserted here -->
-                                    </div>
-                                </div>
-                                
-                                <div class="initial-assessment">
-                                    <h5>Initial Assessment Questions</h5>
-                                    <div id="assessment-questions">
-                                        <!-- Questions will be loaded dynamically -->
-                                    </div>
-                                </div>
-                                
-                                <div class="action-center">
-                                    <button class="continue-btn" onclick="startTroubleshooting()">Start Troubleshooting Process</button>
-                                </div>
-                            </div>
+                        <div class="troubleshooting-category">
+                            <h4>⚡ PCR Efficiency Issues</h4>
+                            <ul class="troubleshooting-list">
+                                <li>
+                                    <div class="problem">Low amplification efficiency</div>
+                                    <div class="solution">Optimize primer concentrations (typically 100-900 nM), adjust annealing temperature, check for primer dimers</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Poor reproducibility between replicates</div>
+                                    <div class="solution">Ensure proper mixing of reaction components, use consistent pipetting techniques, check thermal cycler calibration</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Late or shifted amplification curves</div>
+                                    <div class="solution">Increase template concentration, optimize primer design, check for inhibitors in sample</div>
+                                </li>
+                            </ul>
                         </div>
                         
-                        <!-- Decision Tree Screen -->
-                        <div id="troubleshoot-decision" class="troubleshoot-screen">
-                            <div class="decision-header">
-                                <button class="back-btn" onclick="goToTroubleshootScreen('analysis')">← Back to Analysis</button>
-                                <h4>Troubleshooting Steps</h4>
-                                <div class="progress-tracker">
-                                    <span>Step <span id="current-step">1</span> of <span id="total-steps">5</span></span>
-                                </div>
-                            </div>
-                            
-                            <div class="decision-content">
-                                <div class="step-description">
-                                    <h5 id="step-title">Step Title</h5>
-                                    <p id="step-description">Step description</p>
-                                </div>
-                                
-                                <div class="step-visual" id="step-visual">
-                                    <!-- Step-specific visuals -->
-                                </div>
-                                
-                                <div class="action-choices">
-                                    <h5>What would you like to do?</h5>
-                                    <div id="choice-options">
-                                        <!-- Multiple choice options -->
-                                    </div>
-                                </div>
-                                
-                                <div class="step-navigation">
-                                    <button class="nav-btn" id="prev-step" onclick="previousStep()">Previous Step</button>
-                                    <button class="nav-btn primary" id="next-step" onclick="nextStep()">Continue</button>
-                                </div>
-                            </div>
+                        <div class="troubleshooting-category">
+                            <h4>🚫 Contamination Issues</h4>
+                            <ul class="troubleshooting-list">
+                                <li>
+                                    <div class="problem">Positive signal in negative control</div>
+                                    <div class="solution">Clean work surfaces and pipettes, use filter tips, prepare reaction components in separate areas, check reagent contamination</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Cross-contamination between samples</div>
+                                    <div class="solution">Use separate pipettes for different samples, change tips between samples, use physical separation during setup</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Carryover contamination from previous runs</div>
+                                    <div class="solution">Clean thermal cycler block, decontaminate work area with bleach, use UNG treatment for DNA contamination</div>
+                                </li>
+                            </ul>
                         </div>
                         
-                        <!-- Resolution Screen -->
-                        <div id="troubleshoot-resolution" class="troubleshoot-screen">
-                            <div class="resolution-header">
-                                <h4>Troubleshooting Complete</h4>
-                            </div>
-                            
-                            <div class="resolution-content">
-                                <div class="resolution-summary">
-                                    <div class="success-icon">✅</div>
-                                    <h5 id="resolution-title">Resolution Found</h5>
-                                    <p id="resolution-description">Resolution description</p>
-                                </div>
-                                
-                                <div class="action-summary">
-                                    <h5>Actions Taken</h5>
-                                    <ul id="actions-taken">
-                                        <!-- List of actions -->
-                                    </ul>
-                                </div>
-                                
-                                <div class="prevention-tips">
-                                    <h5>Prevention Tips</h5>
-                                    <ul id="prevention-list">
-                                        <!-- Prevention recommendations -->
-                                    </ul>
-                                </div>
-                                
-                                <div class="resolution-actions">
-                                    <button class="continue-btn" onclick="goToTroubleshootScreen('dashboard')">Troubleshoot Another Problem</button>
-                                    <button class="continue-btn secondary" onclick="resetTroubleshooting()">Start Over</button>
-                                </div>
-                            </div>
+                        <div class="troubleshooting-category">
+                            <h4>📊 Signal and Detection Problems</h4>
+                            <ul class="troubleshooting-list">
+                                <li>
+                                    <div class="problem">Weak or low fluorescence signal</div>
+                                    <div class="solution">Check probe concentration and integrity, verify instrument calibration, ensure proper filter settings</div>
+                                </li>
+                                <li>
+                                    <div class="problem">High background fluorescence</div>
+                                    <div class="solution">Check for probe degradation, optimize probe concentration, ensure proper storage of fluorescent reagents</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Irregular or noisy amplification curves</div>
+                                    <div class="solution">Check for air bubbles in reactions, ensure proper plate sealing, verify thermal cycler performance</div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="troubleshooting-category">
+                            <h4>🧬 Primer and Probe Issues</h4>
+                            <ul class="troubleshooting-list">
+                                <li>
+                                    <div class="problem">Primer dimer formation</div>
+                                    <div class="solution">Reduce primer concentration, increase annealing temperature, redesign primers to reduce complementarity</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Non-specific amplification</div>
+                                    <div class="solution">Increase annealing temperature, optimize primer specificity, perform melting curve analysis</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Probe hydrolysis issues</div>
+                                    <div class="solution">Check probe design and concentration, verify 5' nuclease activity of polymerase, optimize probe annealing temperature</div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="troubleshooting-category">
+                            <h4>🎯 CCHF-Specific Troubleshooting</h4>
+                            <ul class="troubleshooting-list">
+                                <li>
+                                    <div class="problem">Failed detection of known CCHF-positive samples</div>
+                                    <div class="solution">Check for genetic variability in target region, consider using multiplex assay with multiple primer sets</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Cross-reactivity with other viruses</div>
+                                    <div class="solution">Validate specificity against related viruses, consider using more specific primer/probe combinations</div>
+                                </li>
+                                <li>
+                                    <div class="problem">Internal control failure in clinical samples</div>
+                                    <div class="solution">Check for blood-based inhibitors, dilute sample, use inhibitor-resistant polymerase, add BSA to reaction</div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="important-note">
+                            <h4>📝 General Troubleshooting Tips</h4>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li><strong>Document everything:</strong> Keep detailed records of all reagent lots, expiration dates, and reaction conditions</li>
+                                <li><strong>Use positive and negative controls:</strong> Always include appropriate controls in every run</li>
+                                <li><strong>Start with known working conditions:</strong> Use validated protocols as starting points for optimization</li>
+                                <li><strong>Change one variable at a time:</strong> Systematic optimization yields better results than changing multiple parameters simultaneously</li>
+                                <li><strong>Regular maintenance:</strong> Keep equipment calibrated and clean to ensure consistent performance</li>
+                            </ul>
                         </div>
                     </div>
+                    
                     <div class="end-module-section">
                         <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
                     </div>
@@ -1340,6 +1268,5 @@
             }
         });
     </script>
-
 </body>
 </html>
