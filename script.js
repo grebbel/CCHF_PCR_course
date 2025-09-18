@@ -760,6 +760,247 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
+// Add this JavaScript to the end of your script.js file, just before the final closing bracket and console.log
+
+    // Troubleshooting Dashboard Functionality
+    const troubleshootTiles = document.querySelectorAll('.troubleshoot-tile');
+    const modalCloseButtons = document.querySelectorAll('.modal-close');
+    const modalOverlays = document.querySelectorAll('.modal-overlay');
+
+    console.log('Loading troubleshooting dashboard...');
+
+    // Function to show modal
+    function showModal(issueType) {
+        const modal = document.getElementById(issueType + '-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            console.log('Opened modal for:', issueType);
+            
+            // Focus management for accessibility
+            const closeButton = modal.querySelector('.modal-close');
+            if (closeButton) {
+                closeButton.focus();
+            }
+        }
+    }
+
+    // Function to hide all modals
+    function hideAllModals() {
+        modalOverlays.forEach(overlay => {
+            overlay.style.display = 'none';
+        });
+        document.body.style.overflow = 'auto';
+    }
+
+    // Add click handlers to tiles
+    troubleshootTiles.forEach(tile => {
+        tile.addEventListener('click', function() {
+            const issueType = this.getAttribute('data-issue');
+            showModal(issueType);
+            
+            // Analytics tracking if LMS integration exists
+            if (typeof reportToLMS === 'function') {
+                reportToLMS(`troubleshooting_${issueType}_viewed`, 0, false);
+            }
+        });
+
+        // Add keyboard support for accessibility
+        tile.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const issueType = this.getAttribute('data-issue');
+                showModal(issueType);
+            }
+        });
+
+        // Make tiles focusable and add ARIA attributes
+        tile.setAttribute('tabindex', '0');
+        tile.setAttribute('role', 'button');
+        const titleElement = tile.querySelector('h4');
+        if (titleElement) {
+            tile.setAttribute('aria-label', `View details for ${titleElement.textContent}`);
+        }
+    });
+
+    // Add close handlers to close buttons
+    modalCloseButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            hideAllModals();
+        });
+    });
+
+    // Close modal when clicking on overlay background
+    modalOverlays.forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideAllModals();
+            }
+        });
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const openModal = document.querySelector('.modal-overlay[style*="flex"]');
+            if (openModal) {
+                hideAllModals();
+            }
+        }
+    });
+
+    // Handle image loading errors with fallback
+    const troubleshootingImages = document.querySelectorAll('.troubleshoot-tile img, .modal-overlay img');
+    troubleshootingImages.forEach(img => {
+        img.addEventListener('error', function() {
+            console.log('Image failed to load:', this.src);
+            // Try fallback image
+            if (!this.src.includes('pcr-curves-normal.png')) {
+                this.src = 'images/pcr-curves-normal.png';
+            } else {
+                // If even fallback fails, show placeholder
+                this.style.display = 'none';
+                const container = this.closest('.tile-img-container, .modal-image');
+                if (container) {
+                    container.style.background = 'linear-gradient(45deg, #8fcae7, #76d2b6)';
+                    if (!container.querySelector('.image-placeholder')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'image-placeholder';
+                        placeholder.style.cssText = `
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            height: 100%; 
+                            color: #01689b; 
+                            font-weight: 600;
+                            text-align: center;
+                            padding: 20px;
+                        `;
+                        placeholder.textContent = 'Image not available';
+                        container.appendChild(placeholder);
+                    }
+                }
+            }
+        });
+    });
+
+    // Troubleshooting Analytics and Tracking
+    function trackTroubleshootingInteraction(action, issueType) {
+        const interactionData = {
+            action: action,
+            issueType: issueType,
+            timestamp: new Date().toISOString(),
+            module: 'troubleshooting_dashboard'
+        };
+
+        // Report to LMS if available
+        if (typeof reportToLMS === 'function') {
+            reportToLMS(`troubleshooting_${action}`, 0, false);
+        }
+
+        // Store locally for offline tracking
+        try {
+            const existingData = JSON.parse(localStorage.getItem('troubleshooting_interactions') || '[]');
+            existingData.push(interactionData);
+            // Keep only last 100 interactions to prevent storage bloat
+            if (existingData.length > 100) {
+                existingData.splice(0, existingData.length - 100);
+            }
+            localStorage.setItem('troubleshooting_interactions', JSON.stringify(existingData));
+            console.log('Tracked interaction:', action, issueType);
+        } catch (e) {
+            console.log('Could not store troubleshooting interaction data:', e);
+        }
+    }
+
+    // Enhanced analytics on tile clicks
+    troubleshootTiles.forEach(tile => {
+        tile.addEventListener('click', function() {
+            const issueType = this.getAttribute('data-issue');
+            trackTroubleshootingInteraction('tile_clicked', issueType);
+        });
+    });
+
+    // Track when troubleshooting section becomes visible
+    const troubleshootingSection = document.getElementById('troubleshooting');
+    if (troubleshootingSection && typeof IntersectionObserver !== 'undefined') {
+        const troubleshootingObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    trackTroubleshootingInteraction('section_viewed', 'dashboard');
+                    troubleshootingObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        troubleshootingObserver.observe(troubleshootingSection);
+    }
+
+    // Preload images for better user experience
+    function preloadTroubleshootingImages() {
+        const imageUrls = [
+            'images/pcr-curves-contamination.png',
+            'images/pcr-curves-degradation.png',
+            'images/pcr-curves-high-template.png',
+            'images/pcr-curves-inhibition.png',
+            'images/pcr-curves-low-template.png',
+            'images/pcr-curves-primer-dimer.png',
+            'images/pcr-curves-normal.png'
+        ];
+
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+            img.onload = () => console.log('Preloaded:', url);
+            img.onerror = () => console.log('Failed to preload:', url);
+        });
+    }
+
+    // Initialize troubleshooting dashboard
+    function initializeTroubleshootingDashboard() {
+        console.log('Troubleshooting Dashboard initialized with', troubleshootTiles.length, 'tiles');
+        
+        // Preload images
+        preloadTroubleshootingImages();
+        
+        // Add loading indicator if needed
+        const dashboard = document.querySelector('.troubleshoot-main-container');
+        if (dashboard) {
+            dashboard.style.opacity = '0';
+            setTimeout(() => {
+                dashboard.style.transition = 'opacity 0.5s ease';
+                dashboard.style.opacity = '1';
+            }, 100);
+        }
+        
+        // Verify all required elements exist
+        if (troubleshootTiles.length === 0) {
+            console.warn('No troubleshooting tiles found! Check HTML structure.');
+        }
+        if (modalOverlays.length === 0) {
+            console.warn('No modal overlays found! Check HTML structure.');
+        }
+    }
+
+    // Call initialization when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeTroubleshootingDashboard);
+    } else {
+        initializeTroubleshootingDashboard();
+    }
+
+    // Export functions for potential external use
+    window.troubleshootingDashboard = {
+        showModal: showModal,
+        hideAllModals: hideAllModals,
+        trackInteraction: trackTroubleshootingInteraction
+    };
+
+    console.log('Troubleshooting Dashboard JavaScript loaded successfully');
+
     // Console log to confirm script loaded
     console.log('PCR Module JavaScript loaded successfully');
 });

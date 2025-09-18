@@ -1095,149 +1095,401 @@
                     </div>
                 </div>
                 
-                <!-- Troubleshooting Section -->
-                <div id="troubleshooting" class="content-section">
-                    <h2>Troubleshooting</h2>
-                    <div class="troubleshooting-intro">
-                        <img src="images/dumpcore.png" alt="Open PCR machine" class="troubleshooting-image" style="max-width: 290px; margin: 20px 30px 20px 20px;">
-                        <p>Common issues in real-time PCR can include a lack of amplification, low efficiency, or inconsistent results. This can be caused by various factors, such as degraded nucleic acids, primer or probe design issues, or the presence of inhibitors in the sample. Troubleshooting involves checking reagent quality, optimizing primer and probe concentrations, adjusting the thermal cycling conditions, and ensuring the sample is free from contaminants.</p>
-                        
-                        <p>Real-time PCR troubleshooting requires a systematic approach to identify and resolve issues that may arise during the amplification process. Understanding common problems and their solutions is essential for obtaining reliable and reproducible results in diagnostic applications.</p>
-                    </div>
-                    
-                    <button class="dashboard-button" id="troubleshootingDashboardBtn">Continue to troubleshooting dashboard</button>
-                    
-                    <div class="troubleshooting-dashboard" id="troubleshootingDashboard">
-                        <h3>PCR Troubleshooting Dashboard</h3>
-                        
-                        <div class="troubleshooting-category">
-                            <h4>🔬 No Amplification Problems</h4>
-                            <ul class="troubleshooting-list">
-                                <li>
-                                    <div class="problem">No amplification in positive control</div>
-                                    <div class="solution">Check reagent quality and expiration dates, verify primer and probe concentrations, ensure proper thermal cycling conditions</div>
-                                </li>
-                                <li>
-                                    <div class="problem">No amplification in test samples but positive control works</div>
-                                    <div class="solution">Check sample quality and concentration, verify RNA/DNA extraction efficiency, test for PCR inhibitors</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Template DNA/RNA degradation</div>
-                                    <div class="solution">Use fresh samples, optimize storage conditions, check extraction protocol, use shorter amplicons</div>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="troubleshooting-category">
-                            <h4>⚡ PCR Efficiency Issues</h4>
-                            <ul class="troubleshooting-list">
-                                <li>
-                                    <div class="problem">Low amplification efficiency</div>
-                                    <div class="solution">Optimize primer concentrations (typically 100-900 nM), adjust annealing temperature, check for primer dimers</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Poor reproducibility between replicates</div>
-                                    <div class="solution">Ensure proper mixing of reaction components, use consistent pipetting techniques, check thermal cycler calibration</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Late or shifted amplification curves</div>
-                                    <div class="solution">Increase template concentration, optimize primer design, check for inhibitors in sample</div>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="troubleshooting-category">
-                            <h4>🚫 Contamination Issues</h4>
-                            <ul class="troubleshooting-list">
-                                <li>
-                                    <div class="problem">Positive signal in negative control</div>
-                                    <div class="solution">Clean work surfaces and pipettes, use filter tips, prepare reaction components in separate areas, check reagent contamination</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Cross-contamination between samples</div>
-                                    <div class="solution">Use separate pipettes for different samples, change tips between samples, use physical separation during setup</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Carryover contamination from previous runs</div>
-                                    <div class="solution">Clean thermal cycler block, decontaminate work area with bleach, use UNG treatment for DNA contamination</div>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="troubleshooting-category">
-                            <h4>📊 Signal and Detection Problems</h4>
-                            <ul class="troubleshooting-list">
-                                <li>
-                                    <div class="problem">Weak or low fluorescence signal</div>
-                                    <div class="solution">Check probe concentration and integrity, verify instrument calibration, ensure proper filter settings</div>
-                                </li>
-                                <li>
-                                    <div class="problem">High background fluorescence</div>
-                                    <div class="solution">Check for probe degradation, optimize probe concentration, ensure proper storage of fluorescent reagents</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Irregular or noisy amplification curves</div>
-                                    <div class="solution">Check for air bubbles in reactions, ensure proper plate sealing, verify thermal cycler performance</div>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="troubleshooting-category">
-                            <h4>🧬 Primer and Probe Issues</h4>
-                            <ul class="troubleshooting-list">
-                                <li>
-                                    <div class="problem">Primer dimer formation</div>
-                                    <div class="solution">Reduce primer concentration, increase annealing temperature, redesign primers to reduce complementarity</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Non-specific amplification</div>
-                                    <div class="solution">Increase annealing temperature, optimize primer specificity, perform melting curve analysis</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Probe hydrolysis issues</div>
-                                    <div class="solution">Check probe design and concentration, verify 5' nuclease activity of polymerase, optimize probe annealing temperature</div>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="troubleshooting-category">
-                            <h4>🎯 CCHF-Specific Troubleshooting</h4>
-                            <ul class="troubleshooting-list">
-                                <li>
-                                    <div class="problem">Failed detection of known CCHF-positive samples</div>
-                                    <div class="solution">Check for genetic variability in target region, consider using multiplex assay with multiple primer sets</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Cross-reactivity with other viruses</div>
-                                    <div class="solution">Validate specificity against related viruses, consider using more specific primer/probe combinations</div>
-                                </li>
-                                <li>
-                                    <div class="problem">Internal control failure in clinical samples</div>
-                                    <div class="solution">Check for blood-based inhibitors, dilute sample, use inhibitor-resistant polymerase, add BSA to reaction</div>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="important-note">
-                            <h4>📝 General Troubleshooting Tips</h4>
-                            <ul style="text-align: left; margin-top: 10px;">
-                                <li><strong>Document everything:</strong> Keep detailed records of all reagent lots, expiration dates, and reaction conditions</li>
-                                <li><strong>Use positive and negative controls:</strong> Always include appropriate controls in every run</li>
-                                <li><strong>Start with known working conditions:</strong> Use validated protocols as starting points for optimization</li>
-                                <li><strong>Change one variable at a time:</strong> Systematic optimization yields better results than changing multiple parameters simultaneously</li>
-                                <li><strong>Regular maintenance:</strong> Keep equipment calibrated and clean to ensure consistent performance</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="end-module-section">
-                        <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
-                    </div>
+
+
+<!-- COMPLETE TROUBLESHOOTING SECTION - Replace entire troubleshooting section with this -->
+<div id="troubleshooting" class="content-section">
+    <h2>Troubleshooting</h2>
+    <p>Real-time PCR troubleshooting requires systematic analysis of amplification curves and understanding common issues that can affect your results. Use this interactive dashboard to identify and resolve PCR problems.</p>
+    
+    <!-- Main Troubleshooting Dashboard -->
+    <div class="troubleshoot-main-container">
+        <h3 style="text-align: center; color: var(--rh-dark-blue); font-size: 1.8rem; margin-bottom: 15px; font-weight: 700;">PCR Troubleshooting Dashboard</h3>
+        <p style="text-align: center; color: var(--rh-violet); font-size: 1.1rem; margin-bottom: 30px; font-weight: 500;">Click on any tile below to explore common PCR issues, their causes, and solutions:</p>
+        
+        <!-- Grid Container for Tiles -->
+        <div class="troubleshoot-grid">
+            <!-- Issue 1: Contamination -->
+            <div class="troubleshoot-tile" data-issue="contamination">
+                <div class="tile-img-container">
+                    <img src="images/pcr-curves-contamination.png" alt="PCR Contamination Curves" onerror="this.src='images/pcr-curves-normal.png'">
                 </div>
-            </main>
+                <div class="tile-info">
+                    <h4>🚨 Contamination</h4>
+                    <p>Unexpected amplification in negative controls or non-template samples</p>
+                    <div class="tile-status">●</div>
+                </div>
+            </div>
+
+            <!-- Issue 2: Degradation -->
+            <div class="troubleshoot-tile" data-issue="degradation">
+                <div class="tile-img-container">
+                    <img src="images/pcr-curves-degradation.png" alt="PCR Degradation Curves" onerror="this.src='images/pcr-curves-normal.png'">
+                </div>
+                <div class="tile-info">
+                    <h4>⚡ Template Degradation</h4>
+                    <p>Poor amplification due to degraded DNA/RNA templates</p>
+                    <div class="tile-status">●</div>
+                </div>
+            </div>
+
+            <!-- Issue 3: High Template -->
+            <div class="troubleshoot-tile" data-issue="high-template">
+                <div class="tile-img-container">
+                    <img src="images/pcr-curves-high-template.png" alt="High Template Concentration Curves" onerror="this.src='images/pcr-curves-normal.png'">
+                </div>
+                <div class="tile-info">
+                    <h4>📈 High Template Concentration</h4>
+                    <p>Plateau phase reached early due to excessive starting material</p>
+                    <div class="tile-status">●</div>
+                </div>
+            </div>
+
+            <!-- Issue 4: Inhibition -->
+            <div class="troubleshoot-tile" data-issue="inhibition">
+                <div class="tile-img-container">
+                    <img src="images/pcr-curves-inhibition.png" alt="PCR Inhibition Curves" onerror="this.src='images/pcr-curves-normal.png'">
+                </div>
+                <div class="tile-info">
+                    <h4>🚫 PCR Inhibition</h4>
+                    <p>Reduced amplification efficiency due to inhibitors in samples</p>
+                    <div class="tile-status">●</div>
+                </div>
+            </div>
+
+            <!-- Issue 5: Low Template -->
+            <div class="troubleshoot-tile" data-issue="low-template">
+                <div class="tile-img-container">
+                    <img src="images/pcr-curves-low-template.png" alt="Low Template Concentration Curves" onerror="this.src='images/pcr-curves-normal.png'">
+                </div>
+                <div class="tile-info">
+                    <h4>📉 Low Template Concentration</h4>
+                    <p>Late Ct values or no amplification due to insufficient starting material</p>
+                    <div class="tile-status">●</div>
+                </div>
+            </div>
+
+            <!-- Issue 6: Primer Dimer -->
+            <div class="troubleshoot-tile" data-issue="primer-dimer">
+                <div class="tile-img-container">
+                    <img src="images/pcr-curves-primer-dimer.png" alt="Primer Dimer Formation Curves" onerror="this.src='images/pcr-curves-normal.png'">
+                </div>
+                <div class="tile-info">
+                    <h4>🔗 Primer Dimer Formation</h4>
+                    <p>Non-specific amplification between primers creating false signals</p>
+                    <div class="tile-status">●</div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Modal Details for each issue -->
+    <div class="modal-overlay" id="contamination-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>🚨 Contamination</h4>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="images/pcr-curves-contamination.png" alt="Contamination curves" onerror="this.src='images/pcr-curves-normal.png'">
+                    <p><em>Typical contamination pattern showing unexpected amplification in negative controls</em></p>
+                </div>
+                <div class="issue-sections">
+                    <div class="issue-section symptoms">
+                        <h5>Symptoms:</h5>
+                        <ul>
+                            <li>Amplification in negative controls (NTC)</li>
+                            <li>Similar Ct values across multiple samples</li>
+                            <li>Unexpected positive results</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section causes">
+                        <h5>Common Causes:</h5>
+                        <ul>
+                            <li>Cross-contamination between samples</li>
+                            <li>Contaminated reagents or equipment</li>
+                            <li>Aerosol contamination from previous PCR products</li>
+                            <li>Poor laboratory practices</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section solutions">
+                        <h5>Solutions:</h5>
+                        <ul>
+                            <li>Implement strict contamination control procedures</li>
+                            <li>Use separate areas for sample preparation and amplification</li>
+                            <li>Replace all reagents and consumables</li>
+                            <li>Clean and decontaminate work surfaces</li>
+                            <li>Use dedicated pipettes for different steps</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="degradation-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>⚡ Template Degradation</h4>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="images/pcr-curves-degradation.png" alt="Degradation curves" onerror="this.src='images/pcr-curves-normal.png'">
+                    <p><em>Poor amplification efficiency due to degraded nucleic acid templates</em></p>
+                </div>
+                <div class="issue-sections">
+                    <div class="issue-section symptoms">
+                        <h5>Symptoms:</h5>
+                        <ul>
+                            <li>High or no Ct values</li>
+                            <li>Poor amplification efficiency</li>
+                            <li>Inconsistent results between replicates</li>
+                            <li>Internal controls may fail</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section causes">
+                        <h5>Common Causes:</h5>
+                        <ul>
+                            <li>Improper sample storage conditions</li>
+                            <li>Repeated freeze-thaw cycles</li>
+                            <li>Extended storage at room temperature</li>
+                            <li>Poor extraction or purification</li>
+                            <li>RNase/DNase contamination</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section solutions">
+                        <h5>Solutions:</h5>
+                        <ul>
+                            <li>Store samples at appropriate temperatures (-80°C for long-term)</li>
+                            <li>Minimize freeze-thaw cycles</li>
+                            <li>Use RNase/DNase inhibitors</li>
+                            <li>Check template integrity by gel electrophoresis</li>
+                            <li>Use fresh extraction controls</li>
+                            <li>Consider re-extraction from original sample</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="high-template-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>📈 High Template Concentration</h4>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="images/pcr-curves-high-template.png" alt="High template curves" onerror="this.src='images/pcr-curves-normal.png'">
+                    <p><em>Early plateau phase due to excessive starting template concentration</em></p>
+                </div>
+                <div class="issue-sections">
+                    <div class="issue-section symptoms">
+                        <h5>Symptoms:</h5>
+                        <ul>
+                            <li>Very low Ct values (&lt;15 cycles)</li>
+                            <li>Early plateau phase</li>
+                            <li>Reduced amplification efficiency in later cycles</li>
+                            <li>Potential reagent depletion</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section causes">
+                        <h5>Common Causes:</h5>
+                        <ul>
+                            <li>Template concentration too high</li>
+                            <li>Incorrect dilution calculations</li>
+                            <li>Sample preparation errors</li>
+                            <li>Standard curve preparation issues</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section solutions">
+                        <h5>Solutions:</h5>
+                        <ul>
+                            <li>Dilute template 1:10 or 1:100 and re-run</li>
+                            <li>Quantify template concentration before PCR</li>
+                            <li>Prepare serial dilutions for optimization</li>
+                            <li>Use smaller template volumes</li>
+                            <li>Verify dilution calculations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="inhibition-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>🚫 PCR Inhibition</h4>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="images/pcr-curves-inhibition.png" alt="Inhibition curves" onerror="this.src='images/pcr-curves-normal.png'">
+                    <p><em>Reduced amplification efficiency caused by PCR inhibitors in samples</em></p>
+                </div>
+                <div class="issue-sections">
+                    <div class="issue-section symptoms">
+                        <h5>Symptoms:</h5>
+                        <ul>
+                            <li>Delayed or absent amplification</li>
+                            <li>Internal control failure</li>
+                            <li>Inconsistent results</li>
+                            <li>Reduced amplification efficiency</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section causes">
+                        <h5>Common Causes:</h5>
+                        <ul>
+                            <li>Blood components (heme, hemoglobin)</li>
+                            <li>Fecal matter or bile salts</li>
+                            <li>Ethanol or isopropanol residues</li>
+                            <li>High salt concentrations</li>
+                            <li>Protein residues</li>
+                            <li>Phenol or chloroform carryover</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section solutions">
+                        <h5>Solutions:</h5>
+                        <ul>
+                            <li>Dilute samples 1:10 to reduce inhibitor concentration</li>
+                            <li>Add BSA (Bovine Serum Albumin) to reaction</li>
+                            <li>Use PCR enhancers or facilitators</li>
+                            <li>Re-purify or clean up templates</li>
+                            <li>Increase polymerase concentration</li>
+                            <li>Use inhibitor-resistant polymerases</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="low-template-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>📉 Low Template Concentration</h4>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="images/pcr-curves-low-template.png" alt="Low template curves" onerror="this.src='images/pcr-curves-normal.png'">
+                    <p><em>Late Ct values and poor amplification due to insufficient starting material</em></p>
+                </div>
+                <div class="issue-sections">
+                    <div class="issue-section symptoms">
+                        <h5>Symptoms:</h5>
+                        <ul>
+                            <li>High Ct values (&gt;35 cycles)</li>
+                            <li>Poor or no amplification</li>
+                            <li>High variability between replicates</li>
+                            <li>Inconsistent detection</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section causes">
+                        <h5>Common Causes:</h5>
+                        <ul>
+                            <li>Insufficient starting material</li>
+                            <li>Poor extraction efficiency</li>
+                            <li>Over-dilution of template</li>
+                            <li>Template degradation</li>
+                            <li>Sample collection issues</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section solutions">
+                        <h5>Solutions:</h5>
+                        <ul>
+                            <li>Use larger sample volumes for extraction</li>
+                            <li>Concentrate templates before PCR</li>
+                            <li>Increase template volume in reaction</li>
+                            <li>Optimize extraction protocols</li>
+                            <li>Use nested PCR or pre-amplification</li>
+                            <li>Verify sample collection and handling</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="primer-dimer-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>🔗 Primer Dimer Formation</h4>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="images/pcr-curves-primer-dimer.png" alt="Primer dimer curves" onerror="this.src='images/pcr-curves-normal.png'">
+                    <p><em>Non-specific amplification between primers creating false positive signals</em></p>
+                </div>
+                <div class="issue-sections">
+                    <div class="issue-section symptoms">
+                        <h5>Symptoms:</h5>
+                        <ul>
+                            <li>Amplification in negative controls</li>
+                            <li>Low melting temperature products</li>
+                            <li>Small product size on gel electrophoresis</li>
+                            <li>Late amplification with SYBR Green</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section causes">
+                        <h5>Common Causes:</h5>
+                        <ul>
+                            <li>Complementary primer sequences</li>
+                            <li>High primer concentrations</li>
+                            <li>Low annealing temperatures</li>
+                            <li>Excessive PCR cycles</li>
+                            <li>Poor primer design</li>
+                        </ul>
+                    </div>
+                    <div class="issue-section solutions">
+                        <h5>Solutions:</h5>
+                        <ul>
+                            <li>Reduce primer concentrations</li>
+                            <li>Increase annealing temperature</li>
+                            <li>Redesign primers to avoid complementarity</li>
+                            <li>Use hot-start polymerase</li>
+                            <li>Optimize Mg²⁺ concentration</li>
+                            <li>Consider using TaqMan probes instead</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Reference Guide -->
+    <div class="quick-reference">
+        <h3>Quick Troubleshooting Guide</h3>
+        <div class="reference-grid">
+            <div class="reference-item">
+                <h4>🎯 First Check</h4>
+                <p>Always verify your controls first: positive control should amplify, negative control should not.</p>
+            </div>
+            <div class="reference-item">
+                <h4>🔄 Systematic Approach</h4>
+                <p>Change one variable at a time when troubleshooting to identify the root cause.</p>
+            </div>
+            <div class="reference-item">
+                <h4>📝 Documentation</h4>
+                <p>Keep detailed records of all changes and observations for future reference.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="end-module-section">
+        <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
+    </div>
+</div>
+    
+    <div class="end-module-section">
+        <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
+    </div>
+</div>
     <script src="script.js"></script>
     <script>
         // Debug script to check if external JS loaded

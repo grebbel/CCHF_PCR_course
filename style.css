@@ -974,3 +974,333 @@ body {
         min-height: 300px;
     }
 }
+<style>
+/* Troubleshooting Dashboard Styles - Inline to ensure they load */
+.troubleshoot-main-container {
+    background: linear-gradient(135deg, #f0f0f0 0%, #76d2b6 100%);
+    padding: 30px;
+    border-radius: 20px;
+    margin: 30px 0;
+    border: 3px solid #007bc7;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.troubleshoot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.troubleshoot-tile {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+}
+
+.troubleshoot-tile:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    border-color: #007bc7;
+}
+
+.tile-img-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: linear-gradient(45deg, #8fcae7, #76d2b6);
+}
+
+.tile-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.troubleshoot-tile:hover .tile-img-container img {
+    transform: scale(1.05);
+}
+
+.tile-info {
+    padding: 20px;
+    position: relative;
+}
+
+.tile-info h4 {
+    color: #01689b;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.tile-info p {
+    color: black;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+.tile-status {
+    position: absolute;
+    top: -10px;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    background-color: #e17000;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.troubleshoot-tile:hover .tile-status {
+    background-color: #39870c;
+    transform: scale(1.1);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #e17000 0%, #39870c 100%);
+    color: white;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20px 20px 0 0;
+}
+
+.modal-header h4 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-image {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.modal-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border: 2px solid #8fcae7;
+}
+
+.modal-image p {
+    font-style: italic;
+    color: #421451;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.issue-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.issue-section {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #007bc7;
+}
+
+.issue-section.symptoms h5 {
+    color: #e17000;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.issue-section.causes h5 {
+    color: #421451;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.issue-section.solutions h5 {
+    color: #39870c;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.issue-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.issue-section li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 8px;
+    color: black;
+    line-height: 1.5;
+}
+
+.symptoms li::before {
+    content: '⚠️';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.causes li::before {
+    content: '🔍';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.solutions li::before {
+    content: '✅';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Quick Reference Guide */
+.quick-reference {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 2px solid #39870c;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.quick-reference h3 {
+    text-align: center;
+    color: #01689b;
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.reference-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.reference-item {
+    background: linear-gradient(135deg, #76d2b6 0%, #8fcae7 100%);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.reference-item:hover {
+    transform: translateY(-5px);
+}
+
+.reference-item h4 {
+    color: #01689b;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.reference-item p {
+    color: black;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .troubleshoot-main-container {
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .troubleshoot-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .modal-overlay {
+        padding: 10px;
+    }
+    
+    .modal-content {
+        max-height: 95vh;
+        border-radius: 15px;
+    }
+    
+    .modal-header {
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .reference-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+</style>
+
+
+/* End of Troubleshooting Dashboard Styles */
