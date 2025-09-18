@@ -185,8 +185,8 @@ body {
 
 .troubleshooting-image {
     float: left;
-    margin: 0 20px 15px 0;
-    max-width: 200px;
+    margin: 0 50px 30px 20px;
+    max-width: 180px;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
