@@ -1252,70 +1252,70 @@ function updateProblemVisual(visualType) {
     //     });
     // }
 
-    function updateProblemVisual(visualType) {
-        const container = document.getElementById('problem-visual');
-        if (!container) return;
+    // function updateProblemVisual(visualType) {
+    //     const container = document.getElementById('problem-visual');
+    //     if (!container) return;
 
-        // Create SVG chart based on visual type
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('class', 'pcr-curve-chart');
-        svg.setAttribute('viewBox', '0 0 500 300');
+    //     // Create SVG chart based on visual type
+    //     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    //     svg.setAttribute('class', 'pcr-curve-chart');
+    //     svg.setAttribute('viewBox', '0 0 500 300');
 
-        // Add chart background
-        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('width', '480');
-        rect.setAttribute('height', '260');
-        rect.setAttribute('x', '10');
-        rect.setAttribute('y', '20');
-        rect.setAttribute('fill', 'white');
-        rect.setAttribute('stroke', '#ddd');
-        svg.appendChild(rect);
+    //     // Add chart background
+    //     const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    //     rect.setAttribute('width', '480');
+    //     rect.setAttribute('height', '260');
+    //     rect.setAttribute('x', '10');
+    //     rect.setAttribute('y', '20');
+    //     rect.setAttribute('fill', 'white');
+    //     rect.setAttribute('stroke', '#ddd');
+    //     svg.appendChild(rect);
 
-        // Add axes
-        const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        xAxis.setAttribute('x1', '50');
-        xAxis.setAttribute('y1', '250');
-        xAxis.setAttribute('x2', '450');
-        xAxis.setAttribute('y2', '250');
-        xAxis.setAttribute('stroke', '#333');
-        xAxis.setAttribute('stroke-width', '2');
-        svg.appendChild(xAxis);
+    //     // Add axes
+    //     const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    //     xAxis.setAttribute('x1', '50');
+    //     xAxis.setAttribute('y1', '250');
+    //     xAxis.setAttribute('x2', '450');
+    //     xAxis.setAttribute('y2', '250');
+    //     xAxis.setAttribute('stroke', '#333');
+    //     xAxis.setAttribute('stroke-width', '2');
+    //     svg.appendChild(xAxis);
 
-        const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        yAxis.setAttribute('x1', '50');
-        yAxis.setAttribute('y1', '50');
-        yAxis.setAttribute('x2', '50');
-        yAxis.setAttribute('y2', '250');
-        yAxis.setAttribute('stroke', '#333');
-        yAxis.setAttribute('stroke-width', '2');
-        svg.appendChild(yAxis);
+    //     const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    //     yAxis.setAttribute('x1', '50');
+    //     yAxis.setAttribute('y1', '50');
+    //     yAxis.setAttribute('x2', '50');
+    //     yAxis.setAttribute('y2', '250');
+    //     yAxis.setAttribute('stroke', '#333');
+    //     yAxis.setAttribute('stroke-width', '2');
+    //     svg.appendChild(yAxis);
 
-        // Add labels
-        const xLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        xLabel.setAttribute('x', '250');
-        xLabel.setAttribute('y', '290');
-        xLabel.setAttribute('text-anchor', 'middle');
-        xLabel.setAttribute('font-family', 'Arial');
-        xLabel.setAttribute('font-size', '14');
-        xLabel.textContent = 'Cycle Number';
-        svg.appendChild(xLabel);
+    //     // Add labels
+    //     const xLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    //     xLabel.setAttribute('x', '250');
+    //     xLabel.setAttribute('y', '290');
+    //     xLabel.setAttribute('text-anchor', 'middle');
+    //     xLabel.setAttribute('font-family', 'Arial');
+    //     xLabel.setAttribute('font-size', '14');
+    //     xLabel.textContent = 'Cycle Number';
+    //     svg.appendChild(xLabel);
 
-        const yLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        yLabel.setAttribute('x', '25');
-        yLabel.setAttribute('y', '150');
-        yLabel.setAttribute('text-anchor', 'middle');
-        yLabel.setAttribute('font-family', 'Arial');
-        yLabel.setAttribute('font-size', '14');
-        yLabel.setAttribute('transform', 'rotate(-90, 25, 150)');
-        yLabel.textContent = 'Fluorescence';
-        svg.appendChild(yLabel);
+    //     const yLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    //     yLabel.setAttribute('x', '25');
+    //     yLabel.setAttribute('y', '150');
+    //     yLabel.setAttribute('text-anchor', 'middle');
+    //     yLabel.setAttribute('font-family', 'Arial');
+    //     yLabel.setAttribute('font-size', '14');
+    //     yLabel.setAttribute('transform', 'rotate(-90, 25, 150)');
+    //     yLabel.textContent = 'Fluorescence';
+    //     svg.appendChild(yLabel);
 
-        // Draw curves based on problem type
-        drawProblemCurves(svg, visualType);
+    //     // Draw curves based on problem type
+    //     drawProblemCurves(svg, visualType);
 
-        container.innerHTML = '';
-        container.appendChild(svg);
-    }
+    //     container.innerHTML = '';
+    //     container.appendChild(svg);
+    // }
 
     function generateAssessmentQuestions(questions) {
         const container = document.getElementById('assessment-questions');
