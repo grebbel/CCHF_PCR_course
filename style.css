@@ -974,7 +974,7 @@ body {
         min-height: 300px;
     }
 }
-<style>
+
 /* Troubleshooting Dashboard Styles - Inline to ensure they load */
 .troubleshoot-main-container {
     background: linear-gradient(135deg, #f0f0f0 0%, #76d2b6 100%);
@@ -1300,7 +1300,22 @@ body {
         gap: 15px;
     }
 }
-</style>
+
+/* Hide all end-module buttons by default */
+.end-module-section {
+    display: none !important;
+}
+
+/* Only show in troubleshooting section */
+#troubleshooting .end-module-section {
+    display: block !important;
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, var(--rh-light-blue) 0%, var(--rh-mint-green) 100%);
+    border-radius: 15px;
+    border: 2px solid var(--rh-blue);
+}
 
 
 /* End of Troubleshooting Dashboard Styles */
