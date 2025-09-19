@@ -104,8 +104,42 @@
                     <li class="chapter-item" data-tab="controls">Controls</li>
                     <li class="chapter-item" data-tab="multiplex">Multiplex PCR</li>
                     <li class="chapter-item" data-tab="troubleshooting">Troubleshooting</li>
+                
                 </ul>
+<!-- Score Thermometer -->
+<div class="score-thermometer">
+    <div class="thermometer-header">
+        <span class="thermometer-title">🎯 Course Score</span>
+        <div class="thermometer-temp">
+            <span class="current-score">0</span>/<span class="max-score">540</span>
+        </div>
+    </div>
+    
+    <div class="thermometer-container">
+        <div class="thermometer">
+            <div class="thermometer-bulb">
+                <div class="mercury-bulb" id="mercuryBulb"></div>
+            </div>
+            <div class="thermometer-tube">
+                <div class="mercury-fill" id="mercuryFill"></div>
+                <div class="thermometer-marks">
+                    <div class="mark" data-temp="100%">540</div>
+                    <div class="mark" data-temp="75%">405</div>
+                    <div class="mark" data-temp="50%">270</div>
+                    <div class="mark" data-temp="25%">135</div>
+                    <div class="mark" data-temp="0%">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="thermometer-status">
+        <div class="status-message" id="statusMessage">🌱 Just getting started!</div>
+        <div class="percentage-display" id="percentageDisplay">0%</div>
+    </div>
+</div>
             </nav>
+            
 
             <!-- Main Content Area -->
             <main class="content-area">

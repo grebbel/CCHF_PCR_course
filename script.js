@@ -328,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 quiz1Status.classList.add('completed');
                 quizData.quiz1.score = 100;
                 quizData.quiz1.completed = true;
+                addToScore(100);
                 quiz1Score.style.display = 'block';
                 quiz1Score.querySelector('.score-value').textContent = '100%';
             } else {
@@ -440,6 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rtExerciseStatus.classList.add('completed');
                 rtExerciseData.score = 100;
                 rtExerciseData.completed = true;
+                addToScore(100);
                 rtExerciseScore.style.display = 'block';
                 rtExerciseScore.querySelector('.score-value').textContent = '100%';
             } else {
@@ -555,6 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 troubleshootingQuiz1Status.classList.add('completed');
                 troubleshootingQuiz1Data.score = 100; // 100 points as specified
                 troubleshootingQuiz1Data.completed = true;
+                addToScore(100)
                 troubleshootingQuiz1Score.style.display = 'block';
                 troubleshootingQuiz1Score.querySelector('.score-value').textContent = '30 points';
             } else {
@@ -655,6 +658,7 @@ if (troubleshootingQuiz2Form) {
         
         troubleshootingQuiz2Data.score = score;
         troubleshootingQuiz2Data.completed = true;
+        addToScore(score); //This will be 0, 60, or 120 points
         
         const troubleshootingQuiz2Options = document.querySelectorAll('#troubleshootingQuiz2Form .quiz-option');
         troubleshootingQuiz2Options.forEach(option => {
@@ -878,7 +882,8 @@ document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]').forEach(ch
             } else {
                 message += 'Keep practicing! Review the principles of PCR result interpretation.';
             }
-            
+            addToScore(multiplexScore)
+
             alert(message);
             
             // Report to LMS
@@ -1210,6 +1215,114 @@ document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]').forEach(ch
             console.warn('No modal overlays found! Check HTML structure.');
         }
     }
+
+// Fun Thermometer Score Tracking
+let courseScore = 0;
+const maxScore = 540;
+
+const statusMessages = [
+    { threshold: 0, message: "🌱 Just getting started!", color: "#ff6b6b" },
+    { threshold: 10, message: "🚀 Off to a great start!", color: "#ff8a65" },
+    { threshold: 25, message: "⭐ Making progress!", color: "#ffa726" },
+    { threshold: 40, message: "🔥 You're on fire!", color: "#66bb6a" },
+    { threshold: 60, message: "💪 Awesome work!", color: "#42a5f5" },
+    { threshold: 80, message: "🏆 Almost there!", color: "#ab47bc" },
+    { threshold: 95, message: "🎉 Perfect score!", color: "#9c27b0" }
+];
+
+function updateThermometer() {
+    const percentage = Math.round((courseScore / maxScore) * 100);
+    
+    // Update displays
+    document.querySelector('.current-score').textContent = courseScore;
+    document.getElementById('percentageDisplay').textContent = percentage + '%';
+    
+    // Update mercury fill
+    const mercuryFill = document.getElementById('mercuryFill');
+    const mercuryBulb = document.getElementById('mercuryBulb');
+    
+    mercuryFill.style.height = percentage + '%';
+    
+    // Update status message and colors
+    let currentStatus = statusMessages[0];
+    for (let status of statusMessages) {
+        if (percentage >= status.threshold) {
+            currentStatus = status;
+        }
+    }
+    
+    document.getElementById('statusMessage').textContent = currentStatus.message;
+    mercuryBulb.style.backgroundColor = currentStatus.color;
+    
+    // Add bubble animation for scores above 50%
+    if (percentage > 50) {
+        mercuryBulb.classList.add('active');
+    } else {
+        mercuryBulb.classList.remove('active');
+    }
+    
+    // Save score
+    localStorage.setItem('courseScore', courseScore.toString());
+}
+
+function addToScore(points) {
+    courseScore = Math.min(courseScore + points, maxScore); // Cap at max score
+    updateThermometer();
+    
+    // Fun notification for score increases
+    if (points > 0) {
+        showScoreNotification(points);
+    }
+}
+
+function showScoreNotification(points) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--rh-green) 0%, var(--rh-orange) 100%);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        z-index: 10000;
+        animation: slideIn 0.5s ease, slideOut 0.5s ease 2s forwards;
+    `;
+    notification.textContent = `+${points} points! 🎉`;
+    
+    // Add animation keyframes if not already added
+    if (!document.getElementById('score-animations')) {
+        const style = document.createElement('style');
+        style.id = 'score-animations';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+}
+
+// Load saved score
+function loadSavedScore() {
+    const saved = localStorage.getItem('courseScore');
+    if (saved) {
+        courseScore = parseInt(saved) || 0;
+    }
+    updateThermometer();
+}
+
+// Initialize thermometer
+loadSavedScore();
 
     // Call initialization when DOM is ready
     if (document.readyState === 'loading') {
