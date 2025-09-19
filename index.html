@@ -1511,31 +1511,129 @@
             </div>
         </div>
     </div>
-
-    <!-- Quick Reference Guide -->
-    <div class="quick-reference">
-        <h3>Quick Troubleshooting Guide</h3>
-        <div class="reference-grid">
-            <div class="reference-item">
-                <h4>🎯 First Check</h4>
-                <p>Always verify your controls first: positive control should amplify, negative control should not.</p>
+<!-- Troubleshooting Quiz 1 -->
+<div class="quiz-section">
+    <h3>TROUBLESHOOTING QUESTION 1</h3>
+    <div class="quiz-question">
+        <img src="images/flavi_PCR.png" alt="Flavi PCR amplification curves" style="display: block; margin: 0 auto 18px auto; max-width: 420px; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <p>The image displays real-time PCR amplification curves for the pan-flavi-virus assay following a 10-fold dilution series of Zika virus. The red curves appear erratic during the plateau phase. What is the most likely explanation for this observation?</p>
+        <p><em>Select one correct answer.</em></p>
+    </div>
+    <form class="quiz-form" id="troubleshootingQuiz1Form">
+        <div class="quiz-options">
+            <label class="quiz-option">
+                <input type="radio" name="troubleshootingQuiz1Answer" value="a" id="ts1-option-a">
+                <span class="option-text">a) Insufficient polymerase or dNTPs in the reaction</span>
+                <span class="option-indicator"></span>
+            </label>
+            <label class="quiz-option">
+                <input type="radio" name="troubleshootingQuiz1Answer" value="b" id="ts1-option-b">
+                <span class="option-text">b) Contamination of the samples with another virus</span>
+                <span class="option-indicator"></span>
+            </label>
+            <label class="quiz-option">
+                <input type="radio" name="troubleshootingQuiz1Answer" value="c" id="ts1-option-c">
+                <span class="option-text">c) Presence of PCR inhibitors in the samples</span>
+                <span class="option-indicator"></span>
+            </label>
+            <label class="quiz-option">
+                <input type="radio" name="troubleshootingQuiz1Answer" value="d" id="ts1-option-d">
+                <span class="option-text">d) Excess template cDNA in the reaction</span>
+                <span class="option-indicator"></span>
+            </label>
+        </div>
+        <div class="quiz-submit">
+            <button type="submit" class="submit-btn" id="submitTroubleshootingQuiz1">Submit Answer</button>
+            <button type="button" class="retry-btn" id="retryTroubleshootingQuiz1" style="display: none;">Try Again</button>
+        </div>
+    </form>
+    <div class="quiz-feedback" id="troubleshootingQuiz1Feedback" style="display: none;">
+        <div class="feedback-content">
+            <div class="feedback-header">
+                <span class="feedback-icon"></span>
+                <span class="feedback-title"></span>
             </div>
-            <div class="reference-item">
-                <h4>🔄 Systematic Approach</h4>
-                <p>Change one variable at a time when troubleshooting to identify the root cause.</p>
-            </div>
-            <div class="reference-item">
-                <h4>📝 Documentation</h4>
-                <p>Keep detailed records of all changes and observations for future reference.</p>
+            <div class="feedback-explanation">
+                <p>The correct answer is <strong>a)</strong>: Insufficient polymerase or dNTPs in the reaction.</p>
+                <p><strong>Explanation:</strong> As PCR progresses, dNTPs or polymerase may become limiting, causing non-uniform product accumulation and erratic fluorescence during the plateau phase. When reagents are depleted, the reaction becomes inconsistent, leading to the observed erratic behavior.</p>
             </div>
         </div>
     </div>
-    
-    <div class="end-module-section">
-        <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
+    <div class="quiz-progress">
+        <div class="progress-indicator">
+            <span class="progress-text">Quiz Progress:</span>
+            <span class="progress-status" id="troubleshootingQuiz1Status">Not Started</span>
+        </div>
+        <div class="score-display" id="troubleshootingQuiz1Score" style="display: none;">
+            Score: <span class="score-value"></span>
+        </div>
     </div>
 </div>
-    
+
+<!-- Troubleshooting Quiz 2 -->
+<div class="quiz-section">
+    <h3>TROUBLESHOOTING QUIZ 2</h3>
+    <div class="quiz-question">
+        <p>A PCR master mix was dispensed into 12 wells, and each well received 5 μl of the same cDNA sample. Ideally, all wells should yield identical results. However, the last sample shows no amplification for either the target or the internal control. What could explain this outcome?</p>
+        <p><em>Select all that apply. Each correct answer gives 30 points.</em></p>
+    </div>
+    <form class="quiz-form" id="troubleshootingQuiz2Form">
+        <div class="quiz-options">
+            <label class="quiz-option">
+                <input type="checkbox" name="troubleshootingQuiz2Answer" value="a" id="ts2-option-a">
+                <span class="option-text">a) An air bubble was present in the last well</span>
+                <span class="option-indicator"></span>
+            </label>
+            <label class="quiz-option">
+                <input type="checkbox" name="troubleshootingQuiz2Answer" value="b" id="ts2-option-b">
+                <span class="option-text">b) The PCR instrument was left open during the run</span>
+                <span class="option-indicator"></span>
+            </label>
+            <label class="quiz-option">
+                <input type="checkbox" name="troubleshootingQuiz2Answer" value="c" id="ts2-option-c">
+                <span class="option-text">c) The PCR run was terminated prematurely</span>
+                <span class="option-indicator"></span>
+            </label>
+            <label class="quiz-option">
+                <input type="checkbox" name="troubleshootingQuiz2Answer" value="d" id="ts2-option-d">
+                <span class="option-text">d) One reaction exhibited reduced sensitivity</span>
+                <span class="option-indicator"></span>
+            </label>
+            <label class="quiz-option">
+                <input type="checkbox" name="troubleshootingQuiz2Answer" value="e" id="ts2-option-e">
+                <span class="option-text">e) The plastic plate cover was not properly sealed</span>
+                <span class="option-indicator"></span>
+            </label>
+        </div>
+        <div class="quiz-submit">
+            <button type="submit" class="submit-btn" id="submitTroubleshootingQuiz2">Submit Answer</button>
+            <!-- No retry button for this quiz -->
+        </div>
+    </form>
+    <div class="quiz-feedback" id="troubleshootingQuiz2Feedback" style="display: none;">
+        <div class="feedback-content">
+            <div class="feedback-header">
+                <span class="feedback-icon"></span>
+                <span class="feedback-title"></span>
+            </div>
+            <div class="feedback-explanation">
+                <p>The correct answers are <strong>a) and e)</strong>: An air bubble was present in the last well AND The plastic plate cover was not properly sealed.</p>
+                <p><strong>Explanation:</strong> The last sample might have been short on cDNA because an air bubble was pipetted into the solution. Additionally, the plastic cover might not have pressed well enough to the plate, causing the mixture to evaporate during the run. Always press the plastic cover well on the plate and spin the plate to remove bubbles.</p>
+            </div>
+        </div>
+    </div>
+    <div class="quiz-progress">
+        <div class="progress-indicator">
+            <span class="progress-text">Quiz Progress:</span>
+            <span class="progress-status" id="troubleshootingQuiz2Status">Not Started</span>
+        </div>
+        <div class="score-display" id="troubleshootingQuiz2Score" style="display: none;">
+            Score: <span class="score-value"></span>
+        </div>
+    </div>
+</div>    
+
+
     <div class="end-module-section">
         <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
     </div>

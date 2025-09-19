@@ -492,6 +492,230 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
+    // Troubleshooting Quiz 1 Functionality
+    const troubleshootingQuiz1Form = document.getElementById('troubleshootingQuiz1Form');
+    const troubleshootingQuiz1Feedback = document.getElementById('troubleshootingQuiz1Feedback');
+    const troubleshootingQuiz1Status = document.getElementById('troubleshootingQuiz1Status');
+    const troubleshootingQuiz1Score = document.getElementById('troubleshootingQuiz1Score');
+    const submitTroubleshootingQuiz1Btn = document.getElementById('submitTroubleshootingQuiz1');
+    const retryTroubleshootingQuiz1Btn = document.getElementById('retryTroubleshootingQuiz1');
+
+    let troubleshootingQuiz1Data = {
+        attempts: 0,
+        completed: false,
+        score: 0,
+        correctAnswer: 'a',
+        startTime: null,
+        endTime: null
+    };
+
+    if (troubleshootingQuiz1Form) {
+        troubleshootingQuiz1Form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedAnswer = document.querySelector('input[name="troubleshootingQuiz1Answer"]:checked');
+            if (!selectedAnswer) {
+                alert('Please select an answer before submitting.');
+                return;
+            }
+            
+            troubleshootingQuiz1Data.attempts++;
+            troubleshootingQuiz1Data.endTime = new Date();
+            
+            const userAnswer = selectedAnswer.value;
+            const isCorrect = userAnswer === troubleshootingQuiz1Data.correctAnswer;
+            
+            const troubleshootingQuiz1Options = document.querySelectorAll('#troubleshootingQuiz1Form .quiz-option');
+            troubleshootingQuiz1Options.forEach(option => {
+                option.classList.add('disabled');
+                const input = option.querySelector('input');
+                input.disabled = true;
+                
+                const indicator = option.querySelector('.option-indicator');
+                if (input.value === troubleshootingQuiz1Data.correctAnswer) {
+                    option.classList.add('correct');
+                    indicator.textContent = '✓';
+                    indicator.style.display = 'flex';
+                } else if (input.checked && input.value !== troubleshootingQuiz1Data.correctAnswer) {
+                    option.classList.add('incorrect');
+                    indicator.textContent = '✗';
+                    indicator.style.display = 'flex';
+                }
+            });
+            
+            troubleshootingQuiz1Feedback.style.display = 'block';
+            const feedbackIcon = troubleshootingQuiz1Feedback.querySelector('.feedback-icon');
+            const feedbackTitle = troubleshootingQuiz1Feedback.querySelector('.feedback-title');
+            
+            if (isCorrect) {
+                feedbackIcon.classList.add('correct');
+                feedbackIcon.textContent = '✓';
+                feedbackTitle.textContent = 'Correct!';
+                troubleshootingQuiz1Status.textContent = 'Completed';
+                troubleshootingQuiz1Status.classList.add('completed');
+                troubleshootingQuiz1Data.score = 30; // 30 points as specified
+                troubleshootingQuiz1Data.completed = true;
+                troubleshootingQuiz1Score.style.display = 'block';
+                troubleshootingQuiz1Score.querySelector('.score-value').textContent = '30 points';
+            } else {
+                feedbackIcon.classList.add('incorrect');
+                feedbackIcon.textContent = '✗';
+                feedbackTitle.textContent = 'Incorrect. The correct answer is highlighted above.';
+                troubleshootingQuiz1Status.textContent = 'Failed';
+                troubleshootingQuiz1Status.classList.add('failed');
+                troubleshootingQuiz1Data.score = 0;
+                troubleshootingQuiz1Score.style.display = 'block';
+                troubleshootingQuiz1Score.querySelector('.score-value').textContent = '0 points';
+                retryTroubleshootingQuiz1Btn.style.display = 'inline-block';
+            }
+            
+            submitTroubleshootingQuiz1Btn.style.display = 'none';
+            reportToLMS('troubleshootingQuiz1', troubleshootingQuiz1Data.score, troubleshootingQuiz1Data.completed);
+            troubleshootingQuiz1Feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    }
+    
+    if (retryTroubleshootingQuiz1Btn) {
+        retryTroubleshootingQuiz1Btn.addEventListener('click', function() {
+            const troubleshootingQuiz1Options = document.querySelectorAll('#troubleshootingQuiz1Form .quiz-option');
+            troubleshootingQuiz1Options.forEach(option => {
+                option.classList.remove('disabled', 'correct', 'incorrect');
+                const input = option.querySelector('input');
+                input.disabled = false;
+                input.checked = false;
+                const indicator = option.querySelector('.option-indicator');
+                indicator.textContent = '';
+                indicator.style.display = 'none';
+            });
+            
+            troubleshootingQuiz1Feedback.style.display = 'none';
+            troubleshootingQuiz1Status.textContent = 'Not Started';
+            troubleshootingQuiz1Status.classList.remove('completed', 'failed');
+            troubleshootingQuiz1Score.style.display = 'none';
+            submitTroubleshootingQuiz1Btn.style.display = 'inline-block';
+            retryTroubleshootingQuiz1Btn.style.display = 'none';
+            troubleshootingQuiz1Data.startTime = new Date();
+            troubleshootingQuiz1Form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    document.querySelectorAll('input[name="troubleshootingQuiz1Answer"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (!troubleshootingQuiz1Data.startTime) {
+                troubleshootingQuiz1Data.startTime = new Date();
+                troubleshootingQuiz1Status.textContent = 'In Progress';
+            }
+        });
+    });
+
+// Troubleshooting Quiz 2 Functionality (Corrected Scoring Logic)
+const troubleshootingQuiz2Form = document.getElementById('troubleshootingQuiz2Form');
+const troubleshootingQuiz2Feedback = document.getElementById('troubleshootingQuiz2Feedback');
+const troubleshootingQuiz2Status = document.getElementById('troubleshootingQuiz2Status');
+const troubleshootingQuiz2Score = document.getElementById('troubleshootingQuiz2Score');
+const submitTroubleshootingQuiz2Btn = document.getElementById('submitTroubleshootingQuiz2');
+
+let troubleshootingQuiz2Data = {
+    attempts: 0,
+    completed: false,
+    score: 0,
+    correctAnswers: ['a', 'e'], // Correct answers
+    startTime: null,
+    endTime: null
+};
+
+if (troubleshootingQuiz2Form) {
+    troubleshootingQuiz2Form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const selectedAnswers = Array.from(document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]:checked')).map(input => input.value);
+        if (selectedAnswers.length === 0) {
+            alert('Please select at least one answer before submitting.');
+            return;
+        }
+        
+        troubleshootingQuiz2Data.attempts++;
+        troubleshootingQuiz2Data.endTime = new Date();
+        
+        // Calculate score based on correct answers selected
+        const correctAnswersSelected = selectedAnswers.filter(answer => 
+            troubleshootingQuiz2Data.correctAnswers.includes(answer)
+        );
+        
+        let score = 0;
+        if (correctAnswersSelected.length === 2) {
+            // Both correct answers selected
+            score = 60;
+        } else if (correctAnswersSelected.length === 1) {
+            // At least one correct answer selected
+            score = 30;
+        } else {
+            // No correct answers selected
+            score = 0;
+        }
+        
+        troubleshootingQuiz2Data.score = score;
+        troubleshootingQuiz2Data.completed = true;
+        
+        const troubleshootingQuiz2Options = document.querySelectorAll('#troubleshootingQuiz2Form .quiz-option');
+        troubleshootingQuiz2Options.forEach(option => {
+            option.classList.add('disabled');
+            const input = option.querySelector('input');
+            input.disabled = true;
+            
+            const indicator = option.querySelector('.option-indicator');
+            if (troubleshootingQuiz2Data.correctAnswers.includes(input.value)) {
+                option.classList.add('correct');
+                indicator.textContent = '✓';
+                indicator.style.display = 'flex';
+            } else if (input.checked && !troubleshootingQuiz2Data.correctAnswers.includes(input.value)) {
+                option.classList.add('incorrect');
+                indicator.textContent = '✗';
+                indicator.style.display = 'flex';
+            }
+        });
+        
+        troubleshootingQuiz2Feedback.style.display = 'block';
+        const feedbackIcon = troubleshootingQuiz2Feedback.querySelector('.feedback-icon');
+        const feedbackTitle = troubleshootingQuiz2Feedback.querySelector('.feedback-title');
+        
+        // Show results based on score
+        if (score === 60) {
+            feedbackIcon.classList.add('correct');
+            feedbackIcon.textContent = '✓';
+            feedbackTitle.textContent = 'Perfect! Both correct answers selected.';
+        } else if (score === 30) {
+            feedbackIcon.classList.add('correct');
+            feedbackIcon.textContent = '✓';
+            feedbackTitle.textContent = 'Good! At least one correct answer selected.';
+        } else {
+            feedbackIcon.classList.add('incorrect');
+            feedbackIcon.textContent = '✗';
+            feedbackTitle.textContent = 'No correct answers selected.';
+        }
+        
+        troubleshootingQuiz2Status.textContent = 'Completed';
+        troubleshootingQuiz2Status.classList.add('completed');
+        troubleshootingQuiz2Score.style.display = 'block';
+        troubleshootingQuiz2Score.querySelector('.score-value').textContent = `${score} points`;
+        
+        // No retry button - disable submit button
+        submitTroubleshootingQuiz2Btn.style.display = 'none';
+        
+        reportToLMS('troubleshootingQuiz2', troubleshootingQuiz2Data.score, troubleshootingQuiz2Data.completed);
+        troubleshootingQuiz2Feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+}
+
+document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        if (!troubleshootingQuiz2Data.startTime) {
+            troubleshootingQuiz2Data.startTime = new Date();
+            troubleshootingQuiz2Status.textContent = 'In Progress';
+        }
+    });
+});
+
+
     // Continue Button Logic
     const continueButtons = document.querySelectorAll('.continue-btn');
     continueButtons.forEach(btn => {
