@@ -313,8 +313,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
+            // Increment attempts and store end time
             quizData.quiz1.attempts++;
             quizData.quiz1.endTime = new Date();
+            
+            // Check if this is a retry and reset previous visual states if needed
+            const previousFeedback = document.querySelectorAll('.quiz-option.correct, .quiz-option.incorrect');
+            previousFeedback.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+                const indicator = option.querySelector('.option-indicator');
+                if (indicator) {
+                    indicator.textContent = '';
+                }
+            });
             
             const userAnswer = selectedAnswer.value;
             const isCorrect = userAnswer === quizData.quiz1.correctAnswer;
@@ -378,13 +389,26 @@ document.addEventListener('DOMContentLoaded', () => {
         retryBtn.addEventListener('click', function() {
             const allOptions = document.querySelectorAll('.quiz-option');
             allOptions.forEach(option => {
-                option.classList.remove('disabled', 'correct', 'incorrect');
+                // Remove all state classes
+                option.classList.remove('disabled', 'correct', 'incorrect', 'selected');
+                
+                // Reset input state
                 const input = option.querySelector('input');
-                input.disabled = false;
-                input.checked = false;
+                if (input) {
+                    input.disabled = false;
+                    input.checked = false;
+                }
+                
+                // Reset indicator
                 const indicator = option.querySelector('.option-indicator');
-                indicator.textContent = '';
-                indicator.style.display = 'none';
+                if (indicator) {
+                    indicator.textContent = '';
+                    indicator.style.display = 'none';
+                }
+                
+                // Remove any custom styles
+                option.style.backgroundColor = '';
+                option.style.borderColor = '';
             });
             
             quiz1Feedback.style.display = 'none';
@@ -432,32 +456,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Please select an answer before submitting.');
                 return;
             }
-            
             rtExerciseData.attempts++;
             rtExerciseData.endTime = new Date();
-            
             const userAnswer = selectedAnswer.value;
             const isCorrect = userAnswer === rtExerciseData.correctAnswer;
-            
-            const allRtOptions = document.querySelectorAll('input[name="rtExerciseAnswer"]').forEach(input => {
+            const allRtInputs = document.querySelectorAll('input[name="rtExerciseAnswer"]');
+            allRtInputs.forEach(input => {
                 const option = input.closest('.quiz-option');
+                if (!option) return;
                 option.classList.add('disabled');
                 input.disabled = true;
-                
                 const indicator = option.querySelector('.option-indicator');
+                if (!indicator) return;
                 if (input.value === rtExerciseData.correctAnswer) {
                     option.classList.add('correct');
                     indicator.textContent = '✓';
+                    indicator.style.display = 'flex';
                 } else if (input.checked && input.value !== rtExerciseData.correctAnswer) {
                     option.classList.add('incorrect');
                     indicator.textContent = '✗';
+                    indicator.style.display = 'flex';
                 }
             });
-            
             rtExerciseFeedback.style.display = 'block';
             const feedbackIcon = rtExerciseFeedback.querySelector('.feedback-icon');
             const feedbackTitle = rtExerciseFeedback.querySelector('.feedback-title');
-            
             if (isCorrect) {
                 feedbackIcon.classList.add('correct');
                 feedbackIcon.textContent = '✓';
@@ -466,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rtExerciseStatus.classList.add('completed');
                 rtExerciseData.score = 100;
                 rtExerciseData.completed = true;
-            // 🆕 ADD: SCORM tracking
+                // 🆕 ADD: SCORM tracking
                 courseProgress.quizzesCompleted.rtExercise = true;
                 updateCourseProgress();
                 addToScore(100);
@@ -483,7 +506,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 rtExerciseScore.querySelector('.score-value').textContent = '0%';
                 retryRtExerciseBtn.style.display = 'inline-block';
             }
-            
             submitRtExerciseBtn.style.display = 'none';
             reportToLMS('rtExercise', rtExerciseData.score, rtExerciseData.completed);
             rtExerciseFeedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -492,16 +514,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (retryRtExerciseBtn) {
         retryRtExerciseBtn.addEventListener('click', function() {
-            const allRtOptions = document.querySelectorAll('input[name="rtExerciseAnswer"]').forEach(input => {
+            const allRtInputs = document.querySelectorAll('input[name="rtExerciseAnswer"]');
+            allRtInputs.forEach(input => {
                 const option = input.closest('.quiz-option');
+                if (!option) return;
                 option.classList.remove('disabled', 'correct', 'incorrect');
                 input.disabled = false;
                 input.checked = false;
                 const indicator = option.querySelector('.option-indicator');
-                indicator.textContent = '';
-                indicator.style.display = 'none';
+                if (indicator) {
+                    indicator.textContent = '';
+                    indicator.style.display = 'none';
+                }
             });
-            
             rtExerciseFeedback.style.display = 'none';
             rtExerciseStatus.textContent = 'Not Started';
             rtExerciseStatus.classList.remove('completed', 'failed');
@@ -535,7 +560,8 @@ document.addEventListener('DOMContentLoaded', () => {
         attempts: 0,
         completed: false,
         score: 0,
-        correctAnswer: 'a',
+        correctAnswer: 'a', // Insufficient polymerase or dNTPs
+        maxPoints: 30,
         startTime: null,
         endTime: null
     };
@@ -543,6 +569,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (troubleshootingQuiz1Form) {
         troubleshootingQuiz1Form.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            // Check if quiz is already completed
+            if (troubleshootingQuiz1Data.completed) {
+                return;
+            }
+
             const selectedAnswer = document.querySelector('input[name="troubleshootingQuiz1Answer"]:checked');
             if (!selectedAnswer) {
                 alert('Please select an answer before submitting.');
@@ -559,17 +591,21 @@ document.addEventListener('DOMContentLoaded', () => {
             troubleshootingQuiz1Options.forEach(option => {
                 option.classList.add('disabled');
                 const input = option.querySelector('input');
-                input.disabled = true;
+                if (input) {
+                    input.disabled = true;
                 
-                const indicator = option.querySelector('.option-indicator');
-                if (input.value === troubleshootingQuiz1Data.correctAnswer) {
-                    option.classList.add('correct');
-                    indicator.textContent = '✓';
-                    indicator.style.display = 'flex';
-                } else if (input.checked && input.value !== troubleshootingQuiz1Data.correctAnswer) {
-                    option.classList.add('incorrect');
-                    indicator.textContent = '✗';
-                    indicator.style.display = 'flex';
+                    const indicator = option.querySelector('.option-indicator');
+                    if (indicator) {
+                        if (input.value === troubleshootingQuiz1Data.correctAnswer) {
+                            option.classList.add('correct');
+                            indicator.textContent = '✓';
+                            indicator.style.display = 'flex';
+                        } else if (input.checked && input.value !== troubleshootingQuiz1Data.correctAnswer) {
+                            option.classList.add('incorrect');
+                            indicator.textContent = '✗';
+                            indicator.style.display = 'flex';
+                        }
+                    }
                 }
             });
             
@@ -582,17 +618,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 feedbackIcon.textContent = '✓';
                 feedbackTitle.textContent = 'Correct!';
                 troubleshootingQuiz1Status.textContent = 'Completed';
+                troubleshootingQuiz1Status.classList.remove('failed');
                 troubleshootingQuiz1Status.classList.add('completed');
-                troubleshootingQuiz1Data.score = 100; // 100 points as specified
+                troubleshootingQuiz1Data.score = troubleshootingQuiz1Data.maxPoints;
                 troubleshootingQuiz1Data.completed = true;
-                addToScore(100)
+                addToScore(troubleshootingQuiz1Data.maxPoints);
                 troubleshootingQuiz1Score.style.display = 'block';
-                troubleshootingQuiz1Score.querySelector('.score-value').textContent = '30 points';
+                troubleshootingQuiz1Score.querySelector('.score-value').textContent = troubleshootingQuiz1Data.maxPoints + ' points';
             } else {
                 feedbackIcon.classList.add('incorrect');
                 feedbackIcon.textContent = '✗';
                 feedbackTitle.textContent = 'Incorrect. The correct answer is highlighted above.';
                 troubleshootingQuiz1Status.textContent = 'Failed';
+                troubleshootingQuiz1Status.classList.remove('completed');
                 troubleshootingQuiz1Status.classList.add('failed');
                 troubleshootingQuiz1Data.score = 0;
                 troubleshootingQuiz1Score.style.display = 'block';
@@ -650,7 +688,8 @@ let troubleshootingQuiz2Data = {
     attempts: 0,
     completed: false,
     score: 0,
-    correctAnswers: ['a', 'e'], // Correct answers
+    correctAnswers: ['a', 'e'], // Correct answers: air bubble and improper sealing
+    maxPointsPerAnswer: 30, // 30 points per correct answer
     startTime: null,
     endTime: null
 };
@@ -658,6 +697,12 @@ let troubleshootingQuiz2Data = {
 if (troubleshootingQuiz2Form) {
     troubleshootingQuiz2Form.addEventListener('submit', function(e) {
         e.preventDefault();
+
+        // Check if quiz is already completed
+        if (troubleshootingQuiz2Data.completed) {
+            return;
+        }
+
         const selectedAnswers = Array.from(document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]:checked')).map(input => input.value);
         if (selectedAnswers.length === 0) {
             alert('Please select at least one answer before submitting.');
@@ -667,26 +712,28 @@ if (troubleshootingQuiz2Form) {
         troubleshootingQuiz2Data.attempts++;
         troubleshootingQuiz2Data.endTime = new Date();
         
-        // Calculate score based on correct answers selected
+        // Calculate score
         const correctAnswersSelected = selectedAnswers.filter(answer => 
             troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
         
-        let score = 0;
-        if (correctAnswersSelected.length === 2) {
-            // Both correct answers selected
-            score = 120;
-        } else if (correctAnswersSelected.length === 1) {
-            // At least one correct answer selected
-            score = 60;
-        } else {
-            // No correct answers selected
-            score = 0;
-        }
+        const incorrectAnswersSelected = selectedAnswers.filter(answer => 
+            !troubleshootingQuiz2Data.correctAnswers.includes(answer)
+        );
+
+        // Calculate score: 30 points per correct answer, minus 30 points per incorrect answer
+        const score = Math.max(0, 
+            (correctAnswersSelected.length * troubleshootingQuiz2Data.maxPointsPerAnswer) - 
+            (incorrectAnswersSelected.length * troubleshootingQuiz2Data.maxPointsPerAnswer)
+        );
         
         troubleshootingQuiz2Data.score = score;
         troubleshootingQuiz2Data.completed = true;
-        addToScore(score); //This will be 0, 60, or 120 points
+
+        // Add score to total only if there are points to add
+        if (score > 0) {
+            addToScore(score);
+        }
         
         const troubleshootingQuiz2Options = document.querySelectorAll('#troubleshootingQuiz2Form .quiz-option');
         troubleshootingQuiz2Options.forEach(option => {
@@ -714,15 +761,24 @@ if (troubleshootingQuiz2Form) {
         if (score === 60) {
             feedbackIcon.classList.add('correct');
             feedbackIcon.textContent = '✓';
-            feedbackTitle.textContent = 'Perfect! Both correct answers selected.';
+            feedbackTitle.textContent = 'Perfect! You selected both correct answers (air bubble and improper sealing) and no incorrect ones!';
+            troubleshootingQuiz2Status.textContent = 'Completed';
+            troubleshootingQuiz2Status.classList.remove('failed');
+            troubleshootingQuiz2Status.classList.add('completed');
         } else if (score === 30) {
-            feedbackIcon.classList.add('correct');
-            feedbackIcon.textContent = '✓';
-            feedbackTitle.textContent = 'Good! At least one correct answer selected.';
-        } else {
+            feedbackIcon.classList.add('partial');
+            feedbackIcon.textContent = '•';
+            feedbackTitle.textContent = 'Good start! You got one correct answer and no incorrect ones. Try again to find the other issue.';
+            troubleshootingQuiz2Status.textContent = 'Partially Complete';
+            troubleshootingQuiz2Status.classList.remove('failed', 'completed');
+            troubleshootingQuiz2Status.classList.add('partial');
+        } else if (score === 0) {
             feedbackIcon.classList.add('incorrect');
             feedbackIcon.textContent = '✗';
-            feedbackTitle.textContent = 'No correct answers selected.';
+            feedbackTitle.textContent = 'Keep trying! Either you selected incorrect answers or missed both correct ones. Remember to think about sample handling issues.';
+            troubleshootingQuiz2Status.textContent = 'Try Again';
+            troubleshootingQuiz2Status.classList.remove('completed', 'partial');
+            troubleshootingQuiz2Status.classList.add('failed');
         }
         
         troubleshootingQuiz2Status.textContent = 'Completed';
