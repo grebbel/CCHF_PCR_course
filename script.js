@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 feedbackTitle.textContent = 'Correct!';
                 troubleshootingQuiz1Status.textContent = 'Completed';
                 troubleshootingQuiz1Status.classList.add('completed');
-                troubleshootingQuiz1Data.score = 30; // 30 points as specified
+                troubleshootingQuiz1Data.score = 100; // 100 points as specified
                 troubleshootingQuiz1Data.completed = true;
                 troubleshootingQuiz1Score.style.display = 'block';
                 troubleshootingQuiz1Score.querySelector('.score-value').textContent = '30 points';
@@ -644,10 +644,10 @@ if (troubleshootingQuiz2Form) {
         let score = 0;
         if (correctAnswersSelected.length === 2) {
             // Both correct answers selected
-            score = 60;
+            score = 120;
         } else if (correctAnswersSelected.length === 1) {
             // At least one correct answer selected
-            score = 30;
+            score = 60;
         } else {
             // No correct answers selected
             score = 0;
