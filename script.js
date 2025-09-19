@@ -712,7 +712,7 @@ if (troubleshootingQuiz2Form) {
         troubleshootingQuiz2Data.attempts++;
         troubleshootingQuiz2Data.endTime = new Date();
         
-        // Calculate score
+        // Calculate score - only award points for completely correct answers (both correct, no incorrect)
         const correctAnswersSelected = selectedAnswers.filter(answer => 
             troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
@@ -721,12 +721,11 @@ if (troubleshootingQuiz2Form) {
             !troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
 
-        // Calculate score: 30 points per correct answer, minus 30 points per incorrect answer
-        const score = Math.max(0, 
-            (correctAnswersSelected.length * troubleshootingQuiz2Data.maxPointsPerAnswer) - 
-            (incorrectAnswersSelected.length * troubleshootingQuiz2Data.maxPointsPerAnswer)
-        );
-        
+        // Calculate score based on perfect selection (both correct answers and no incorrect ones)
+        const score = (correctAnswersSelected.length === troubleshootingQuiz2Data.correctAnswers.length && 
+                      incorrectAnswersSelected.length === 0) ? 60 : 
+                     (correctAnswersSelected.length === 1 && incorrectAnswersSelected.length === 0) ? 30 : 0;
+
         troubleshootingQuiz2Data.score = score;
         troubleshootingQuiz2Data.completed = true;
 
