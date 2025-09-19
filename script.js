@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+     // 🆕 ADD: SCORM Progress Tracking
+    let courseProgress = {
+        chaptersVisited: new Set(),
+        totalChapters: 6,
+        quizzesCompleted: { quiz1: false, rtExercise: false, multiplexExercise: false },
+        startTime: new Date()
+    };
+    
+    // Initialize SCORM
+    if (window.scormAPI && window.scormAPI.isScormAvailable()) {
+        console.log('✅ SCORM tracking active');
+        window.scormSetProgress(0);
+    }
+
     // Chapter Navigation Logic
     const chapterItems = document.querySelectorAll('.chapter-item');
     const contentSections = document.querySelectorAll('.content-section');
@@ -10,6 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('active');
             const tabId = item.dataset.tab;
             document.getElementById(tabId).classList.add('active');
+
+                // 🆕 ADD: Track chapter visits
+    courseProgress.chaptersVisited.add(tabId);
+    updateCourseProgress();
 
         // Scroll to top when clicking sidebar chapters
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -328,6 +347,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 quiz1Status.classList.add('completed');
                 quizData.quiz1.score = 100;
                 quizData.quiz1.completed = true;
+            // 🆕 ADD: SCORM tracking
+                courseProgress.quizzesCompleted.quiz1 = true;
+            if (window.scormAPI) {
+                window.scormAPI.recordInteraction('quiz1', 'choice', userAnswer, 'correct', quizData.quiz1.correctAnswer);
+                }
+                updateCourseProgress();
                 addToScore(100);
                 quiz1Score.style.display = 'block';
                 quiz1Score.querySelector('.score-value').textContent = '100%';
@@ -441,6 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 rtExerciseStatus.classList.add('completed');
                 rtExerciseData.score = 100;
                 rtExerciseData.completed = true;
+            // 🆕 ADD: SCORM tracking
+                courseProgress.quizzesCompleted.rtExercise = true;
+                updateCourseProgress();
                 addToScore(100);
                 rtExerciseScore.style.display = 'block';
                 rtExerciseScore.querySelector('.score-value').textContent = '100%';
@@ -885,7 +913,13 @@ document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]').forEach(ch
             addToScore(multiplexScore)
 
             alert(message);
-            
+        
+            // 🆕 ADD: SCORM tracking
+            courseProgress.quizzesCompleted.multiplexExercise = true;
+            if (window.scormAPI) {
+                window.scormSetScore(percentage);
+            }
+            updateCourseProgress();
             // Report to LMS
             reportToLMS('multiplexExercise', multiplexScore, percentage >= 70);
         });
@@ -925,6 +959,14 @@ document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]').forEach(ch
     }
 
     function reportModuleCompletion() {
+ // 🆕 ADD: Final SCORM completion
+    if (window.scormAPI && window.scormAPI.isScormAvailable()) {
+        window.scormSetComplete();
+        window.scormSetScore(95); // Set final score
+        const sessionTime = Math.floor((new Date() - courseProgress.startTime) / 1000);
+        window.scormAPI.setSessionTime(sessionTime);
+        console.log('✅ Final completion sent to SCORM');
+    }
         const moduleData = {
             moduleId: 'module4_pcr',
             completion: 'completed',
@@ -1331,6 +1373,33 @@ loadSavedScore();
         initializeTroubleshootingDashboard();
     }
 
+// 🆕 ADD: Progress calculation function
+function updateCourseProgress() {
+    if (!window.scormAPI || !window.scormAPI.isScormAvailable()) return;
+    
+    let progress = 0;
+    
+    // Chapter visits (40% of progress)
+    progress += (courseProgress.chaptersVisited.size / courseProgress.totalChapters) * 0.4;
+    
+    // Quiz completion (60% of progress)
+    const completedQuizzes = Object.values(courseProgress.quizzesCompleted).filter(Boolean).length;
+    progress += (completedQuizzes / 3) * 0.6;
+    
+    // Update SCORM progress
+    window.scormSetProgress(progress);
+    
+    // Mark complete if all quizzes done and most chapters visited
+    if (completedQuizzes >= 2 && courseProgress.chaptersVisited.size >= 4) {
+        window.scormSetComplete();
+        console.log('🎉 Course marked complete!');
+    }
+    
+    console.log(`📊 Progress: ${Math.round(progress * 100)}%`);
+}
+
+
+
     // Export functions for potential external use
     window.troubleshootingDashboard = {
         showModal: showModal,
@@ -1342,4 +1411,18 @@ loadSavedScore();
 
     // Console log to confirm script loaded
     console.log('PCR Module JavaScript loaded successfully');
-});
+
+    
+    // 🆕 ADD: Save progress every 30 seconds
+    setInterval(() => {
+        if (window.scormAPI && window.scormAPI.isScormAvailable()) {
+            const sessionTime = Math.floor((new Date() - courseProgress.startTime) / 1000);
+            window.scormAPI.setSessionTime(sessionTime);
+            window.scormAPI.commit();
+        }
+    }, 30000);
+
+    console.log('PCR Module JavaScript loaded successfully');
+}); // End of DOMContentLoaded
+
+
