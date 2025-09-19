@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('active');
             const tabId = item.dataset.tab;
             document.getElementById(tabId).classList.add('active');
+
+        // Scroll to top when clicking sidebar chapters
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
 
@@ -520,8 +523,8 @@ document.addEventListener('DOMContentLoaded', () => {
             nextChapter.classList.add('active');
             nextSection.classList.add('active');
             
-            const contentArea = document.querySelector('.content-area');
-            contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+        // Scroll to top when changing chapters
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
@@ -760,7 +763,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-// Add this JavaScript to the end of your script.js file, just before the final closing bracket and console.log
 
     // Troubleshooting Dashboard Functionality
     const troubleshootTiles = document.querySelectorAll('.troubleshoot-tile');
