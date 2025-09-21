@@ -1388,6 +1388,10 @@ body {
     position: relative;
     margin-top: -3px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .mercury-fill {
@@ -1407,12 +1411,8 @@ body {
 }
 
 .mercury-bulb {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     background: #ff6b6b;
     border-radius: 50%;
     transition: background-color 1.2s ease;
@@ -1467,6 +1467,8 @@ body {
     background-clip: text;
 }
 
+
+
 /* Thermometer animations */
 @keyframes bubble {
     0%, 100% { transform: scale(1); }
@@ -1500,3 +1502,56 @@ body {
         font-size: 0.7rem;
     }
 }
+
+/* Add this CSS to style.css for the reset button */
+
+.score-reset-section {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+}
+
+.reset-score-btn {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(220, 53, 69, 0.3);
+    border: 2px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.reset-score-btn:hover {
+    background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    border-color: #dc3545;
+}
+
+.reset-score-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.3);
+}
+
+.reset-score-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.3);
+}
+
+/* Add warning state for confirmation */
+.reset-score-btn.confirming {
+    background: linear-gradient(135deg, #fd7e14 0%, #e36209 100%);
+    animation: pulse-warning 1s infinite;
+}
+
+@keyframes pulse-warning {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+

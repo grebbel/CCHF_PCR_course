@@ -1454,6 +1454,218 @@ function updateCourseProgress() {
 }
 
 
+// Add this JavaScript code to script.js for reset functionality
+// Place this code near the end of the DOMContentLoaded event listener, before the closing bracket
+
+// Reset Score Functionality
+const resetScoreBtn = document.getElementById('resetScoreBtn');
+
+if (resetScoreBtn) {
+    resetScoreBtn.addEventListener('click', function() {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to reset all progress and scores to zero? This action cannot be undone.')) {
+            resetAllProgress();
+        }
+    });
+}
+
+function resetAllProgress() {
+    // Reset course score
+    courseScore = 0;
+    updateThermometer();
+    
+    // Reset course progress tracking
+    if (typeof courseProgress !== 'undefined') {
+        courseProgress.chaptersVisited.clear();
+        courseProgress.quizzesCompleted = { 
+            quiz1: false, 
+            rtExercise: false, 
+            multiplexExercise: false 
+        };
+        courseProgress.startTime = new Date();
+    }
+    
+    // Reset Quiz 1
+    if (typeof quizData !== 'undefined') {
+        quizData.quiz1 = {
+            attempts: 0,
+            completed: false,
+            score: 0,
+            correctAnswer: 'd',
+            startTime: null,
+            endTime: null
+        };
+        resetQuizDisplay('quiz1');
+    }
+    
+    // Reset RT Exercise
+    if (typeof rtExerciseData !== 'undefined') {
+        rtExerciseData = {
+            attempts: 0,
+            completed: false,
+            score: 0,
+            correctAnswer: 'b',
+            startTime: null,
+            endTime: null
+        };
+        resetQuizDisplay('rtExercise');
+    }
+    
+    // Reset Troubleshooting Quiz 1
+    if (typeof troubleshootingQuiz1Data !== 'undefined') {
+        troubleshootingQuiz1Data = {
+            attempts: 0,
+            completed: false,
+            score: 0,
+            correctAnswer: 'a',
+            maxPoints: 30,
+            startTime: null,
+            endTime: null
+        };
+        resetQuizDisplay('troubleshootingQuiz1');
+    }
+    
+    // Reset Troubleshooting Quiz 2
+    if (typeof troubleshootingQuiz2Data !== 'undefined') {
+        troubleshootingQuiz2Data = {
+            attempts: 0,
+            completed: false,
+            score: 0,
+            correctAnswers: ['a', 'e'],
+            maxPointsPerAnswer: 30,
+            startTime: null,
+            endTime: null
+        };
+        resetQuizDisplay('troubleshootingQuiz2');
+    }
+    
+    // Reset Multiplex Exercise
+    if (typeof multiplexScore !== 'undefined') {
+        multiplexScore = 0;
+        answersChecked = false;
+        if (multiplexScoreDisplay) {
+            multiplexScoreDisplay.textContent = `-- / ${maxMultiplexScore}`;
+            multiplexScoreDisplay.style.backgroundColor = '#cccccc';
+        }
+        resetMultiplexDropdowns();
+    }
+    
+    // Clear local storage
+    localStorage.removeItem('courseScore');
+    localStorage.removeItem('pcr_course_data');
+    localStorage.removeItem('troubleshooting_interactions');
+    
+    // Reset SCORM progress if available
+    if (window.scormAPI && window.scormAPI.isScormAvailable()) {
+        window.scormSetProgress(0);
+        window.scormAPI.setSessionTime(0);
+    }
+    
+    // Show success message
+    showResetConfirmation();
+    
+    console.log('All progress and scores have been reset to zero');
+}
+
+function resetQuizDisplay(quizType) {
+    // Reset quiz form and feedback displays
+    const formId = quizType + 'Form';
+    const feedbackId = quizType + 'Feedback';
+    const statusId = quizType + 'Status';
+    const scoreId = quizType + 'Score';
+    
+    const form = document.getElementById(formId);
+    const feedback = document.getElementById(feedbackId);
+    const status = document.getElementById(statusId);
+    const scoreDisplay = document.getElementById(scoreId);
+    
+    if (form) {
+        // Reset all radio buttons/checkboxes
+        const inputs = form.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+        inputs.forEach(input => {
+            input.checked = false;
+            input.disabled = false;
+        });
+        
+        // Reset all quiz options
+        const options = form.querySelectorAll('.quiz-option');
+        options.forEach(option => {
+            option.classList.remove('disabled', 'correct', 'incorrect', 'selected');
+            option.style.backgroundColor = '';
+            option.style.borderColor = '';
+            
+            const indicator = option.querySelector('.option-indicator');
+            if (indicator) {
+                indicator.textContent = '';
+                indicator.style.display = 'none';
+            }
+        });
+        
+        // Reset submit/retry buttons
+        const submitBtn = form.querySelector('.submit-btn, [id^="submit"]');
+        const retryBtn = form.querySelector('.retry-btn, [id^="retry"]');
+        
+        if (submitBtn) {
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = false;
+        }
+        if (retryBtn) {
+            retryBtn.style.display = 'none';
+        }
+    }
+    
+    if (feedback) {
+        feedback.style.display = 'none';
+    }
+    
+    if (status) {
+        status.textContent = 'Not Started';
+        status.classList.remove('completed', 'failed', 'partial');
+    }
+    
+    if (scoreDisplay) {
+        scoreDisplay.style.display = 'none';
+    }
+}
+
+function resetMultiplexDropdowns() {
+    const dropdowns = document.querySelectorAll('.interpretation-dropdown');
+    dropdowns.forEach(dropdown => {
+        dropdown.value = '';
+        dropdown.style.borderColor = '#ddd';
+        dropdown.style.backgroundColor = 'white';
+        
+        const sampleNumber = dropdown.getAttribute('data-sample');
+        const indicator = document.querySelector(`.result-indicator[data-sample="${sampleNumber}"]`);
+        if (indicator) {
+            indicator.innerHTML = '';
+        }
+    });
+}
+
+function showResetConfirmation() {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 25px;
+        font-weight: bold;
+        z-index: 10000;
+        animation: slideIn 0.5s ease, slideOut 0.5s ease 3s forwards;
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+    `;
+    notification.innerHTML = '✅ All progress reset successfully!';
+    
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 4000);
+}
+
+
+
 
     // Export functions for potential external use
     window.troubleshootingDashboard = {
