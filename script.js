@@ -576,7 +576,7 @@ if (rtExerciseForm) {
         completed: false,
         score: 0,
         correctAnswer: 'a', // Insufficient polymerase or dNTPs
-        maxPoints: 30,
+        maxPoints: 100,
         startTime: null,
         endTime: null
     };
@@ -703,7 +703,7 @@ let troubleshootingQuiz2Data = {
     completed: false,
     score: 0,
     correctAnswers: ['a', 'e'], // Correct answers: air bubble and improper sealing
-    maxPointsPerAnswer: 30, // 30 points per correct answer
+    maxPointsPerAnswer: 60, // 60 points per correct answer
     startTime: null,
     endTime: null
 };
@@ -733,8 +733,8 @@ if (troubleshootingQuiz2Form) {
             !troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
         const score = (correctAnswersSelected.length === troubleshootingQuiz2Data.correctAnswers.length && 
-                      incorrectAnswersSelected.length === 0) ? 60 : 
-                     (correctAnswersSelected.length === 1 && incorrectAnswersSelected.length === 0) ? 30 : 0;
+                      incorrectAnswersSelected.length === 0) ? 120 : 
+                     (correctAnswersSelected.length === 1 && incorrectAnswersSelected.length === 0) ? 60 : 0;
 
         troubleshootingQuiz2Data.score = score;
         troubleshootingQuiz2Data.completed = true;
