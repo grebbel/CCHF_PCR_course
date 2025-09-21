@@ -304,124 +304,135 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (quiz1Form) {
-        quiz1Form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const selectedAnswer = document.querySelector('input[name="quiz1Answer"]:checked');
-            if (!selectedAnswer) {
-                alert('Please select an answer before submitting.');
-                return;
+// REPLACE the Quiz 1 functionality section in script.js with this corrected version:
+
+if (quiz1Form) {
+    quiz1Form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const selectedAnswer = document.querySelector('input[name="quiz1Answer"]:checked');
+        if (!selectedAnswer) {
+            alert('Please select an answer before submitting.');
+            return;
+        }
+        
+        // Increment attempts and store end time
+        quizData.quiz1.attempts++;
+        quizData.quiz1.endTime = new Date();
+        
+        // Check if this is a retry and reset previous visual states if needed
+        // FIXED: Only target quiz1 options, not all quiz options
+        const previousFeedback = quiz1Form.querySelectorAll('.quiz-option.correct, .quiz-option.incorrect');
+        previousFeedback.forEach(option => {
+            option.classList.remove('correct', 'incorrect');
+            const indicator = option.querySelector('.option-indicator');
+            if (indicator) {
+                indicator.textContent = '';
             }
+        });
+        
+        const userAnswer = selectedAnswer.value;
+        const isCorrect = userAnswer === quizData.quiz1.correctAnswer;
+        
+        // FIXED: Only target options within quiz1Form, not all options
+        const allOptions = quiz1Form.querySelectorAll('.quiz-option');
+        allOptions.forEach(option => {
+            option.classList.add('disabled');
+            const input = option.querySelector('input');
+            input.disabled = true;
             
-            // Increment attempts and store end time
-            quizData.quiz1.attempts++;
-            quizData.quiz1.endTime = new Date();
-            
-            // Check if this is a retry and reset previous visual states if needed
-            const previousFeedback = document.querySelectorAll('.quiz-option.correct, .quiz-option.incorrect');
-            previousFeedback.forEach(option => {
-                option.classList.remove('correct', 'incorrect');
-                const indicator = option.querySelector('.option-indicator');
-                if (indicator) {
-                    indicator.textContent = '';
-                }
-            });
-            
-            const userAnswer = selectedAnswer.value;
-            const isCorrect = userAnswer === quizData.quiz1.correctAnswer;
-            
-            const allOptions = document.querySelectorAll('.quiz-option');
-            allOptions.forEach(option => {
-                option.classList.add('disabled');
-                const input = option.querySelector('input');
-                input.disabled = true;
-                
-                const indicator = option.querySelector('.option-indicator');
-                if (input.value === quizData.quiz1.correctAnswer) {
-                    option.classList.add('correct');
-                    indicator.textContent = '✓';
-                } else if (input.checked && input.value !== quizData.quiz1.correctAnswer) {
-                    option.classList.add('incorrect');
-                    indicator.textContent = '✗';
-                }
-            });
-            
-            quiz1Feedback.style.display = 'block';
-            const feedbackIcon = quiz1Feedback.querySelector('.feedback-icon');
-            const feedbackTitle = quiz1Feedback.querySelector('.feedback-title');
-            
-            if (isCorrect) {
-                feedbackIcon.classList.add('correct');
-                feedbackIcon.textContent = '✓';
-                feedbackTitle.textContent = 'Correct!';
-                quiz1Status.textContent = 'Completed';
-                quiz1Status.classList.add('completed');
-                quizData.quiz1.score = 100;
-                quizData.quiz1.completed = true;
-            // 🆕 ADD: SCORM tracking
-                courseProgress.quizzesCompleted.quiz1 = true;
+            const indicator = option.querySelector('.option-indicator');
+            if (input.value === quizData.quiz1.correctAnswer) {
+                option.classList.add('correct');
+                indicator.textContent = '✓';
+            } else if (input.checked && input.value !== quizData.quiz1.correctAnswer) {
+                option.classList.add('incorrect');
+                indicator.textContent = '✗';
+            }
+        });
+        
+        quiz1Feedback.style.display = 'block';
+        const feedbackIcon = quiz1Feedback.querySelector('.feedback-icon');
+        const feedbackTitle = quiz1Feedback.querySelector('.feedback-title');
+        
+        if (isCorrect) {
+            feedbackIcon.classList.add('correct');
+            feedbackIcon.textContent = '✓';
+            feedbackTitle.textContent = 'Correct!';
+            quiz1Status.textContent = 'Completed';
+            quiz1Status.classList.add('completed');
+            quizData.quiz1.score = 100;
+            quizData.quiz1.completed = true;
+            // ADD: SCORM tracking
+            courseProgress.quizzesCompleted.quiz1 = true;
             if (window.scormAPI) {
                 window.scormAPI.recordInteraction('quiz1', 'choice', userAnswer, 'correct', quizData.quiz1.correctAnswer);
-                }
-                updateCourseProgress();
-                addToScore(100);
-                quiz1Score.style.display = 'block';
-                quiz1Score.querySelector('.score-value').textContent = '100%';
-            } else {
-                feedbackIcon.classList.add('incorrect');
-                feedbackIcon.textContent = '✗';
-                feedbackTitle.textContent = 'Incorrect. The correct answer is highlighted above.';
-                quiz1Status.textContent = 'Failed';
-                quiz1Status.classList.add('failed');
-                quizData.quiz1.score = 0;
-                quiz1Score.style.display = 'block';
-                quiz1Score.querySelector('.score-value').textContent = '0%';
-                retryBtn.style.display = 'inline-block';
+            }
+            updateCourseProgress();
+            addToScore(100);
+            quiz1Score.style.display = 'block';
+            quiz1Score.querySelector('.score-value').textContent = '100%';
+        } else {
+            feedbackIcon.classList.add('incorrect');
+            feedbackIcon.textContent = '✗';
+            feedbackTitle.textContent = 'Incorrect. The correct answer is highlighted above.';
+            quiz1Status.textContent = 'Failed';
+            quiz1Status.classList.add('failed');
+            quizData.quiz1.score = 0;
+            quiz1Score.style.display = 'block';
+            quiz1Score.querySelector('.score-value').textContent = '0%';
+            retryBtn.style.display = 'inline-block';
+        }
+        
+        submitBtn.style.display = 'none';
+        reportToLMS('quiz1', quizData.quiz1.score, quizData.quiz1.completed);
+        quiz1Feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+}
+
+if (retryBtn) {
+    retryBtn.addEventListener('click', function() {
+        // FIXED: Only target options within quiz1Form
+        const allOptions = quiz1Form.querySelectorAll('.quiz-option');
+        allOptions.forEach(option => {
+            // Remove all state classes
+            option.classList.remove('disabled', 'correct', 'incorrect', 'selected');
+            
+            // Reset input state
+            const input = option.querySelector('input');
+            if (input) {
+                input.disabled = false;
+                input.checked = false;
             }
             
-            submitBtn.style.display = 'none';
-            reportToLMS('quiz1', quizData.quiz1.score, quizData.quiz1.completed);
-            quiz1Feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        });
-    }
-    
-    if (retryBtn) {
-        retryBtn.addEventListener('click', function() {
-            const allOptions = document.querySelectorAll('.quiz-option');
-            allOptions.forEach(option => {
-                // Remove all state classes
-                option.classList.remove('disabled', 'correct', 'incorrect', 'selected');
-                
-                // Reset input state
-                const input = option.querySelector('input');
-                if (input) {
-                    input.disabled = false;
-                    input.checked = false;
-                }
-                
-                // Reset indicator
-                const indicator = option.querySelector('.option-indicator');
-                if (indicator) {
-                    indicator.textContent = '';
-                    indicator.style.display = 'none';
-                }
-                
-                // Remove any custom styles
-                option.style.backgroundColor = '';
-                option.style.borderColor = '';
-            });
+            // Reset indicator
+            const indicator = option.querySelector('.option-indicator');
+            if (indicator) {
+                indicator.textContent = '';
+                indicator.style.display = 'none';
+            }
             
-            quiz1Feedback.style.display = 'none';
-            quiz1Status.textContent = 'Not Started';
-            quiz1Status.classList.remove('completed', 'failed');
-            quiz1Score.style.display = 'none';
-            submitBtn.style.display = 'inline-block';
-            retryBtn.style.display = 'none';
-            quizData.quiz1.startTime = new Date();
-            quiz1Form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Remove any custom styles
+            option.style.backgroundColor = '';
+            option.style.borderColor = '';
         });
-    }
+        
+        quiz1Feedback.style.display = 'none';
+        quiz1Status.textContent = 'Not Started';
+        quiz1Status.classList.remove('completed', 'failed');
+        quiz1Score.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+        retryBtn.style.display = 'none';
+        quizData.quiz1.startTime = new Date();
+        quiz1Form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+}
 
+
+
+
+
+
+    
     document.querySelectorAll('input[name="quiz1Answer"]').forEach(radio => {
         radio.addEventListener('change', function() {
             if (!quizData.quiz1.startTime) {
@@ -448,36 +459,40 @@ document.addEventListener('DOMContentLoaded', () => {
         endTime: null
     };
 
-    if (rtExerciseForm) {
-        rtExerciseForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const selectedAnswer = document.querySelector('input[name="rtExerciseAnswer"]:checked');
-            if (!selectedAnswer) {
-                alert('Please select an answer before submitting.');
-                return;
+if (rtExerciseForm) {
+    rtExerciseForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const selectedAnswer = document.querySelector('input[name="rtExerciseAnswer"]:checked');
+        if (!selectedAnswer) {
+            alert('Please select an answer before submitting.');
+            return;
+        }
+        rtExerciseData.attempts++;
+        rtExerciseData.endTime = new Date();
+        const userAnswer = selectedAnswer.value;
+        const isCorrect = userAnswer === rtExerciseData.correctAnswer;
+        
+        // FIXED: Only target inputs within rtExerciseForm
+        const allRtInputs = rtExerciseForm.querySelectorAll('input[name="rtExerciseAnswer"]');
+        allRtInputs.forEach(input => {
+            const option = input.closest('.quiz-option');
+            if (!option) return;
+            option.classList.add('disabled');
+            input.disabled = true;
+            const indicator = option.querySelector('.option-indicator');
+            if (!indicator) return;
+            if (input.value === rtExerciseData.correctAnswer) {
+                option.classList.add('correct');
+                indicator.textContent = '✓';
+                indicator.style.display = 'flex';
+            } else if (input.checked && input.value !== rtExerciseData.correctAnswer) {
+                option.classList.add('incorrect');
+                indicator.textContent = '✗';
+                indicator.style.display = 'flex';
             }
-            rtExerciseData.attempts++;
-            rtExerciseData.endTime = new Date();
-            const userAnswer = selectedAnswer.value;
-            const isCorrect = userAnswer === rtExerciseData.correctAnswer;
-            const allRtInputs = document.querySelectorAll('input[name="rtExerciseAnswer"]');
-            allRtInputs.forEach(input => {
-                const option = input.closest('.quiz-option');
-                if (!option) return;
-                option.classList.add('disabled');
-                input.disabled = true;
-                const indicator = option.querySelector('.option-indicator');
-                if (!indicator) return;
-                if (input.value === rtExerciseData.correctAnswer) {
-                    option.classList.add('correct');
-                    indicator.textContent = '✓';
-                    indicator.style.display = 'flex';
-                } else if (input.checked && input.value !== rtExerciseData.correctAnswer) {
-                    option.classList.add('incorrect');
-                    indicator.textContent = '✗';
-                    indicator.style.display = 'flex';
-                }
-            });
+        });
+
+
             rtExerciseFeedback.style.display = 'block';
             const feedbackIcon = rtExerciseFeedback.querySelector('.feedback-icon');
             const feedbackTitle = rtExerciseFeedback.querySelector('.feedback-title');
@@ -511,22 +526,22 @@ document.addEventListener('DOMContentLoaded', () => {
             rtExerciseFeedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
     }
-    
     if (retryRtExerciseBtn) {
         retryRtExerciseBtn.addEventListener('click', function() {
-            const allRtInputs = document.querySelectorAll('input[name="rtExerciseAnswer"]');
-            allRtInputs.forEach(input => {
-                const option = input.closest('.quiz-option');
-                if (!option) return;
-                option.classList.remove('disabled', 'correct', 'incorrect');
-                input.disabled = false;
-                input.checked = false;
-                const indicator = option.querySelector('.option-indicator');
-                if (indicator) {
-                    indicator.textContent = '';
-                    indicator.style.display = 'none';
-                }
-            });
+
+        const allRtInputs = rtExerciseForm.querySelectorAll('input[name="rtExerciseAnswer"]');
+        allRtInputs.forEach(input => {
+            const option = input.closest('.quiz-option');
+            if (!option) return;
+            option.classList.remove('disabled', 'correct', 'incorrect');
+            input.disabled = false;
+            input.checked = false;
+            const indicator = option.querySelector('.option-indicator');
+            if (indicator) {
+                indicator.textContent = '';
+                indicator.style.display = 'none';
+            }
+        });
             rtExerciseFeedback.style.display = 'none';
             rtExerciseStatus.textContent = 'Not Started';
             rtExerciseStatus.classList.remove('completed', 'failed');
@@ -587,27 +602,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const userAnswer = selectedAnswer.value;
             const isCorrect = userAnswer === troubleshootingQuiz1Data.correctAnswer;
             
-            const troubleshootingQuiz1Options = document.querySelectorAll('#troubleshootingQuiz1Form .quiz-option');
-            troubleshootingQuiz1Options.forEach(option => {
-                option.classList.add('disabled');
-                const input = option.querySelector('input');
-                if (input) {
-                    input.disabled = true;
-                
-                    const indicator = option.querySelector('.option-indicator');
-                    if (indicator) {
-                        if (input.value === troubleshootingQuiz1Data.correctAnswer) {
-                            option.classList.add('correct');
-                            indicator.textContent = '✓';
-                            indicator.style.display = 'flex';
-                        } else if (input.checked && input.value !== troubleshootingQuiz1Data.correctAnswer) {
-                            option.classList.add('incorrect');
-                            indicator.textContent = '✗';
-                            indicator.style.display = 'flex';
-                        }
+        const troubleshootingQuiz1Options = troubleshootingQuiz1Form.querySelectorAll('.quiz-option');
+        troubleshootingQuiz1Options.forEach(option => {
+            option.classList.add('disabled');
+            const input = option.querySelector('input');
+            if (input) {
+                input.disabled = true;
+                const indicator = option.querySelector('.option-indicator');
+                if (indicator) {
+                    if (input.value === troubleshootingQuiz1Data.correctAnswer) {
+                        option.classList.add('correct');
+                        indicator.textContent = '✓';
+                        indicator.style.display = 'flex';
+                    } else if (input.checked && input.value !== troubleshootingQuiz1Data.correctAnswer) {
+                        option.classList.add('incorrect');
+                        indicator.textContent = '✗';
+                        indicator.style.display = 'flex';
                     }
                 }
-            });
+            }
+        });
             
             troubleshootingQuiz1Feedback.style.display = 'block';
             const feedbackIcon = troubleshootingQuiz1Feedback.querySelector('.feedback-icon');
@@ -694,16 +708,15 @@ let troubleshootingQuiz2Data = {
     endTime: null
 };
 
+
+
 if (troubleshootingQuiz2Form) {
     troubleshootingQuiz2Form.addEventListener('submit', function(e) {
         e.preventDefault();
-
-        // Check if quiz is already completed
         if (troubleshootingQuiz2Data.completed) {
             return;
         }
-
-        const selectedAnswers = Array.from(document.querySelectorAll('input[name="troubleshootingQuiz2Answer"]:checked')).map(input => input.value);
+        const selectedAnswers = Array.from(troubleshootingQuiz2Form.querySelectorAll('input[name="troubleshootingQuiz2Answer"]:checked')).map(input => input.value);
         if (selectedAnswers.length === 0) {
             alert('Please select at least one answer before submitting.');
             return;
@@ -712,29 +725,25 @@ if (troubleshootingQuiz2Form) {
         troubleshootingQuiz2Data.attempts++;
         troubleshootingQuiz2Data.endTime = new Date();
         
-        // Calculate score - only award points for completely correct answers (both correct, no incorrect)
+        // Calculate score logic...
         const correctAnswersSelected = selectedAnswers.filter(answer => 
             troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
-        
         const incorrectAnswersSelected = selectedAnswers.filter(answer => 
             !troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
-
-        // Calculate score based on perfect selection (both correct answers and no incorrect ones)
         const score = (correctAnswersSelected.length === troubleshootingQuiz2Data.correctAnswers.length && 
                       incorrectAnswersSelected.length === 0) ? 60 : 
                      (correctAnswersSelected.length === 1 && incorrectAnswersSelected.length === 0) ? 30 : 0;
 
         troubleshootingQuiz2Data.score = score;
         troubleshootingQuiz2Data.completed = true;
-
-        // Add score to total only if there are points to add
         if (score > 0) {
             addToScore(score);
         }
         
-        const troubleshootingQuiz2Options = document.querySelectorAll('#troubleshootingQuiz2Form .quiz-option');
+        // FIXED: Only target options within troubleshootingQuiz2Form
+        const troubleshootingQuiz2Options = troubleshootingQuiz2Form.querySelectorAll('.quiz-option');
         troubleshootingQuiz2Options.forEach(option => {
             option.classList.add('disabled');
             const input = option.querySelector('input');
@@ -751,6 +760,9 @@ if (troubleshootingQuiz2Form) {
                 indicator.style.display = 'flex';
             }
         });
+        
+
+
         
         troubleshootingQuiz2Feedback.style.display = 'block';
         const feedbackIcon = troubleshootingQuiz2Feedback.querySelector('.feedback-icon');
@@ -1580,14 +1592,16 @@ function resetQuizDisplay(quizType) {
     const scoreDisplay = document.getElementById(scoreId);
     
     if (form) {
+
         // Reset all radio buttons/checkboxes
+       // FIXED: Only target inputs within the specific form
         const inputs = form.querySelectorAll('input[type="radio"], input[type="checkbox"]');
         inputs.forEach(input => {
             input.checked = false;
             input.disabled = false;
         });
         
-        // Reset all quiz options
+        // FIXED: Only target options within the specific form
         const options = form.querySelectorAll('.quiz-option');
         options.forEach(option => {
             option.classList.remove('disabled', 'correct', 'incorrect', 'selected');
@@ -1601,7 +1615,7 @@ function resetQuizDisplay(quizType) {
             }
         });
         
-        // Reset submit/retry buttons
+        // Reset submit/retry buttons within the specific form
         const submitBtn = form.querySelector('.submit-btn, [id^="submit"]');
         const retryBtn = form.querySelector('.retry-btn, [id^="retry"]');
         
@@ -1628,44 +1642,6 @@ function resetQuizDisplay(quizType) {
     }
 }
 
-function resetMultiplexDropdowns() {
-    const dropdowns = document.querySelectorAll('.interpretation-dropdown');
-    dropdowns.forEach(dropdown => {
-        dropdown.value = '';
-        dropdown.style.borderColor = '#ddd';
-        dropdown.style.backgroundColor = 'white';
-        
-        const sampleNumber = dropdown.getAttribute('data-sample');
-        const indicator = document.querySelector(`.result-indicator[data-sample="${sampleNumber}"]`);
-        if (indicator) {
-            indicator.innerHTML = '';
-        }
-    });
-}
-
-function showResetConfirmation() {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 15px 25px;
-        border-radius: 25px;
-        font-weight: bold;
-        z-index: 10000;
-        animation: slideIn 0.5s ease, slideOut 0.5s ease 3s forwards;
-        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
-    `;
-    notification.innerHTML = '✅ All progress reset successfully!';
-    
-    document.body.appendChild(notification);
-    setTimeout(() => notification.remove(), 4000);
-}
-
-
-
 
     // Export functions for potential external use
     window.troubleshootingDashboard = {
@@ -1691,5 +1667,4 @@ function showResetConfirmation() {
 
     console.log('PCR Module JavaScript loaded successfully');
 }); // End of DOMContentLoaded
-
 
