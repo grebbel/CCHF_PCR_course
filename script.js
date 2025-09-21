@@ -1530,7 +1530,7 @@ function resetAllProgress() {
             completed: false,
             score: 0,
             correctAnswer: 'a',
-            maxPoints: 30,
+            maxPoints: 100,
             startTime: null,
             endTime: null
         };
