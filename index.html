@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 3: Principles of Real-time PCR</title>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- IMPORTANT: Load enhanced SCORM wrapper FIRST, before any other scripts -->
+    <script src="scorm-wrapper.js"></script>
+    
     <style>
         /* Override sidebar and content area scrolling to scroll together */
         .main-layout {
@@ -58,6 +66,30 @@
             min-height: 100vh; /* Ensure full viewport height */
         }
 
+        /* SCORM Status Indicator */
+        .scorm-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            z-index: 10000;
+            display: none;
+        }
+
+        .scorm-status.connected {
+            background: rgba(57, 135, 12, 0.9);
+            display: block;
+        }
+
+        .scorm-status.error {
+            background: rgba(231, 76, 60, 0.9);
+            display: block;
+        }
+
         /* Mobile responsive adjustments */
         @media (max-width: 768px) {
             .main-layout {
@@ -77,10 +109,23 @@
                 order: 1;
                 padding: 20px;
             }
+
+            .scorm-status {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 10px;
+            }
         }
     </style>
 </head>
+
+
 <body>
+    <!-- SCORM Status Indicator -->
+    <div class="scorm-status" id="scormStatus">
+        <span id="scormStatusText">🔗 SCORM: Connecting...</span>
+    </div>
 
     <div class="course-container">
         <!-- Header -->
@@ -1678,36 +1723,74 @@
         <button class="end-module-btn" id="endModuleBtn">END OF MODULE 3</button>
     </div>
 </div>
-    <script src="scorm-wrapper.js"></script>
+<!-- Clean Script Loading - REPLACE your bottom script section -->
     <script src="script.js"></script>
+    
     <script>
-        // Debug script to check if external JS loaded
-        window.addEventListener('load', function() {
-            console.log('Page loaded');
-            // Check if our main script loaded
-            if (typeof document.querySelector === 'undefined') {
-                console.error('Basic JavaScript not working');
-            } else {
-                console.log('Basic JavaScript working');
-            }
+        // Enhanced SCORM initialization and monitoring
+        let scormInitialized = false;
+        let studentInfo = null;
+
+        // Update SCORM status indicator
+        function updateSCORMStatus(status, message, studentName = '') {
+            const statusEl = document.getElementById('scormStatus');
+            const statusText = document.getElementById('scormStatusText');
             
-            // Check if our elements exist
-            const chapterItems = document.querySelectorAll('.chapter-item');
-            const nextBtn = document.getElementById('nextBtn');
-            console.log('Chapter items found:', chapterItems.length);
-            console.log('Next button found:', nextBtn ? 'Yes' : 'No');
+            if (!statusEl || !statusText) return;
             
-            // Test if external script loaded
-            if (chapterItems.length > 0 && !nextBtn) {
-                console.error('External script.js may not have loaded properly');
-                console.log('Trying to reload functionality...');
-                
-                // Fallback: reload the page or provide error message
-                setTimeout(() => {
-                    alert('JavaScript not loading properly. Please check:\n1. script.js file is in the same folder as index.html\n2. Both files are uploaded to GitHub\n3. Try refreshing the page');
-                }, 1000);
+            statusEl.className = `scorm-status ${status}`;
+            
+            const statusMessages = {
+                'connecting': '🔗 SCORM: Connecting...',
+                'connected': `✅ SCORM: Connected ${studentName ? '(' + studentName + ')' : ''}`,
+                'error': '❌ SCORM: Connection Failed',
+                'offline': '📴 SCORM: Offline Mode'
+            };
+            
+            statusText.textContent = statusMessages[status] || message;
+            
+            if (status === 'connected') {
+                setTimeout(() => statusEl.style.opacity = '0.3', 5000);
             }
+        }
+
+        // Listen for SCORM ready event
+        window.addEventListener('scormReady', function(event) {
+            console.log('🎉 SCORM Ready!', event.detail);
+            scormInitialized = true;
+            studentInfo = event.detail.student;
+            updateSCORMStatus('connected', '', studentInfo?.name || '');
         });
+
+        // Handle page load
+        window.addEventListener('load', function() {
+            console.log('📄 Page loaded successfully');
+            updateSCORMStatus('connecting');
+            
+            setTimeout(() => {
+                if (!scormInitialized) {
+                    if (window.scormAPI?.isScormAvailable()) {
+                        scormInitialized = true;
+                        studentInfo = window.scormAPI.getStudentInfo();
+                        updateSCORMStatus('connected', '', studentInfo?.name || '');
+                    } else {
+                        updateSCORMStatus('offline');
+                        console.log('📴 Running in offline mode - this is normal for local testing');
+                    }
+                }
+            }, 2000);
+        });
+
+        // Debug utilities
+        window.scormDebug = {
+            getStatus: () => ({
+                initialized: scormInitialized,
+                student: studentInfo,
+                version: window.scormAPI?.getVersion(),
+                available: window.scormAPI?.isScormAvailable()
+            }),
+            testProgress: (progress) => window.scormAPI?.setProgress(progress)
+        };
     </script>
 </body>
 </html>

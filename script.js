@@ -1,13 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
 
      // 🆕 ADD: SCORM Progress Tracking
-    let courseProgress = {
-        chaptersVisited: new Set(),
-        totalChapters: 6,
-        quizzesCompleted: { quiz1: false, rtExercise: false, multiplexExercise: false },
-        startTime: new Date()
-    };
-    
+
+
+let courseProgress = {
+    chaptersVisited: new Set(),
+    totalChapters: 9, // Updated to match your actual chapter count (intro, pcr-principle, realtime-pcr, sybr-green, taqman-probe, reverse-transcriptase, controls, multiplex, troubleshooting)
+    quizzesCompleted: { 
+        quiz1: false, 
+        rtExercise: false, 
+        multiplexExercise: false,
+        troubleshootingQuiz1: false,
+        troubleshootingQuiz2: false
+    },
+    startTime: new Date(),
+    interactions: [],
+    bookmarks: [],
+    sessionData: {
+        loginTime: new Date().toISOString(),
+        timeSpent: 0,
+        pagesVisited: 0
+    }
+};
     // Initialize SCORM
     if (window.scormAPI && window.scormAPI.isScormAvailable()) {
         console.log('✅ SCORM tracking active');
@@ -34,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
+
+
 
     // PCR Interactive Slides
     const slides = document.querySelectorAll('#pcr-principle .slide');
@@ -364,6 +380,7 @@ if (quiz1Form) {
             quizData.quiz1.completed = true;
             // ADD: SCORM tracking
             courseProgress.quizzesCompleted.quiz1 = true;
+            addToScore(100); // Add points to overall course score
             if (window.scormAPI) {
                 window.scormAPI.recordInteraction('quiz1', 'choice', userAnswer, 'correct', quizData.quiz1.correctAnswer);
             }
@@ -725,16 +742,31 @@ if (troubleshootingQuiz2Form) {
         troubleshootingQuiz2Data.attempts++;
         troubleshootingQuiz2Data.endTime = new Date();
         
-        // Calculate score logic...
+        // Calculate score logic based on correct and incorrect answers
         const correctAnswersSelected = selectedAnswers.filter(answer => 
             troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
         const incorrectAnswersSelected = selectedAnswers.filter(answer => 
             !troubleshootingQuiz2Data.correctAnswers.includes(answer)
         );
-        const score = (correctAnswersSelected.length === troubleshootingQuiz2Data.correctAnswers.length && 
-                      incorrectAnswersSelected.length === 0) ? 120 : 
-                     (correctAnswersSelected.length === 1 && incorrectAnswersSelected.length === 0) ? 60 : 0;
+        
+        let score = 0;
+        // If no correct answers selected
+        if (correctAnswersSelected.length === 0) {
+            score = 0;
+        }
+        // If one correct answer selected
+        else if (correctAnswersSelected.length === 1) {
+            score = 60; // 60 points regardless of incorrect answers
+        }
+        // If two correct answers selected
+        else if (correctAnswersSelected.length === 2) {
+            if (incorrectAnswersSelected.length === 0) {
+                score = 120; // Perfect score - both correct, no incorrect
+            } else {
+                score = 30; // Both correct but with incorrect answers
+            }
+        }
 
         troubleshootingQuiz2Data.score = score;
         troubleshootingQuiz2Data.completed = true;
@@ -769,24 +801,31 @@ if (troubleshootingQuiz2Form) {
         const feedbackTitle = troubleshootingQuiz2Feedback.querySelector('.feedback-title');
         
         // Show results based on score
-        if (score === 60) {
+        if (score === 120) {
             feedbackIcon.classList.add('correct');
             feedbackIcon.textContent = '✓';
-            feedbackTitle.textContent = 'Perfect! You selected both correct answers (air bubble and improper sealing) and no incorrect ones!';
+            feedbackTitle.textContent = 'Perfect! You selected both correct answers (air bubble and improper sealing) without any incorrect ones!';
             troubleshootingQuiz2Status.textContent = 'Completed';
-            troubleshootingQuiz2Status.classList.remove('failed');
+            troubleshootingQuiz2Status.classList.remove('failed', 'partial');
             troubleshootingQuiz2Status.classList.add('completed');
-        } else if (score === 30) {
+        } else if (score === 60) {
             feedbackIcon.classList.add('partial');
             feedbackIcon.textContent = '•';
-            feedbackTitle.textContent = 'Good start! You got one correct answer and no incorrect ones. Try again to find the other issue.';
+            feedbackTitle.textContent = 'Good! You found one of the correct answers. Can you find the other one?';
             troubleshootingQuiz2Status.textContent = 'Partially Complete';
             troubleshootingQuiz2Status.classList.remove('failed', 'completed');
             troubleshootingQuiz2Status.classList.add('partial');
-        } else if (score === 0) {
+        } else if (score === 30) {
+            feedbackIcon.classList.add('partial');
+            feedbackIcon.textContent = '•';
+            feedbackTitle.textContent = 'You found both correct answers, but also selected some incorrect ones. Try again with only the correct answers.';
+            troubleshootingQuiz2Status.textContent = 'Partially Complete';
+            troubleshootingQuiz2Status.classList.remove('failed', 'completed');
+            troubleshootingQuiz2Status.classList.add('partial');
+        } else {
             feedbackIcon.classList.add('incorrect');
             feedbackIcon.textContent = '✗';
-            feedbackTitle.textContent = 'Keep trying! Either you selected incorrect answers or missed both correct ones. Remember to think about sample handling issues.';
+            feedbackTitle.textContent = 'Keep trying! Think about sample handling issues that could cause no amplification in one well.';
             troubleshootingQuiz2Status.textContent = 'Try Again';
             troubleshootingQuiz2Status.classList.remove('completed', 'partial');
             troubleshootingQuiz2Status.classList.add('failed');
@@ -1441,30 +1480,77 @@ loadSavedScore();
     }
 
 // 🆕 ADD: Progress calculation function
+// Enhanced Progress Calculation Function - REPLACE YOUR EXISTING updateCourseProgress()
 function updateCourseProgress() {
-    if (!window.scormAPI || !window.scormAPI.isScormAvailable()) return;
-    
-    let progress = 0;
-    
-    // Chapter visits (40% of progress)
-    progress += (courseProgress.chaptersVisited.size / courseProgress.totalChapters) * 0.4;
-    
-    // Quiz completion (60% of progress)
-    const completedQuizzes = Object.values(courseProgress.quizzesCompleted).filter(Boolean).length;
-    progress += (completedQuizzes / 3) * 0.6;
-    
-    // Update SCORM progress
-    window.scormSetProgress(progress);
-    
-    // Mark complete if all quizzes done and most chapters visited
-    if (completedQuizzes >= 2 && courseProgress.chaptersVisited.size >= 4) {
-        window.scormSetComplete();
-        console.log('🎉 Course marked complete!');
+    if (!window.scormAPI?.isScormAvailable()) {
+        console.log('📴 SCORM not available - saving to localStorage');
+        localStorage.setItem('courseProgress', JSON.stringify({
+            ...courseProgress,
+            chaptersVisited: Array.from(courseProgress.chaptersVisited)
+        }));
+        return;
     }
     
-    console.log(`📊 Progress: ${Math.round(progress * 100)}%`);
+    try {
+        let progress = 0;
+        
+        // Chapter visits (40% of progress) - Updated for your 9 chapters
+        const chapterProgress = courseProgress.chaptersVisited.size / courseProgress.totalChapters;
+        progress += chapterProgress * 0.4;
+        
+        // Quiz completion (60% of progress) - Updated for all your quizzes
+        const completedQuizzes = Object.values(courseProgress.quizzesCompleted).filter(Boolean).length;
+        const totalQuizzes = Object.keys(courseProgress.quizzesCompleted).length;
+        const quizProgress = completedQuizzes / totalQuizzes;
+        progress += quizProgress * 0.6;
+        
+        // Update SCORM with enhanced data
+        window.scormAPI.setProgress(progress);
+        
+        // Calculate and set score
+        const currentScore = window.courseScore || 0;
+        const maxScore = window.maxScore || 540;
+        const scorePercentage = (currentScore / maxScore) * 100;
+        window.scormAPI.setScore(scorePercentage, 0, 100);
+        
+        // Determine completion status - Updated criteria for your course
+        const completionThreshold = Math.ceil(totalQuizzes * 0.6); // 60% of quizzes
+        const chapterThreshold = Math.ceil(courseProgress.totalChapters * 0.7); // 70% of chapters
+        
+        if (completedQuizzes >= completionThreshold && courseProgress.chaptersVisited.size >= chapterThreshold) {
+            window.scormAPI.setCompletionStatus('completed');
+            
+            // Set success status for SCORM 2004
+            if (window.scormAPI.getVersion() === '2004') {
+                const passThreshold = 70; // 70% pass threshold
+                window.scormAPI.setSuccessStatus(scorePercentage >= passThreshold ? 'passed' : 'failed');
+            }
+            
+            console.log('🎉 Course marked complete! Final score:', scorePercentage.toFixed(1) + '%');
+        } else {
+            window.scormAPI.setCompletionStatus('incomplete');
+        }
+        
+        // Update session time
+        const sessionTime = Math.floor((new Date() - courseProgress.startTime) / 1000);
+        window.scormAPI.setSessionTime(sessionTime);
+        
+        console.log(`📊 Progress Update:
+            - Overall: ${Math.round(progress * 100)}%
+            - Chapters: ${courseProgress.chaptersVisited.size}/${courseProgress.totalChapters} (${Math.round(chapterProgress * 100)}%)
+            - Quizzes: ${completedQuizzes}/${totalQuizzes} (${Math.round(quizProgress * 100)}%)
+            - Score: ${scorePercentage.toFixed(1)}%
+            - Session: ${Math.floor(sessionTime/60)} minutes`);
+            
+    } catch (error) {
+        console.error('Error updating course progress:', error);
+        // Fallback to localStorage
+        localStorage.setItem('courseProgress', JSON.stringify({
+            ...courseProgress,
+            chaptersVisited: Array.from(courseProgress.chaptersVisited)
+        }));
+    }
 }
-
 
 // Add this JavaScript code to script.js for reset functionality
 // Place this code near the end of the DOMContentLoaded event listener, before the closing bracket
